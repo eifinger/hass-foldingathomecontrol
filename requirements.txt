@@ -1,2 +1,1 @@
-integrationhelper
-sampleclient
+PyFoldingAtHomeControl==0.1.5
