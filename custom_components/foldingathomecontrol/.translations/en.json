@@ -4,7 +4,7 @@
         "step": {
             "user": {
                 "title": "FoldingAtHomeControl",
-                "description": "If you need help with the configuration have a look here: https://github.com/custom-components/blueprint",
+                "description": "If you need help with the configuration have a look here: https://github.com/eifinger/hass-foldingathomecontrol",
                 "data": {
                     "address": "IP Address or Hostname",
                     "password": "Password",

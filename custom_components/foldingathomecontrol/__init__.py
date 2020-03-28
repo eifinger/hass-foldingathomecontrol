@@ -1,6 +1,9 @@
 """
 Component to integrate with PyFoldingAtHomeControl.
 """
+
+import asyncio
+import itertools
 import logging
 from typing import Any
 
@@ -15,20 +18,28 @@ from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.core import Config, HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
-from .const import CONF_ADDRESS, CONF_PASSWORD, CONF_PORT, DATA_UPDATED, DOMAIN
+from .const import (
+    CONF_ADDRESS,
+    CONF_PASSWORD,
+    CONF_PORT,
+    DATA_UPDATED,
+    DOMAIN,
+    SENSOR_ADDED,
+    SENSOR_REMOVED,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
-CONFIG_SCHEMA = vol.Schema(
+FOLDINGATHOMECONTROL_SCHEMA = vol.Schema(
     {
-        DOMAIN: vol.Schema(
-            {
-                vol.Optional(CONF_ADDRESS, default="localhost"): cv.string,
-                vol.Optional(CONF_PORT, default=36330): cv.port,
-                vol.Optional(CONF_PASSWORD): cv.string,
-            }
-        )
-    },
+        vol.Optional(CONF_ADDRESS, default="localhost"): cv.string,
+        vol.Optional(CONF_PORT, default=36330): cv.port,
+        vol.Optional(CONF_PASSWORD): cv.string,
+    }
+)
+
+CONFIG_SCHEMA = vol.Schema(
+    {DOMAIN: vol.All(cv.ensure_list, [FOLDINGATHOMECONTROL_SCHEMA])},
     extra=vol.ALLOW_EXTRA,
 )
 
@@ -36,11 +47,12 @@ CONFIG_SCHEMA = vol.Schema(
 async def async_setup(hass: HomeAssistant, config: Config) -> bool:
     """Configure PyFoldingAtHomeControl using config flow only."""
     if DOMAIN in config:
-        hass.async_create_task(
-            hass.config_entries.flow.async_init(
-                DOMAIN, context={"source": SOURCE_IMPORT}, data=config[DOMAIN]
+        for entry in config[DOMAIN]:
+            hass.async_create_task(
+                hass.config_entries.flow.async_init(
+                    DOMAIN, context={"source": SOURCE_IMPORT}, data=entry
+                )
             )
-        )
 
     return True
 
@@ -77,10 +89,30 @@ class FoldingAtHomeControlData:
     @callback
     def callback(self, message_type: str, data: Any) -> None:
         """Called when data is received from the Folding@Home client."""
-        if len(self.data[PyOnMessageTypes.SLOTS.value]) != len(self.data[message_type]):
-            _LOGGER.debug("Length has changed create/remove sensors.")
+        if message_type == PyOnMessageTypes.SLOTS.value:
+            if PyOnMessageTypes.SLOTS.value in self.data:
+                added = list(
+                    itertools.filterfalse(
+                        lambda x: x in self.data[PyOnMessageTypes.SLOTS.value], data
+                    )
+                )
+                removed = list(
+                    itertools.filterfalse(
+                        lambda x: x in data, self.data[PyOnMessageTypes.SLOTS.value]
+                    )
+                )
+                async_dispatcher_send(
+                    self.hass, self.get_sensor_added_identifer(), added
+                )
+                async_dispatcher_send(
+                    self.hass, self.get_sensor_removed_identifer(), removed
+                )
+            else:
+                async_dispatcher_send(
+                    self.hass, self.get_sensor_added_identifer(), data
+                )
         self.data[message_type] = data
-        async_dispatcher_send(self.hass, DATA_UPDATED)
+        async_dispatcher_send(self.hass, self.get_data_update_identifer())
 
     async def async_setup(self) -> bool:
         """Set up the Folding@Home client."""
@@ -93,13 +125,15 @@ class FoldingAtHomeControlData:
         except FoldingAtHomeControlConnectionFailed:
             return False
 
-        self._remove_callback = self.client.register_callback(self.callback)
-        self._task = self.hass.async_create_task(self.client.run())
         self.hass.async_create_task(
             self.hass.config_entries.async_forward_entry_setup(
                 self.config_entry, "sensor"
             )
         )
+
+        self._remove_callback = self.client.register_callback(self.callback)
+        self._task = asyncio.ensure_future(self.client.run())
+
         return True
 
     async def async_remove(self) -> None:
@@ -109,9 +143,21 @@ class FoldingAtHomeControlData:
         if self._task is not None:
             self._task.cancel()
 
+    def get_data_update_identifer(self) -> None:
+        """Returns the unique data_update itentifier for this connection."""
+        return f"{DATA_UPDATED}_{self.config_entry.data[CONF_ADDRESS]}"
+
+    def get_sensor_added_identifer(self) -> None:
+        """Returns the unique sensor_added itentifier for this connection."""
+        return f"{SENSOR_ADDED}_{self.config_entry.data[CONF_ADDRESS]}"
+
+    def get_sensor_removed_identifer(self) -> None:
+        """Returns the unique sensor_removed itentifier for this connection."""
+        return f"{SENSOR_REMOVED}_{self.config_entry.data[CONF_ADDRESS]}"
+
     @property
     def available(self):
-        """Is the Client available."""
+        """Is the Folding@Home client available."""
         if self.client:
             return self.client.is_connected
         return False

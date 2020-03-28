@@ -1,4 +1,4 @@
-"""Adds config flow for Blueprint."""
+"""Adds config flow for foldingathomecontrol."""
 
 import voluptuous as vol
 from homeassistant import config_entries, core, exceptions
