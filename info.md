@@ -25,6 +25,13 @@ guide in order to allow other clients on your local network to access your Foldi
 
 ## Installation
 
+### HACS
+
+The easiest way to add this to your Homeassistant installation is using [HACS](https://hacs.xyz/).
+And then follow the instructions under [Configuration](##configuration) below.
+
+### Manual
+
 1. Using the tool of choice open the directory (folder) for your HA configuration (where you find `configuration.yaml`).
 2. If you do not have a `custom_components` directory (folder) there, you need to create it.
 3. In the `custom_components` directory (folder) create a new folder called `foldingathomecontrol`.
@@ -46,7 +53,9 @@ custom_components/foldingathomecontrol/manifest.json
 custom_components/foldingathomecontrol/sensor.py
 ```
 
-## Example configuration.yaml
+## Configuration
+
+### Example configuration.yaml
 
 ```yaml
 foldingathomecontrol:
@@ -55,7 +64,7 @@ foldingathomecontrol:
     password: "password"
 ```
 
-## Configuration options
+### Configuration options
 
 Key | Type | Required | Default | Description
 -- | -- | -- | -- | --
