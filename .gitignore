@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 
 venv/
+hass_debug_env/
