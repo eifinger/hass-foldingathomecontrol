@@ -1,1 +1,1 @@
-PyFoldingAtHomeControl==1.1.0
+PyFoldingAtHomeControl==1.1.2
