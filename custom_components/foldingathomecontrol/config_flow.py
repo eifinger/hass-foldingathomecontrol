@@ -2,6 +2,12 @@
 
 import voluptuous as vol
 from homeassistant import config_entries, core, exceptions
+from FoldingAtHomeControl import (
+    FoldingAtHomeControlConnectionFailed,
+    FoldingAtHomeController,
+    FoldingAtHomeControlAuthenticationRequired,
+    FoldingAtHomeControlAuthenticationFailed,
+)
 
 from .const import CONF_ADDRESS, CONF_PASSWORD, CONF_PORT, DOMAIN
 
@@ -19,6 +25,11 @@ async def validate_input(hass: core.HomeAssistant, data):
     for entry in hass.config_entries.async_entries(DOMAIN):
         if entry.data[CONF_ADDRESS] == data[CONF_ADDRESS]:
             raise AlreadyConfigured
+    client = FoldingAtHomeController(
+        data[CONF_ADDRESS], data[CONF_PORT], data.get(CONF_PASSWORD)
+    )
+    await client.try_connect_async(timeout=5)
+    await client.cleanup_async()
 
 
 @config_entries.HANDLERS.register(DOMAIN)
@@ -43,6 +54,12 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
                 )
             except AlreadyConfigured:
                 return self.async_abort(reason="already_configured")
+            except FoldingAtHomeControlConnectionFailed:
+                errors["base"] = "cannot_connect"
+            except FoldingAtHomeControlAuthenticationRequired:
+                errors["base"] = "auth_required"
+            except FoldingAtHomeControlAuthenticationFailed:
+                errors["base"] = "auth_failed"
 
         return self.async_show_form(
             step_id="user", data_schema=DATA_SCHEMA, errors=errors
