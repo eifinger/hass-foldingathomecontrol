@@ -49,8 +49,13 @@ custom_components/foldingathomecontrol/.translations/en.json
 custom_components/foldingathomecontrol/__init__.py
 custom_components/foldingathomecontrol/config_flow.py
 custom_components/foldingathomecontrol/const.py
+custom_components/foldingathomecontrol/foldingathomecontrol_client.py
+custom_components/foldingathomecontrol/foldingathomecontrol_device.py
 custom_components/foldingathomecontrol/manifest.json
 custom_components/foldingathomecontrol/sensor.py
+custom_components/foldingathomecontrol/services.py
+custom_components/foldingathomecontrol/services.yaml
+custom_components/foldingathomecontrol/timeparse.py
 ```
 
 ## Configuration

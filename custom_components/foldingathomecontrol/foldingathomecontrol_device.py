@@ -4,7 +4,6 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity
 
 from .const import DOMAIN
-
 from .foldingathomecontrol_client import FoldingAtHomeControlClient
 
 
@@ -14,6 +13,7 @@ class FoldingAtHomeControlBase:
     def __init__(self, client: FoldingAtHomeControlClient, slot_id: str) -> None:
         """Set up device and add update callback to get data."""
         self._device_identifier = f"{client.address}_{slot_id}"
+        self._device_name = f"{client.address} {client.slot_data[slot_id]['Description'].split(':')[0].upper()}: {slot_id}"  # pylint: disable=line-too-long
         self._client: FoldingAtHomeControlClient = client
         self._slot_id: str = slot_id
         self.listeners: list = []
@@ -24,6 +24,7 @@ class FoldingAtHomeControlBase:
 
         return {
             "identifiers": {(DOMAIN, self._device_identifier)},
+            "name": self._device_name,
             "manufacturer": "FoldingAtHomeControl",
             "via_device": (DOMAIN, self._client.address),
         }
@@ -32,13 +33,9 @@ class FoldingAtHomeControlBase:
 class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, Entity):
     """Representation of a FoldingAtHomeControl entity."""
 
-    def __init__(self, client: FoldingAtHomeControlClient, slot_id: str):
-        """Set up device and add update callback to get data."""
-        super().__init__(client, slot_id)
-
     @property
     def entity_registry_enabled_default(self) -> bool:
-        """Return if the entity should be enabled when first added to the entity registry."""
+        """Should entitiy be enabled when first added to the entity registry."""
         return True
 
     async def async_added_to_hass(self) -> None:

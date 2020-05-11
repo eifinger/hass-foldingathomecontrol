@@ -20,5 +20,16 @@
         "abort": {
             "already_configured": "Only a single configuration of FoldingAtHomeControl for each address is allowed."
         }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "description": "Configure options for FoldingAtHomeControl",
+                "data": {
+                    "update_rate": "Set Update Rate",
+                    "read_timeout": "Set the Read Timeout"
+                }
+            }
+        }
     }
 }

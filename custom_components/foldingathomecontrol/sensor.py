@@ -4,10 +4,9 @@ from typing import List, Optional
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
+from .const import DOMAIN, SENSOR_TYPES
 from .foldingathomecontrol_client import FoldingAtHomeControlClient
 from .foldingathomecontrol_device import FoldingAtHomeControlDevice
-
-from .const import DOMAIN, SENSOR_TYPES
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):

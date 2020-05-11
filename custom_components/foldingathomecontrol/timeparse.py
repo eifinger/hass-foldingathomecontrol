@@ -45,7 +45,7 @@ DAYCLOCK = (
     r"(?P<days>\d+):(?P<hours>\d{2}):" r"(?P<mins>\d{2}):(?P<secs>\d{2}(?:\.\d+)?)"
 )
 
-OPT = lambda x: r"(?:{x})?".format(x=x, SEPARATORS=SEPARATORS)
+OPT = lambda x: r"(?:{x})?".format(x=x)
 OPTSEP = lambda x: r"(?:{x}\s*(?:{SEPARATORS}\s*)?)?".format(x=x, SEPARATORS=SEPARATORS)
 
 TIMEFORMATS = [
@@ -104,8 +104,6 @@ def _interpret_as_minutes(sval, mdict):
         and (("hours" not in mdict) or (mdict["hours"] is None))
         and (("days" not in mdict) or (mdict["days"] is None))
         and (("weeks" not in mdict) or (mdict["weeks"] is None))
-        # and (('months' not in mdict) or (mdict['months'] is None))
-        # and (('years' not in mdict) or (mdict['years'] is None))
     ):
         mdict["hours"] = mdict["mins"]
         mdict["mins"] = mdict["secs"]
@@ -167,9 +165,7 @@ def timeparse(sval, granularity="seconds"):
                     ]
                 )
             # if SECS is an integer number
-            elif (
-                "secs" not in mdict or mdict["secs"] is None or mdict["secs"].isdigit()
-            ):
+            if "secs" not in mdict or mdict["secs"] is None or mdict["secs"].isdigit():
                 # we will return an integer
                 return sign * int(
                     sum(
@@ -180,12 +176,11 @@ def timeparse(sval, granularity="seconds"):
                         ]
                     )
                 ) + (int(mdict["secs"], 10) if mdict["secs"] else 0)
-            else:
-                # SECS is a float, we will return a float
-                return sign * sum(
-                    [
-                        MULTIPLIERS[k] * float(v)
-                        for (k, v) in list(mdict.items())
-                        if v is not None
-                    ]
-                )
+            # SECS is a float, we will return a float
+            return sign * sum(
+                [
+                    MULTIPLIERS[k] * float(v)
+                    for (k, v) in list(mdict.items())
+                    if v is not None
+                ]
+            )

@@ -1,34 +1,28 @@
 """Client for handling the conncection to a FoldingAtHomeControl instance."""
 
 import asyncio
-import itertools
 import datetime
-from typing import Any, Tuple
+from typing import Any, Optional, Tuple
 
+from FoldingAtHomeControl import FoldingAtHomeController, PyOnMessageTypes
 from homeassistant.core import HomeAssistant, callback
-
+from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.util.dt import as_utc
 
-from homeassistant.helpers.dispatcher import async_dispatcher_send
-
-from FoldingAtHomeControl import (
-    FoldingAtHomeControlConnectionFailed,
-    FoldingAtHomeController,
-    PyOnMessageTypes,
-)
-
-from .timeparse import timeparse
-
 from .const import (
+    _LOGGER,
     CONF_ADDRESS,
     CONF_PASSWORD,
     CONF_PORT,
+    CONF_READ_TIMEOUT,
+    CONF_UPDATE_RATE,
     DATA_UPDATED,
-    DOMAIN,
+    DEFAULT_READ_TIMEOUT,
+    DEFAULT_UPDATE_RATE,
     SENSOR_ADDED,
     SENSOR_REMOVED,
-    _LOGGER,
 )
+from .timeparse import timeparse
 
 
 class FoldingAtHomeControlClient:
@@ -41,11 +35,44 @@ class FoldingAtHomeControlClient:
         self._address = self.config_entry.data[CONF_ADDRESS]
         self._port = self.config_entry.data[CONF_PORT]
         self.slot_data = {}
+        self.slots = []
         self.options_data = {}
         self.client = None
         self._remove_callback = None
         self._task = None
         self._available = False
+        self.add_options()
+
+    def add_options(self) -> None:
+        """Add options for FoldingAtHomeControl integration."""
+        if not self.config_entry.options:
+            options = {
+                CONF_UPDATE_RATE: DEFAULT_UPDATE_RATE,
+                CONF_READ_TIMEOUT: DEFAULT_READ_TIMEOUT,
+            }
+            self.hass.config_entries.async_update_entry(
+                self.config_entry, options=options
+            )
+        else:
+            options = dict(self.config_entry.options)
+            if CONF_UPDATE_RATE not in self.config_entry.options:
+                options[CONF_UPDATE_RATE] = DEFAULT_UPDATE_RATE
+            if CONF_READ_TIMEOUT not in self.config_entry.options:
+                options[CONF_READ_TIMEOUT] = DEFAULT_READ_TIMEOUT
+            self.hass.config_entries.async_update_entry(
+                self.config_entry, options=options
+            )
+
+
+    async def async_set_update_rate(self, update_rate: int) -> None:
+        """Set update_rate."""
+        if self.client is not None:
+            await self.client.set_subscription_update_rate_async(update_rate)
+
+    def set_read_timeout(self, read_timeout: int) -> None:
+        """Set the Read Timeout."""
+        if self.client is not None:
+            self.client.set_read_timeout(read_timeout)
 
     @callback
     def data_received_callback(self, message_type: str, data: Any) -> None:
@@ -67,7 +94,7 @@ class FoldingAtHomeControlClient:
         if self._available:
             self._available = False
             _LOGGER.error(
-                "Disconnected from %s:%s. Trying to reconnect.",
+                "Got disconnected from %s:%s. Trying to reconnect.",
                 self.config_entry.data[CONF_ADDRESS],
                 self.config_entry.data[CONF_PORT],
             )
@@ -78,7 +105,11 @@ class FoldingAtHomeControlClient:
         address = self.config_entry.data[CONF_ADDRESS]
         port = self.config_entry.data[CONF_PORT]
         password = self.config_entry.data.get(CONF_PASSWORD)
-        self.client = FoldingAtHomeController(address, port, password)
+        update_rate = self.config_entry.options[CONF_UPDATE_RATE]
+        read_timeout = self.config_entry.options[CONF_READ_TIMEOUT]
+        self.client = FoldingAtHomeController(
+            address, port, password, update_rate=update_rate, read_timeout=read_timeout
+        )
         self._remove_callback = self.client.register_callback(
             self.data_received_callback
         )
@@ -105,15 +136,6 @@ class FoldingAtHomeControlClient:
             except asyncio.CancelledError:
                 pass
 
-    async def async_update_device_registry(self) -> None:
-        """Update device registry."""
-        device_registry = await self.hass.helpers.device_registry.async_get_registry()
-        device_registry.async_get_or_create(
-            config_entry_id=self.config_entry.entry_id,
-            manufacturer="FoldingAtHomeControl",
-            identifiers={(DOMAIN, self.address)},
-        )
-
     def handle_error_received(self, error: Any) -> None:
         """Handle received error message."""
         _LOGGER.warning("%s received error: %s", self.address, error)
@@ -123,8 +145,10 @@ class FoldingAtHomeControlClient:
         slots_in_data_handled = []
         for unit in data:
             if unit["slot"] not in slots_in_data_handled or unit["state"] == "Running":
-                #  If there is more than one unit for a slot take the one which is running
+                #  For more than one unit for a slot take the one which is running
                 slots_in_data_handled.append(unit["slot"])
+                if self.slot_data.get(unit["slot"]) is None:
+                    self.slot_data[unit["slot"]] = {}
                 self.slot_data[unit["slot"]]["Error"] = unit.get("error")
                 self.slot_data[unit["slot"]]["Project"] = unit.get("project")
                 self.slot_data[unit["slot"]]["Percentdone"] = unit.get("percentdone")
@@ -154,30 +178,28 @@ class FoldingAtHomeControlClient:
         self.options_data["team"] = data.get("team")
         self.options_data["user"] = data.get("user")
 
-    def handle_slots_data_received(self, data: Any) -> None:
+    def handle_slots_data_received(self, slots_data: Any) -> None:
         """Handle received slots data."""
-        self.update_slots_data(data)
-        if len(self.slot_data) > 0:
-            added, removed = self.calculate_slot_changes(data)
+        added, removed = self.calculate_slot_changes(slots_data)
+        if len(added) > 0:
             async_dispatcher_send(self.hass, self.sensor_added_identifer, added)
+            self.slots.extend(added)
+        if len(removed) > 0:
             async_dispatcher_send(self.hass, self.sensor_removed_identifer, removed)
-        else:
-            async_dispatcher_send(
-                self.hass, self.sensor_added_identifer, [slot["id"] for slot in data]
-            )
+            for slot in removed:
+                # Remove old data
+                del self.slot_data[slot]
+                self.slots.remove(slot)
+        self.update_slots_data(slots_data)
 
     def calculate_slot_changes(self, slots: dict) -> Tuple[dict, dict]:
         """Get added and removed slots."""
-        added = list(
-            itertools.filterfalse(
-                lambda slot: (slot["id"] != entry for entry in self.slot_data), slots,
-            )
-        )
-        removed = list(
-            itertools.filterfalse(
-                lambda entry: (entry != slot["id"] for slot in slots), self.slot_data,
-            )
-        )
+        added = [slot["id"] for slot in slots if slot["id"] not in self.slots]
+        removed = [
+            slot
+            for slot in self.slots
+            if slot not in list(map(lambda x: x["id"], slots))
+        ]
         return added, removed
 
     def update_slots_data(self, data: Any) -> None:
