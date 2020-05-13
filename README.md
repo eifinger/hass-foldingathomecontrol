@@ -79,6 +79,42 @@ Key | Type | Required | Default | Description
 `port` | `int` | `False` | `36330` | Port of the client. Default is `36330`.
 `password` | `string` | `False` | - | Password for the client if configured.
 
+## Services
+
+### foldingathomecontrol.pause
+
+Pause one or all slots.
+
+Name | Description | Example
+-- | -- | --
+`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+`slot` | `The slot to pause. Be sure to include the 0 in front if needed. Leave this out to pause all slots.` | `01`
+
+### foldingathomecontrol.unpause
+
+Unpause one or all slots.
+
+Name | Description | Example
+-- | -- | --
+`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+`slot` | `The slot to unpause. Be sure to include the 0 in front if needed. Leave this out to unpause all slots.` | `01`
+
+### foldingathomecontrol.shutdown
+
+Shut down the client.
+
+Name | Description | Example
+-- | -- | --
+`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+
+### foldingathomecontrol.request_work_server_assignment
+
+Request a new assignment from the work server.
+
+Name | Description | Example
+-- | -- | --
+`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+
 ## Contributions are welcome!
 
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
