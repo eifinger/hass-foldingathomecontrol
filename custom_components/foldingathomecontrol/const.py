@@ -11,7 +11,7 @@ else:
 # Base component constants
 DOMAIN = "foldingathomecontrol"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "2.0.2"
+VERSION = "2.0.3"
 PLATFORMS = ["sensor"]
 DATA_UPDATED = f"{DOMAIN}_data_updated"
 SENSOR_ADDED = f"{DOMAIN}_sensor_added"
