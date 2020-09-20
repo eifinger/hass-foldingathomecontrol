@@ -4,8 +4,7 @@ import logging
 from homeassistant.const import MAJOR_VERSION, MINOR_VERSION, TIME_SECONDS
 
 if MAJOR_VERSION == 0 and MINOR_VERSION < 115:
-    from homeassistant.const import UNIT_PERCENTAGE
-    PERCENTAGE = UNIT_PERCENTAGE
+    from homeassistant.const import UNIT_PERCENTAGE as PERCENTAGE
 else:
     from homeassistant.const import PERCENTAGE
 
