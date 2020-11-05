@@ -75,6 +75,10 @@ SENSOR_TYPES = [
         "icon": "mdi:server-network",
     },
     {"name": "Attempts", "unit_of_measurement": UNIT_ATTEMPTS, "icon": "mdi:cached"},
-    {"name": "Time per Frame", "unit_of_measurement": TIME_SECONDS, "icon": "mdi:speedometer"},
+    {
+        "name": "Time per Frame",
+        "unit_of_measurement": TIME_SECONDS,
+        "icon": "mdi:speedometer",
+    },
     {"name": "Basecredit", "unit_of_measurement": UNIT_CREDITS, "icon": ICON},
 ]

@@ -63,7 +63,6 @@ class FoldingAtHomeControlClient:
                 self.config_entry, options=options
             )
 
-
     async def async_set_update_rate(self, update_rate: int) -> None:
         """Set update_rate."""
         if self.client is not None:
@@ -174,7 +173,9 @@ class FoldingAtHomeControlClient:
                 self.slot_data[unit["slot"]]["Attempts"] = unit.get("attempts")
                 tpf = unit.get("tpf")
                 if tpf is not None:
-                    tpf = timeparse(tpf)  # Convert to seconds e.g. "22 mins 47 secs" to 1367
+                    tpf = timeparse(
+                        tpf
+                    )  # Convert to seconds e.g. "22 mins 47 secs" to 1367
                 self.slot_data[unit["slot"]]["Time per Frame"] = tpf
                 self.slot_data[unit["slot"]]["Basecredit"] = unit.get("basecredit")
 

@@ -93,7 +93,7 @@ def _interpret_as_minutes(sval, mdict):
     Times like "1:22" are ambiguous; do they represent minutes and seconds
     or hours and minutes?  By default, timeparse assumes the latter.  Call
     this function after parsing out a dictionary to change that assumption.
-    
+
     >>> import pprint
     >>> pprint.pprint(_interpret_as_minutes('1:24', {'secs': '24', 'mins': '1'}))
     {'hours': '1', 'mins': '24'}
@@ -137,10 +137,10 @@ def timeparse(sval, granularity="seconds"):
     -60
     >>> timeparse('+ 1 minute')
     60
-    
+
     If granularity is specified as ``minutes``, then ambiguous digits following
     a colon will be interpreted as minutes; otherwise they are considered seconds.
-    
+
     >>> timeparse('1:30')
     90
     >>> timeparse('1:30', granularity='minutes')
