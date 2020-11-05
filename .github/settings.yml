@@ -8,6 +8,11 @@ repository:
   allow_squash_merge: true
   allow_merge_commit: false
   allow_rebase_merge: false
+branches:
+  - name: master
+    protection:
+      required_pull_request_reviews:
+        required_approving_review_count: 1
 labels:
   - name: "Feature Request"
     color: "fbca04"
