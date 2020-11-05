@@ -4,9 +4,9 @@ import logging
 from homeassistant.const import MAJOR_VERSION, MINOR_VERSION, TIME_SECONDS
 
 if MAJOR_VERSION == 0 and MINOR_VERSION < 115:
-    from homeassistant.const import (
+    from homeassistant.const import (  # pylint: disable=no-name-in-module
         UNIT_PERCENTAGE as PERCENTAGE,
-    )  # pylint: disable=no-name-in-module
+    )
 else:
     from homeassistant.const import PERCENTAGE
 
