@@ -189,8 +189,8 @@ class FoldingAtHomeControlClient:
         """Handle received slots data."""
         added, removed = self.calculate_slot_changes(slots_data)
         if len(added) > 0:
-            async_dispatcher_send(self.hass, self.sensor_added_identifer, added)
             self.slots.extend(added)
+            async_dispatcher_send(self.hass, self.sensor_added_identifer, added)
         if len(removed) > 0:
             async_dispatcher_send(self.hass, self.sensor_removed_identifer, removed)
             for slot in removed:
