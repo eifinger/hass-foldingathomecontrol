@@ -10,7 +10,7 @@
             "request": "launch",
             "justMyCode": false,
             "module": "homeassistant",
-            "args": ["-c", "./hass_debug_env"]
+            "args": ["-c", "."]
         },
         {
             "name": "Python: Current File",
