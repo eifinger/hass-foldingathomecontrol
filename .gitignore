@@ -103,5 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# local development
 venv/
-hass_debug_env/
+.storage/
+.HA_VERSION
+configuration.yaml
+home-assistant_v2.db
