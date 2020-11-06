@@ -187,6 +187,7 @@ class FoldingAtHomeControlClient:
 
     def handle_slots_data_received(self, slots_data: Any) -> None:
         """Handle received slots data."""
+        self.update_slots_data(slots_data)
         added, removed = self.calculate_slot_changes(slots_data)
         if len(added) > 0:
             self.slots.extend(added)
@@ -197,7 +198,6 @@ class FoldingAtHomeControlClient:
                 # Remove old data
                 del self.slot_data[slot]
                 self.slots.remove(slot)
-        self.update_slots_data(slots_data)
 
     def calculate_slot_changes(self, slots: dict) -> Tuple[dict, dict]:
         """Get added and removed slots."""
