@@ -1,19 +1,20 @@
 """Tests for the foldingathomecontrol sensor platform."""
 import asyncio
 from asyncio.streams import StreamReader
+from unittest.mock import patch
 
-from unittest.mock import AsyncMock, patch
+try:
+    from unittest.mock import AsyncMock as MagicMock
+except ImportError:
+    from unittest.mock import MagicMock
 
 import pytest
 from homeassistant.const import EVENT_HOMEASSISTANT_START
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.foldingathomecontrol.const import (
-    CONF_ADDRESS,
-    CONF_PASSWORD,
-    CONF_PORT,
-    DOMAIN,
-)
+from custom_components.foldingathomecontrol.const import (CONF_ADDRESS,
+                                                          CONF_PASSWORD,
+                                                          CONF_PORT, DOMAIN)
 
 
 @pytest.fixture
@@ -76,7 +77,7 @@ def stream_reader_writer(hass):
     reader.feed_data(b"> \n")
     reader.feed_data(b"> \n")
     reader.feed_eof()
-    stream_writer = AsyncMock()
+    stream_writer = MagicMock()
     return (reader, stream_writer)
 
 
@@ -84,7 +85,7 @@ async def test_sensor(hass, stream_reader_writer):
     """Test that sensor works."""
     with patch("asyncio.open_connection", return_value=stream_reader_writer,), patch(
         "FoldingAtHomeControl.serialconnection.SerialConnection.send_async",
-        return_value=AsyncMock(),
+        return_value=MagicMock(),
     ):
         entry = MockConfigEntry(
             domain=DOMAIN,
