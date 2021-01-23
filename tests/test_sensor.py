@@ -7,9 +7,12 @@ import pytest
 from homeassistant.const import EVENT_HOMEASSISTANT_START
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.foldingathomecontrol.const import (CONF_ADDRESS,
-                                                          CONF_PASSWORD,
-                                                          CONF_PORT, DOMAIN)
+from custom_components.foldingathomecontrol.const import (
+    CONF_ADDRESS,
+    CONF_PASSWORD,
+    CONF_PORT,
+    DOMAIN,
+)
 
 
 @pytest.fixture
