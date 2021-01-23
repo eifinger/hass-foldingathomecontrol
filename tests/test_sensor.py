@@ -6,7 +6,6 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 from homeassistant.const import EVENT_HOMEASSISTANT_START
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.foldingathomecontrol.const import (
@@ -14,7 +13,6 @@ from custom_components.foldingathomecontrol.const import (
     CONF_PASSWORD,
     CONF_PORT,
     DOMAIN,
-    SENSOR_ADDED,
 )
 
 
