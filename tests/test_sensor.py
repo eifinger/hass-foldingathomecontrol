@@ -1,12 +1,7 @@
 """Tests for the foldingathomecontrol sensor platform."""
 import asyncio
 from asyncio.streams import StreamReader
-from unittest.mock import patch
-
-try:
-    from unittest.mock import AsyncMock as MagicMock
-except ImportError:
-    from unittest.mock import MagicMock
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from homeassistant.const import EVENT_HOMEASSISTANT_START
