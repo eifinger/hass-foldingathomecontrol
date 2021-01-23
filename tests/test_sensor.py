@@ -75,7 +75,7 @@ def stream_reader_writer(hass):
     reader.feed_data(b"> \n")
     reader.feed_data(b"> \n")
     reader.feed_eof()
-    stream_writer = MagicMock()
+    stream_writer = AsyncMock()
     return (reader, stream_writer)
 
 
@@ -83,7 +83,7 @@ async def test_sensor(hass, stream_reader_writer):
     """Test that sensor works."""
     with patch("asyncio.open_connection", return_value=stream_reader_writer,), patch(
         "FoldingAtHomeControl.serialconnection.SerialConnection.send_async",
-        return_value=MagicMock(),
+        return_value=AsyncMock(),
     ):
         entry = MockConfigEntry(
             domain=DOMAIN,
