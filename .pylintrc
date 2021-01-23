@@ -25,6 +25,7 @@ disable=
   locally-disabled,
   not-an-iterable,
   not-context-manager,
+  redefined-outer-name,
   redefined-variable-type,
   too-few-public-methods,
   too-many-arguments,
