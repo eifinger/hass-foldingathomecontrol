@@ -212,6 +212,8 @@ class FoldingAtHomeControlClient:
     def update_slots_data(self, data: Any) -> None:
         """Store received slots data."""
         for slot in data:
+            if self.slot_data[slot["id"]] is None:
+                self.slot_data[slot["id"]] = {}
             self.slot_data[slot["id"]]["Status"] = slot.get("status")
             self.slot_data[slot["id"]]["Description"] = slot.get("description")
             self.slot_data[slot["id"]]["Reason"] = slot.get("reason")
