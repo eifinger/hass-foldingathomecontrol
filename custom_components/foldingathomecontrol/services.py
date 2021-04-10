@@ -97,7 +97,9 @@ async def async_pause_service(hass, data):
     for config_entry in hass.data[DOMAIN]:
         if hass.data[DOMAIN][config_entry].config_entry.data[CONF_ADDRESS] == address:
             if slot is not None:
-                await hass.data[DOMAIN][config_entry][CLIENT].client.pause_slot_async(slot)
+                await hass.data[DOMAIN][config_entry][CLIENT].client.pause_slot_async(
+                    slot
+                )
                 return
             await hass.data[DOMAIN][config_entry][CLIENT].client.pause_all_slots_async()
             return
@@ -113,9 +115,13 @@ async def async_unpause_service(hass, data):
     for config_entry in hass.data[DOMAIN]:
         if hass.data[DOMAIN][config_entry].config_entry.data[CONF_ADDRESS] == address:
             if slot is not None:
-                await hass.data[DOMAIN][config_entry][CLIENT].client.unpause_slot_async(slot)
+                await hass.data[DOMAIN][config_entry][CLIENT].client.unpause_slot_async(
+                    slot
+                )
                 return
-            await hass.data[DOMAIN][config_entry][CLIENT].client.unpause_all_slots_async()
+            await hass.data[DOMAIN][config_entry][
+                CLIENT
+            ].client.unpause_all_slots_async()
             return
     _LOGGER.warning("Could not find a registered integration with address: %s", address)
 
@@ -139,8 +145,8 @@ async def async_request_assignment_service(hass, data):
 
     for config_entry in hass.data[DOMAIN]:
         if hass.data[DOMAIN][config_entry].config_entry.data[CONF_ADDRESS] == address:
-            await hass.data[DOMAIN][
-                config_entry
-            ][CLIENT].client.request_work_server_assignment()
+            await hass.data[DOMAIN][config_entry][
+                CLIENT
+            ].client.request_work_server_assignment()
             return
     _LOGGER.warning("Could not find a registered integration with address: %s", address)

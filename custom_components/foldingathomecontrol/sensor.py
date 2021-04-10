@@ -39,7 +39,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     )
     hass.data[DOMAIN][config_entry.entry_id][UNSUB_DISPATCHERS].append(unsub_dispatcher)
     if len(hass.data[DOMAIN][config_entry.entry_id][CLIENT].slot_data) > 0:
-        async_add_sensors(hass.data[DOMAIN][config_entry.entry_id][CLIENT].slot_data.keys())
+        async_add_sensors(
+            hass.data[DOMAIN][config_entry.entry_id][CLIENT].slot_data.keys()
+        )
 
 
 class FoldingAtHomeControlSensor(FoldingAtHomeControlDevice):
