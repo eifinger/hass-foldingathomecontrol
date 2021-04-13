@@ -95,7 +95,10 @@ async def async_pause_service(hass, data):
     slot = data[SERVICE_SLOT]
 
     for config_entry in hass.data[DOMAIN]:
-        if hass.data[DOMAIN][config_entry].config_entry.data[CONF_ADDRESS] == address:
+        if (
+            hass.data[DOMAIN][config_entry][CLIENT].config_entry.data[CONF_ADDRESS]
+            == address
+        ):
             if slot is not None:
                 await hass.data[DOMAIN][config_entry][CLIENT].client.pause_slot_async(
                     slot
@@ -113,7 +116,10 @@ async def async_unpause_service(hass, data):
     slot = data[SERVICE_SLOT]
 
     for config_entry in hass.data[DOMAIN]:
-        if hass.data[DOMAIN][config_entry].config_entry.data[CONF_ADDRESS] == address:
+        if (
+            hass.data[DOMAIN][config_entry][CLIENT].config_entry.data[CONF_ADDRESS]
+            == address
+        ):
             if slot is not None:
                 await hass.data[DOMAIN][config_entry][CLIENT].client.unpause_slot_async(
                     slot
@@ -132,7 +138,10 @@ async def async_shutdown_service(hass, data):
     address = data[SERVICE_ADDRESS]
 
     for config_entry in hass.data[DOMAIN]:
-        if hass.data[DOMAIN][config_entry].config_entry.data[CONF_ADDRESS] == address:
+        if (
+            hass.data[DOMAIN][config_entry][CLIENT].config_entry.data[CONF_ADDRESS]
+            == address
+        ):
             await hass.data[DOMAIN][config_entry][CLIENT].client.shutdown()
             return
     _LOGGER.warning("Could not find a registered integration with address: %s", address)
@@ -144,7 +153,10 @@ async def async_request_assignment_service(hass, data):
     address = data[SERVICE_ADDRESS]
 
     for config_entry in hass.data[DOMAIN]:
-        if hass.data[DOMAIN][config_entry].config_entry.data[CONF_ADDRESS] == address:
+        if (
+            hass.data[DOMAIN][config_entry][CLIENT].config_entry.data[CONF_ADDRESS]
+            == address
+        ):
             await hass.data[DOMAIN][config_entry][
                 CLIENT
             ].client.request_work_server_assignment()
