@@ -64,18 +64,15 @@ jobs:
       - name: Test with pytest
         run: |
           python -m pytest
-  hacs_validate:
-    name: "HACS Validate"
+  hacs:
+    name: HACS Action
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v2"
-      - name: HACS validation
-        uses: "hacs/integration/action@main"
+      - name: HACS Action
+        uses: "hacs/action@main"
         with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            CATEGORY: "integration"
-        env:
-            SKIP_BRANDS_CHECK: "True"
+          category: "integration"
   hass_validate:
     name: Hassfest
     runs-on: "ubuntu-latest"
