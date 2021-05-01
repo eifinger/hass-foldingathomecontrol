@@ -5,7 +5,7 @@
   "issue_tracker": "https://github.com/eifinger/hass-foldingathomecontrol/issues",
   "dependencies": [],
   "config_flow": true,
-  "version": "2.0.10",
+  "version": "2.0.12",
   "codeowners": [
     "@eifinger"
   ],
