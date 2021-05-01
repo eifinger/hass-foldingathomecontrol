@@ -1,7 +1,7 @@
 """Tests for the foldingathomecontrol sensor platform."""
 import asyncio
 from asyncio.streams import StreamReader
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from homeassistant.const import EVENT_HOMEASSISTANT_START
@@ -76,6 +76,7 @@ def stream_reader_writer(hass):
     reader.feed_data(b"> \n")
     reader.feed_eof()
     stream_writer = AsyncMock()
+    stream_writer.close = MagicMock()
     return (reader, stream_writer)
 
 
@@ -140,12 +141,13 @@ def stream_reader_writer_slots_before_units(hass):
     reader.feed_data(b"> \n")
     reader.feed_eof()
     stream_writer = AsyncMock()
+    stream_writer.close = MagicMock()
     return (reader, stream_writer)
 
 
 async def test_sensor(hass, stream_reader_writer):
     """Test that sensor works."""
-    with patch("asyncio.open_connection", return_value=stream_reader_writer,), patch(
+    with patch("asyncio.StreamWriter.close", return_value=None), patch("asyncio.open_connection", return_value=stream_reader_writer,), patch(
         "FoldingAtHomeControl.serialconnection.SerialConnection.send_async",
         return_value=AsyncMock(),
     ):
@@ -170,7 +172,7 @@ async def test_sensor(hass, stream_reader_writer):
 
 async def test_sensor_slots_before_units(hass, stream_reader_writer_slots_before_units):
     """Test that sensor works when slot info is received before unit info."""
-    with patch(
+    with patch("asyncio.StreamWriter.close", return_value=None), patch(
         "asyncio.open_connection",
         return_value=stream_reader_writer_slots_before_units,
     ), patch(
