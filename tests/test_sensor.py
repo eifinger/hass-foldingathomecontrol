@@ -147,7 +147,10 @@ def stream_reader_writer_slots_before_units(hass):
 
 async def test_sensor(hass, stream_reader_writer):
     """Test that sensor works."""
-    with patch("asyncio.StreamWriter.close", return_value=None), patch("asyncio.open_connection", return_value=stream_reader_writer,), patch(
+    with patch("asyncio.StreamWriter.close", return_value=None), patch(
+        "asyncio.open_connection",
+        return_value=stream_reader_writer,
+    ), patch(
         "FoldingAtHomeControl.serialconnection.SerialConnection.send_async",
         return_value=AsyncMock(),
     ):
