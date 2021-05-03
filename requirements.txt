@@ -1,4 +1,4 @@
-pytest-homeassistant-custom-component==0.3.1
+pytest-homeassistant-custom-component==0.3.2
 black==21.4b2
 pylint==2.8.2
 PyFoldingAtHomeControl==2.0.0
