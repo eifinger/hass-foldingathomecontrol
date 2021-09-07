@@ -16,7 +16,7 @@ from custom_components.foldingathomecontrol.const import (
 
 
 @pytest.fixture
-def stream_reader_writer(hass):
+def stream_reader_writer():
     """Create a StreamReader and fill it with connection messages."""
     reader = StreamReader()
     reader.feed_data(
@@ -81,7 +81,7 @@ def stream_reader_writer(hass):
 
 
 @pytest.fixture
-def stream_reader_writer_slots_before_units(hass):
+def stream_reader_writer_slots_before_units():
     """Create a StreamReader and fill it with connection messages."""
     reader = StreamReader()
     reader.feed_data(
