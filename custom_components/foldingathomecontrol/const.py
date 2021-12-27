@@ -1,21 +1,16 @@
 """Constants for foldingathomecontrol."""
 import logging
 
-from homeassistant.const import MAJOR_VERSION, MINOR_VERSION, TIME_SECONDS
+from homeassistant.const import TIME_SECONDS
 
-if MAJOR_VERSION == 0 and MINOR_VERSION < 115:
-    from homeassistant.const import (  # pylint: disable=no-name-in-module
-        UNIT_PERCENTAGE as PERCENTAGE,
-    )
-else:
-    from homeassistant.const import PERCENTAGE
+from homeassistant.const import PERCENTAGE
 
 # Base component constants
 CLIENT = "client"
 UNSUB_DISPATCHERS = "unsub_dispatchers"
 DOMAIN = "foldingathomecontrol"
 DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "2.0.13"
+VERSION = "2.0.14"
 PLATFORMS = ["sensor"]
 DATA_UPDATED = f"{DOMAIN}_data_updated"
 SENSOR_ADDED = f"{DOMAIN}_sensor_added"

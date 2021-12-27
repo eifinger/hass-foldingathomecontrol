@@ -1,6 +1,6 @@
 {
     "name": "Folding@HomeControl",
     "domains": ["sensor"],
-    "homeassistant": "0.109",
+    "homeassistant": "2021.12.0",
     "iot_class": "Local Push"
 }

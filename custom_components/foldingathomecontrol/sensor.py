@@ -79,18 +79,18 @@ class FoldingAtHomeControlSensor(FoldingAtHomeControlDevice):
         return self._icon
 
     @property
-    def unit_of_measurement(self):
+    def native_unit_of_measurement(self):
         """Return the unit the value is expressed in."""
         return self._unit_of_measurement
 
     @property
-    def state(self):
+    def native_value(self):
         """Return the state of the resources if it has been received yet."""
         if self._sensor_type in self._client.slot_data[self._slot_id]:
             return self._client.slot_data[self._slot_id][self._sensor_type]
 
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Return the state attributes of the sensor."""
         attr = self._client.options_data.copy()
         attr["description"] = self._client.slot_data[self._slot_id]["Description"]
