@@ -68,7 +68,7 @@ jobs:
     name: HACS Action
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
+      - uses: actions/checkout@v2
       - name: HACS Action
         uses: "hacs/action@main"
         with:
@@ -77,9 +77,22 @@ jobs:
     name: Hassfest
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
+      - uses: actions/checkout@v2
       - name: Hassfest
         uses: home-assistant/actions/hassfest@master
+  security:
+    name: CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: python
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
   release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -89,6 +102,7 @@ jobs:
       - pytest
       - hacs
       - hass_validate
+      - security
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
