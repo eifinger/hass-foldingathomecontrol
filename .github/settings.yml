@@ -1,3 +1,4 @@
+---
 repository:
   private: false
   has_issues: true
@@ -18,7 +19,7 @@ labels:
     color: "fbca04"
   - name: "Bug"
     color: "b60205"
-  - name: "Wont Fix"
+  - name: "Won't Fix"
     color: "ffffff"
   - name: "Enhancement"
     color: a2eeef

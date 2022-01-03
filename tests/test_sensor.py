@@ -67,7 +67,7 @@ def stream_reader_writer():
     reader.feed_data(b"> \n")
     reader.feed_data(b"PyON 1 slots\n")
     reader.feed_data(
-        b'[{"id": "00", "status": "READY", "description": "cpu: 3", "options": {"idle": "false"}, "reason": "", "idle": False}]\n'
+        b'[{"id": "00", "status": "READY", "description": "cpu: 3", "options": {"idle": "false"}, "reason": "", "idle": False}]\n'  # noqa: line-too-long
     )
     reader.feed_data(b"---\n")
     reader.feed_data(b"> \n")
@@ -94,7 +94,7 @@ def stream_reader_writer_slots_before_units():
     reader.feed_data(b"> \n")
     reader.feed_data(b"PyON 1 slots\n")
     reader.feed_data(
-        b'[{"id": "00", "status": "READY", "description": "cpu: 3", "options": {"idle": "false"}, "reason": "", "idle": False}]\n'
+        b'[{"id": "00", "status": "READY", "description": "cpu: 3", "options": {"idle": "false"}, "reason": "", "idle": False}]\n'  # noqa: line-too-long
     )
     reader.feed_data(b"---\n")
     reader.feed_data(b"> \n")

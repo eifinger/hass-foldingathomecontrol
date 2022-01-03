@@ -9,6 +9,7 @@ from FoldingAtHomeControl import (
 )
 from homeassistant import config_entries, core, exceptions
 from homeassistant.core import callback
+from homeassistant.data_entry_flow import FlowResult
 
 from .const import (
     CONF_ADDRESS,
@@ -51,15 +52,11 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
 
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry):
+    def async_get_options_flow(config_entry) -> config_entries.OptionsFlow:
         """Get the options flow for this handler."""
         return FoldingAtHomeControlOptionsFlowHandler(config_entry)
 
-    def __init__(self):
-        """Initialize."""
-        self._errors = {}
-
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input=None) -> FlowResult:
         """Handle the initial step."""
         errors = {}
         if user_input is not None:
@@ -81,7 +78,7 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
             step_id="user", data_schema=DATA_SCHEMA, errors=errors
         )
 
-    async def async_step_import(self, import_config):
+    async def async_step_import(self, import_config) -> FlowResult:
         """Import from Glances sensor config."""
 
         return await self.async_step_user(user_input=import_config)
@@ -90,11 +87,11 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
 class FoldingAtHomeControlOptionsFlowHandler(config_entries.OptionsFlow):
     """Handle FoldingAtHomeControl client options."""
 
-    def __init__(self, config_entry):
+    def __init__(self, config_entry) -> None:
         """Initialize FoldingAtHomeControl options flow."""
         self.config_entry = config_entry
 
-    async def async_step_init(self, user_input=None):
+    async def async_step_init(self, user_input=None) -> FlowResult:
         """Manage the FoldingAtHomeControl options."""
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
