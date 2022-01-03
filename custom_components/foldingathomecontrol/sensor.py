@@ -13,7 +13,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the PyFoldingAtHomeControl sensors."""
 
     @callback
-    def async_add_sensors(new_slots: List[dict]) -> None:
+    def async_add_sensors(new_slots: List[str]) -> None:
         """add sensors callback."""
 
         client = hass.data[DOMAIN][config_entry.entry_id][CLIENT]

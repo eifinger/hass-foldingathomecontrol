@@ -53,8 +53,6 @@ async def async_setup_entry(hass, config_entry):
     hass.data.setdefault(DOMAIN, {})[config_entry.entry_id] = {}
     hass.data.setdefault(DOMAIN, {})[config_entry.entry_id][CLIENT] = client
     hass.data.setdefault(DOMAIN, {})[config_entry.entry_id][UNSUB_DISPATCHERS] = []
-    if not await client.async_setup():
-        return False
 
     await async_setup_services(hass)
     config_entry.add_update_listener(async_options_updated)

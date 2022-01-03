@@ -1,8 +1,10 @@
-"""Client for handling the conncection to a FoldingAtHomeControl instance."""
+"""Client for handling the connection to a FoldingAtHomeControl instance."""
+
+from __future__ import annotations
 
 import asyncio
 import datetime
-from typing import Any, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from FoldingAtHomeControl import FoldingAtHomeController, PyOnMessageTypes
 from homeassistant.core import HomeAssistant, callback
@@ -22,7 +24,7 @@ from .const import (
     SENSOR_ADDED,
     SENSOR_REMOVED,
 )
-from .timeparse import timeparse
+from .timeparse import timeparse  # type: ignore
 
 
 class FoldingAtHomeControlClient:
@@ -32,16 +34,30 @@ class FoldingAtHomeControlClient:
         """Initialize the class."""
         self.hass = hass
         self.config_entry = config_entry
-        self._address = self.config_entry.data[CONF_ADDRESS]
-        self._port = self.config_entry.data[CONF_PORT]
-        self.slot_data = {}
-        self.slots = []
-        self.options_data = {}
-        self.client = None
-        self._remove_callback = None
-        self._task = None
+        self.slot_data: Dict[str, Dict[str, str | None]] = {}
+        self.slots: List[str] = []
+        self.options_data: Dict[str, str | None] = {}
         self._available = False
         self.add_options()
+        self.client = FoldingAtHomeController(
+            config_entry.data[CONF_ADDRESS],
+            config_entry.data[CONF_PORT],
+            config_entry.data.get(CONF_PASSWORD),
+            update_rate=config_entry.options[CONF_UPDATE_RATE],
+            read_timeout=config_entry.options[CONF_READ_TIMEOUT],
+        )
+        self._remove_callback = self.client.register_callback(
+            self.data_received_callback
+        )
+
+        self.hass.async_create_task(
+            self.hass.config_entries.async_forward_entry_setup(
+                self.config_entry, "sensor"
+            )
+        )
+
+        self.client.on_disconnect(self.on_disconnect_callback)
+        self._task = asyncio.ensure_future(self.client.start())
 
     def add_options(self) -> None:
         """Add options for FoldingAtHomeControl integration."""
@@ -93,36 +109,15 @@ class FoldingAtHomeControlClient:
         if self._available:
             self._available = False
             _LOGGER.error(
-                "Got disconnected from %s:%s. Trying to reconnect. If this happens a lot try increasing the Read Timeout in the Integration Options",
+                (
+                    "Got disconnected from %s:%s. Trying to reconnect. "
+                    "If this happens a lot try increasing the Read Timeout "
+                    "in the Integration Options"
+                ),
                 self.config_entry.data[CONF_ADDRESS],
                 self.config_entry.data[CONF_PORT],
             )
             async_dispatcher_send(self.hass, self.data_update_identifer)
-
-    async def async_setup(self) -> bool:
-        """Set up the Folding@Home client."""
-        address = self.config_entry.data[CONF_ADDRESS]
-        port = self.config_entry.data[CONF_PORT]
-        password = self.config_entry.data.get(CONF_PASSWORD)
-        update_rate = self.config_entry.options[CONF_UPDATE_RATE]
-        read_timeout = self.config_entry.options[CONF_READ_TIMEOUT]
-        self.client = FoldingAtHomeController(
-            address, port, password, update_rate=update_rate, read_timeout=read_timeout
-        )
-        self._remove_callback = self.client.register_callback(
-            self.data_received_callback
-        )
-
-        self.hass.async_create_task(
-            self.hass.config_entries.async_forward_entry_setup(
-                self.config_entry, "sensor"
-            )
-        )
-
-        self.client.on_disconnect(self.on_disconnect_callback)
-        self._task = asyncio.ensure_future(self.client.start())
-
-        return True
 
     async def async_remove(self) -> None:
         """Remove the callback and stops the client."""
@@ -153,9 +148,9 @@ class FoldingAtHomeControlClient:
                 if percent_done is not None:
                     percent_done = percent_done.split("%")[0]
                 self.slot_data[unit["slot"]]["Percentdone"] = percent_done
-                self.slot_data[unit["slot"]][
-                    "Estimated Time Finished"
-                ] = convert_eta_to_timestamp(unit.get("eta"))
+                self.slot_data[unit["slot"]]["Estimated Time Finished"] = str(
+                    convert_eta_to_timestamp(unit.get("eta"))
+                )
                 self.slot_data[unit["slot"]]["Points Per Day"] = unit.get("ppd")
                 self.slot_data[unit["slot"]]["Creditestimate"] = unit.get(
                     "creditestimate"
@@ -175,7 +170,7 @@ class FoldingAtHomeControlClient:
                     tpf = timeparse(
                         tpf
                     )  # Convert to seconds e.g. "22 mins 47 secs" to 1367
-                self.slot_data[unit["slot"]]["Time per Frame"] = tpf
+                self.slot_data[unit["slot"]]["Time per Frame"] = str(tpf)
                 self.slot_data[unit["slot"]]["Basecredit"] = unit.get("basecredit")
 
     def handle_options_data_received(self, data: Any) -> None:
@@ -198,13 +193,13 @@ class FoldingAtHomeControlClient:
                 del self.slot_data[slot]
                 self.slots.remove(slot)
 
-    def calculate_slot_changes(self, slots: dict) -> Tuple[dict, dict]:
+    def calculate_slot_changes(self, slots: dict) -> Tuple[List[Any], List[str]]:
         """Get added and removed slots."""
         added = [slot["id"] for slot in slots if slot["id"] not in self.slots]
         removed = [
             slot
             for slot in self.slots
-            if slot not in list(map(lambda x: x["id"], slots))
+            if slot not in list(map(lambda x: x["id"], slots))  # type: ignore
         ]
         return added, removed
 
@@ -218,41 +213,43 @@ class FoldingAtHomeControlClient:
             self.slot_data[slot["id"]]["Idle"] = slot.get("idle")
 
     @property
-    def available(self):
+    def available(self) -> bool:
         """Is the Folding@Home client available."""
-        return self._available
+        return bool(self._available)
 
     @property
-    def address(self):
+    def address(self) -> str:
         """The address the Folding@Home client is connected to."""
-        return self._address
+        return str(self.config_entry.data[CONF_ADDRESS])
 
     @property
-    def port(self):
+    def port(self) -> str:
         """The port the Folding@Home client is connected to."""
-        return self._port
+        return str(self.config_entry.data[CONF_PORT])
 
     @property
-    def data_update_identifer(self) -> None:
+    def data_update_identifer(self) -> str:
         """The unique data_update itentifier for this connection."""
         return f"{DATA_UPDATED}_{self.address}"
 
     @property
-    def sensor_added_identifer(self) -> None:
+    def sensor_added_identifer(self) -> str:
         """The unique sensor_added itentifier for this connection."""
         return f"{SENSOR_ADDED}_{self.address}"
 
     @property
-    def sensor_removed_identifer(self) -> None:
+    def sensor_removed_identifer(self) -> str:
         """The unique sensor_removed itentifier for this connection."""
         return f"{SENSOR_REMOVED}_{self.address}"
 
 
-def convert_eta_to_timestamp(eta: Optional[str]) -> Optional[str]:
+def convert_eta_to_timestamp(eta: Optional[str]) -> Optional[datetime.datetime]:
     """Convert relative eta to a timestamp."""
     if eta is None:
-        return
+        return None
     seconds_from_now = timeparse(eta)
-    return as_utc(
+    if seconds_from_now is None:
+        return None
+    return as_utc(  # type: ignore
         datetime.datetime.now() + datetime.timedelta(seconds=seconds_from_now)
     )

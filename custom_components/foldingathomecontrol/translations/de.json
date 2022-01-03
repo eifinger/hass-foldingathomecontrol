@@ -5,7 +5,7 @@
                 "title": "FoldingAtHomeControl",
                 "description": "Wenn du Hilfe benötigst, schau mal hier nach: https://github.com/eifinger/hass-foldingathomecontrol",
                 "data": {
-                    "address": "IP Addresse oder Hostname",
+                    "address": "IP Adresse oder Hostname",
                     "password": "Passwort",
                     "port": "Portnummer"
                 }

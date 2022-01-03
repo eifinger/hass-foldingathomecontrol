@@ -1,4 +1,6 @@
 # pylint: skip-file
+# flake8: noqa
+# type: ignore
 """
 timeparse.py
 (c) Will Roberts <wildwilhelm@gmail.com>  1 February, 2014
@@ -46,8 +48,8 @@ DAYCLOCK = (
     r"(?P<days>\d+):(?P<hours>\d{2}):" r"(?P<mins>\d{2}):(?P<secs>\d{2}(?:\.\d+)?)"
 )
 
-OPT = lambda x: r"(?:{x})?".format(x=x)
-OPTSEP = lambda x: r"(?:{x}\s*(?:{SEPARATORS}\s*)?)?".format(x=x, SEPARATORS=SEPARATORS)
+OPT = lambda x: fr"(?:{x})?"
+OPTSEP = lambda x: fr"(?:{x}\s*(?:{SEPARATORS}\s*)?)?"
 
 TIMEFORMATS = [
     r"{WEEKS}\s*{DAYS}\s*{HOURS}\s*{MINS}\s*{SECS}".format(
@@ -59,12 +61,12 @@ TIMEFORMATS = [
         MINS=OPTSEP(MINS),
         SECS=OPT(SECS),
     ),
-    r"{MINCLOCK}".format(MINCLOCK=MINCLOCK),
+    fr"{MINCLOCK}",
     r"{WEEKS}\s*{DAYS}\s*{HOURCLOCK}".format(
         WEEKS=OPTSEP(WEEKS), DAYS=OPTSEP(DAYS), HOURCLOCK=HOURCLOCK
     ),
-    r"{DAYCLOCK}".format(DAYCLOCK=DAYCLOCK),
-    r"{SECCLOCK}".format(SECCLOCK=SECCLOCK),
+    fr"{DAYCLOCK}",
+    fr"{SECCLOCK}",
     # r'{YEARS}'.format(
     # YEARS=YEARS),
     # r'{MONTHS}'.format(
@@ -159,29 +161,23 @@ def timeparse(sval, granularity="seconds"):
             # if all of the fields are integer numbers
             if all(v.isdigit() for v in list(mdict.values()) if v):
                 return sign * sum(
-                    [
-                        MULTIPLIERS[k] * int(v, 10)
-                        for (k, v) in list(mdict.items())
-                        if v is not None
-                    ]
+                    MULTIPLIERS[k] * int(v, 10)
+                    for (k, v) in list(mdict.items())
+                    if v is not None
                 )
             # if SECS is an integer number
             if "secs" not in mdict or mdict["secs"] is None or mdict["secs"].isdigit():
                 # we will return an integer
                 return sign * int(
                     sum(
-                        [
-                            MULTIPLIERS[k] * float(v)
-                            for (k, v) in list(mdict.items())
-                            if k != "secs" and v is not None
-                        ]
+                        MULTIPLIERS[k] * float(v)
+                        for (k, v) in list(mdict.items())
+                        if k != "secs" and v is not None
                     )
                 ) + (int(mdict["secs"], 10) if mdict["secs"] else 0)
             # SECS is a float, we will return a float
             return sign * sum(
-                [
-                    MULTIPLIERS[k] * float(v)
-                    for (k, v) in list(mdict.items())
-                    if v is not None
-                ]
+                MULTIPLIERS[k] * float(v)
+                for (k, v) in list(mdict.items())
+                if v is not None
             )

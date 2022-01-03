@@ -28,14 +28,14 @@ SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT = "request_work_server_assignment"
 SERVICE_SCHEMA = vol.Schema({vol.Required(SERVICE_ADDRESS): cv.string})
 
 
-async def async_setup_services(hass):
+async def async_setup_services(hass) -> None:
     """Set up services for FoldingAtHomeControl integration."""
     if hass.data.get(DOMAIN_SERVICES, False):
-        return
+        return None
 
     hass.data[DOMAIN_SERVICES] = True
 
-    async def async_call_folding_at_home_control_service(service_call):
+    async def async_call_folding_at_home_control_service(service_call) -> None:
         """Call correct FoldingAtHomeControl service."""
         service = service_call.service
         service_data = service_call.data
@@ -73,12 +73,13 @@ async def async_setup_services(hass):
         async_call_folding_at_home_control_service,
         schema=SERVICE_SCHEMA,
     )
+    return None
 
 
-async def async_unload_services(hass):
+async def async_unload_services(hass) -> None:
     """Unload deCONZ services."""
     if not hass.data.get(DOMAIN_SERVICES):
-        return
+        return None
 
     hass.data[DOMAIN_SERVICES] = False
 
@@ -86,9 +87,10 @@ async def async_unload_services(hass):
     hass.services.async_remove(DOMAIN, SERVICE_UNPAUSE)
     hass.services.async_remove(DOMAIN, SERVICE_SHUTDOWN)
     hass.services.async_remove(DOMAIN, SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT)
+    return None
 
 
-async def async_pause_service(hass, data):
+async def async_pause_service(hass, data) -> None:
     """Let the client pause one or all slots."""
 
     address = data[SERVICE_ADDRESS]
@@ -105,11 +107,12 @@ async def async_pause_service(hass, data):
                 )
                 return
             await hass.data[DOMAIN][config_entry][CLIENT].client.pause_all_slots_async()
-            return
+            return None
     _LOGGER.warning("Could not find a registered integration with address: %s", address)
+    return None
 
 
-async def async_unpause_service(hass, data):
+async def async_unpause_service(hass, data) -> None:
     """Let the client unpause one or all slots."""
 
     address = data[SERVICE_ADDRESS]
@@ -128,11 +131,12 @@ async def async_unpause_service(hass, data):
             await hass.data[DOMAIN][config_entry][
                 CLIENT
             ].client.unpause_all_slots_async()
-            return
+            return None
     _LOGGER.warning("Could not find a registered integration with address: %s", address)
+    return None
 
 
-async def async_shutdown_service(hass, data):
+async def async_shutdown_service(hass, data) -> None:
     """Let the client shutdown."""
 
     address = data[SERVICE_ADDRESS]
@@ -143,11 +147,12 @@ async def async_shutdown_service(hass, data):
             == address
         ):
             await hass.data[DOMAIN][config_entry][CLIENT].client.shutdown()
-            return
+            return None
     _LOGGER.warning("Could not find a registered integration with address: %s", address)
+    return None
 
 
-async def async_request_assignment_service(hass, data):
+async def async_request_assignment_service(hass, data) -> None:
     """Let the client request a new work server assignment."""
 
     address = data[SERVICE_ADDRESS]
@@ -160,5 +165,6 @@ async def async_request_assignment_service(hass, data):
             await hass.data[DOMAIN][config_entry][
                 CLIENT
             ].client.request_work_server_assignment()
-            return
+            return None
     _LOGGER.warning("Could not find a registered integration with address: %s", address)
+    return None

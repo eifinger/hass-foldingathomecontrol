@@ -1,9 +1,7 @@
 """Constants for foldingathomecontrol."""
 import logging
 
-from homeassistant.const import TIME_SECONDS
-
-from homeassistant.const import PERCENTAGE
+from homeassistant.const import PERCENTAGE, TIME_SECONDS
 
 # Base component constants
 CLIENT = "client"
@@ -30,7 +28,7 @@ BINARY_SENSOR_DEVICE_CLASS = "connectivity"
 # Configuration
 CONF_ADDRESS = "address"
 CONF_PORT = "port"
-CONF_PASSWORD = "password"
+CONF_PASSWORD = "password"  # nosec
 CONF_UPDATE_RATE = "update_rate"
 CONF_READ_TIMEOUT = "read_timeout"
 

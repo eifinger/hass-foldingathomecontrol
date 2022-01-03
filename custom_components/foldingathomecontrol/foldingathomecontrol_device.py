@@ -1,5 +1,4 @@
 """Base class for FoldingAtHomeControl devices."""
-from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity
 
@@ -13,7 +12,9 @@ class FoldingAtHomeControlBase:
     def __init__(self, client: FoldingAtHomeControlClient, slot_id: str) -> None:
         """Set up device and add update callback to get data."""
         self._device_identifier = f"{client.address}_{slot_id}"
-        self._device_name = f"{client.address} {client.slot_data[slot_id]['Description'].split(':')[0].upper()}: {slot_id}"  # pylint: disable=line-too-long
+        description = client.slot_data[slot_id]["Description"]
+        device_description = description.split(":")[0].upper()  # type: ignore
+        self._device_name = f"{client.address} {device_description}: {slot_id}"
         self._client: FoldingAtHomeControlClient = client
         self._slot_id: str = slot_id
         self.listeners: list = []
@@ -35,7 +36,7 @@ class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, Entity):
 
     @property
     def entity_registry_enabled_default(self) -> bool:
-        """Should entitiy be enabled when first added to the entity registry."""
+        """Should entity be enabled when first added to the entity registry."""
         return True
 
     async def async_added_to_hass(self) -> None:
@@ -44,7 +45,7 @@ class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, Entity):
             async_dispatcher_connect(
                 self.hass,
                 self._client.data_update_identifer,
-                self.async_update_callback,
+                self.async_write_ha_state,
             )
         )
         self.listeners.append(
@@ -67,20 +68,12 @@ class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, Entity):
             return
         await self.async_remove()
 
-    @callback
-    def async_update_callback(self, force_update=False, ignore_update=False):
-        """Update the device's state."""
-        if ignore_update:
-            return
-
-        self.async_write_ha_state()
-
     @property
-    def available(self):
+    def available(self) -> bool:
         """Return True if device is available."""
         return self._client.available
 
     @property
-    def should_poll(self):
+    def should_poll(self) -> bool:
         """No polling needed."""
         return False
