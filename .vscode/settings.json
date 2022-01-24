@@ -1,6 +1,8 @@
 {
-    "python.pythonPath": "venv/bin/python",
     "python.linting.pylintEnabled": true,
-    "python.linting.pycodestyleEnabled": false,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.pythonPath": "/usr/local/bin/python",
+    "files.associations": {
+        "*.yaml": "home-assistant"
+    }
 }
