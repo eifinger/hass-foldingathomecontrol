@@ -136,6 +136,7 @@ class FoldingAtHomeControlClient:
 
     def handle_unit_data_received(self, data: Any) -> None:
         """Handle unit data received."""
+        _LOGGER.debug("Unit data received %s", data)
         slots_in_data_handled = []
         for unit in data:
             if unit["slot"] not in slots_in_data_handled or unit["state"] == "Running":
@@ -175,18 +176,22 @@ class FoldingAtHomeControlClient:
 
     def handle_options_data_received(self, data: Any) -> None:
         """Handle options data received."""
+        _LOGGER.debug("Options data received %s", data)
         self.options_data["power"] = data.get("power")
         self.options_data["team"] = data.get("team")
         self.options_data["user"] = data.get("user")
 
     def handle_slots_data_received(self, slots_data: Any) -> None:
         """Handle received slots data."""
+        _LOGGER.debug("Slots data received: %s", slots_data)
         self.update_slots_data(slots_data)
         added, removed = self.calculate_slot_changes(slots_data)
         if len(added) > 0:
+            _LOGGER.debug("Slots added: %s", added)
             self.slots.extend(added)
             async_dispatcher_send(self.hass, self.sensor_added_identifer, added)
         if len(removed) > 0:
+            _LOGGER.debug("Slots removed: %s", removed)
             async_dispatcher_send(self.hass, self.sensor_removed_identifer, removed)
             for slot in removed:
                 # Remove old data
