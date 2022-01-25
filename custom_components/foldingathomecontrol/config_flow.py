@@ -79,7 +79,7 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
         )
 
     async def async_step_import(self, import_config) -> FlowResult:
-        """Import from Glances sensor config."""
+        """Import from configuration.yaml."""
 
         return await self.async_step_user(user_input=import_config)
 
