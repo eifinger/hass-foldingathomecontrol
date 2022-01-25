@@ -105,3 +105,13 @@ def connection_failed_on_login_fixture():
             side_effect=FoldingAtHomeControlConnectionFailed
         )
         yield
+
+
+@pytest.fixture(name="connection_failed")
+def connection_failed_fixture():
+    """Mock the serialconnection."""
+    with patch(
+        "custom_components.foldingathomecontrol.foldingathomecontrol_client.FoldingAtHomeController",  # noqa: E501
+        side_effect=FoldingAtHomeControlConnectionFailed,
+    ):
+        yield
