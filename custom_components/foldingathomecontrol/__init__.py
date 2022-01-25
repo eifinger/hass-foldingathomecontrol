@@ -4,8 +4,9 @@ Component to integrate with PyFoldingAtHomeControl.
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
-from homeassistant.config_entries import SOURCE_IMPORT
+from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.core import Config, HomeAssistant
+from homeassistant.exceptions import ConfigEntryNotReady
 
 from .const import (
     CLIENT,
@@ -47,37 +48,48 @@ async def async_setup(hass: HomeAssistant, config: Config) -> bool:
     return True
 
 
-async def async_setup_entry(hass, config_entry):
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up PyFoldingAtHomeControl from config entry."""
-    client = FoldingAtHomeControlClient(hass, config_entry)
-    hass.data.setdefault(DOMAIN, {})[config_entry.entry_id] = {}
-    hass.data.setdefault(DOMAIN, {})[config_entry.entry_id][CLIENT] = client
-    hass.data.setdefault(DOMAIN, {})[config_entry.entry_id][UNSUB_DISPATCHERS] = []
+    try:
+        client = FoldingAtHomeControlClient(hass, entry)
+        hass.data.setdefault(DOMAIN, {})[entry.entry_id] = {}
+        hass.data.setdefault(DOMAIN, {})[entry.entry_id][CLIENT] = client
+        hass.data.setdefault(DOMAIN, {})[entry.entry_id][UNSUB_DISPATCHERS] = []
 
-    await async_setup_services(hass)
-    config_entry.add_update_listener(async_options_updated)
+        await async_setup_services(hass)
+        entry.add_update_listener(async_options_updated)
 
-    return True
+        return True
+    except Exception as err:
+        ex = ConfigEntryNotReady()
+        ex.__cause__ = err
+        raise ex from err
 
 
-async def async_unload_entry(hass, config_entry):
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    await hass.config_entries.async_forward_entry_unload(config_entry, "sensor")
-    await hass.data[DOMAIN][config_entry.entry_id][CLIENT].async_remove()
-    for unsub_dispatcher in hass.data[DOMAIN][config_entry.entry_id][UNSUB_DISPATCHERS]:
+    await hass.config_entries.async_forward_entry_unload(entry, "sensor")
+    await hass.data[DOMAIN][entry.entry_id][CLIENT].async_remove()
+    for unsub_dispatcher in hass.data[DOMAIN][entry.entry_id][UNSUB_DISPATCHERS]:
         unsub_dispatcher()
-    hass.data[DOMAIN].pop(config_entry.entry_id)
+    hass.data[DOMAIN].pop(entry.entry_id)
     # If there is no instance of this integration registered anymore
     if not hass.data[DOMAIN]:
         await async_unload_services(hass)
     return True
 
 
-async def async_options_updated(hass, config_entry):
+async def async_options_updated(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Triggered by config entry options updates."""
-    await hass.data[DOMAIN][config_entry.entry_id][CLIENT].async_set_update_rate(
-        config_entry.options[CONF_UPDATE_RATE]
+    await hass.data[DOMAIN][entry.entry_id][CLIENT].async_set_update_rate(
+        entry.options[CONF_UPDATE_RATE]
     )
-    hass.data[DOMAIN][config_entry.entry_id][CLIENT].set_read_timeout(
-        config_entry.options[CONF_READ_TIMEOUT]
+    hass.data[DOMAIN][entry.entry_id][CLIENT].set_read_timeout(
+        entry.options[CONF_READ_TIMEOUT]
     )
+
+
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload config entry."""
+    await async_unload_entry(hass, entry)
+    await async_setup_entry(hass, entry)
