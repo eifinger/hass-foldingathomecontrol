@@ -64,7 +64,7 @@ async def async_unload_entry(hass, config_entry):
     """Unload a config entry."""
     await hass.config_entries.async_forward_entry_unload(config_entry, "sensor")
     await hass.data[DOMAIN][config_entry.entry_id][CLIENT].async_remove()
-    for unsub_dispatcher in hass.data[DOMAIN][config_entry.entry_id][CLIENT]:
+    for unsub_dispatcher in hass.data[DOMAIN][config_entry.entry_id][UNSUB_DISPATCHERS]:
         unsub_dispatcher()
     hass.data[DOMAIN].pop(config_entry.entry_id)
     # If there is no instance of this integration registered anymore
