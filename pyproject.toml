@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "hass-foldingathomecontrol"
-version = "2.0.14"
+version = "2.0.15"
 description = "Homeassistant Custom Component to integrate with Folding@Home"
 license = "MIT"
 authors = ["Kevin Stillhammer <kevin.stillhammer@gmail.com>"]
