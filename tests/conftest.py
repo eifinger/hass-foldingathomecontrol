@@ -4,6 +4,11 @@ import logging
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from FoldingAtHomeControl import (
+    FoldingAtHomeControlAuthenticationFailed,
+    FoldingAtHomeControlAuthenticationRequired,
+    FoldingAtHomeControlConnectionFailed,
+)
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -49,3 +54,54 @@ def foldingathomecontroller_fixture():
             callback(message_type, data)
 
         yield receive_data
+
+
+@pytest.fixture(name="bypass_login")
+def bypass_login_fixture():
+    """Mock the serialconnection."""
+    with patch(
+        "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
+    ) as mock:
+
+        mock.return_value.try_connect_async = AsyncMock()
+        mock.return_value.cleanup_async = AsyncMock()
+        yield
+
+
+@pytest.fixture(name="auth_failed_on_login")
+def auth_failed_on_login_fixture():
+    """Mock the serialconnection."""
+    with patch(
+        "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
+    ) as mock:
+
+        mock.return_value.try_connect_async = AsyncMock(
+            side_effect=FoldingAtHomeControlAuthenticationFailed
+        )
+        yield
+
+
+@pytest.fixture(name="auth_required_on_login")
+def auth_required_on_login_fixture():
+    """Mock the serialconnection."""
+    with patch(
+        "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
+    ) as mock:
+
+        mock.return_value.try_connect_async = AsyncMock(
+            side_effect=FoldingAtHomeControlAuthenticationRequired
+        )
+        yield
+
+
+@pytest.fixture(name="connection_failed_on_login")
+def connection_failed_on_login_fixture():
+    """Mock the serialconnection."""
+    with patch(
+        "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
+    ) as mock:
+
+        mock.return_value.try_connect_async = AsyncMock(
+            side_effect=FoldingAtHomeControlConnectionFailed
+        )
+        yield

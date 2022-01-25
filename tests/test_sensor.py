@@ -2,24 +2,15 @@
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.foldingathomecontrol.const import (
-    CONF_ADDRESS,
-    CONF_PASSWORD,
-    CONF_PORT,
-    DOMAIN,
-)
-from tests.const import SLOTS_DATA, UNITS_DATA
+from custom_components.foldingathomecontrol.const import DOMAIN
+from tests.const import MOCK_CONFIG, SLOTS_DATA, UNITS_DATA
 
 
 async def test_sensor(hass, foldingathomecontroller):
     """Test that sensor works."""
     entry = MockConfigEntry(
         domain=DOMAIN,
-        data={
-            CONF_ADDRESS: "localhost",
-            CONF_PORT: 36330,
-            CONF_PASSWORD: "CONF_UNIT_SYSTEM_IMPERIAL",
-        },
+        data=MOCK_CONFIG,
     )
     entry.add_to_hass(hass)
     await hass.config_entries.async_setup(entry.entry_id)
@@ -150,11 +141,7 @@ async def test_sensor_slots_before_units(hass, foldingathomecontroller):
     """Test that sensor works when slot info is received before unit info."""
     entry = MockConfigEntry(
         domain=DOMAIN,
-        data={
-            CONF_ADDRESS: "localhost",
-            CONF_PORT: 36330,
-            CONF_PASSWORD: "CONF_UNIT_SYSTEM_IMPERIAL",
-        },
+        data=MOCK_CONFIG,
     )
     entry.add_to_hass(hass)
     await hass.config_entries.async_setup(entry.entry_id)
