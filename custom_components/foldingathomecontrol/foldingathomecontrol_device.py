@@ -1,6 +1,6 @@
 """Base class for FoldingAtHomeControl devices."""
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
-from homeassistant.helpers.entity import Entity
 
 from .const import DOMAIN
 from .foldingathomecontrol_client import FoldingAtHomeControlClient
@@ -31,13 +31,8 @@ class FoldingAtHomeControlBase:
         }
 
 
-class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, Entity):
+class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, SensorEntity):
     """Representation of a FoldingAtHomeControl entity."""
-
-    @property
-    def entity_registry_enabled_default(self) -> bool:
-        """Should entity be enabled when first added to the entity registry."""
-        return True
 
     async def async_added_to_hass(self) -> None:
         """Subscribe to device events."""
