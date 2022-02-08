@@ -48,8 +48,8 @@ DAYCLOCK = (
     r"(?P<days>\d+):(?P<hours>\d{2}):" r"(?P<mins>\d{2}):(?P<secs>\d{2}(?:\.\d+)?)"
 )
 
-OPT = lambda x: fr"(?:{x})?"
-OPTSEP = lambda x: fr"(?:{x}\s*(?:{SEPARATORS}\s*)?)?"
+OPT = lambda x: rf"(?:{x})?"
+OPTSEP = lambda x: rf"(?:{x}\s*(?:{SEPARATORS}\s*)?)?"
 
 TIMEFORMATS = [
     r"{WEEKS}\s*{DAYS}\s*{HOURS}\s*{MINS}\s*{SECS}".format(
@@ -61,12 +61,12 @@ TIMEFORMATS = [
         MINS=OPTSEP(MINS),
         SECS=OPT(SECS),
     ),
-    fr"{MINCLOCK}",
+    rf"{MINCLOCK}",
     r"{WEEKS}\s*{DAYS}\s*{HOURCLOCK}".format(
         WEEKS=OPTSEP(WEEKS), DAYS=OPTSEP(DAYS), HOURCLOCK=HOURCLOCK
     ),
-    fr"{DAYCLOCK}",
-    fr"{SECCLOCK}",
+    rf"{DAYCLOCK}",
+    rf"{SECCLOCK}",
     # r'{YEARS}'.format(
     # YEARS=YEARS),
     # r'{MONTHS}'.format(

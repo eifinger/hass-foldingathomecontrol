@@ -30,7 +30,7 @@ python = "^3.9"
 PyFoldingAtHomeControl = "2.1.2"
 
 [tool.poetry.dev-dependencies]
-black = "21.12b0"
+black = "22.1.0"
 blacken-docs = "^1.12.1"
 coverage = {version = "^6.2", extras = ["toml"]}
 bandit = "^1.7.2"
