@@ -36,6 +36,17 @@ def skip_notifications_fixture():
         yield
 
 
+@pytest.fixture(name="simplecontroller")
+def simplecontroller_fixture():
+    """Mock the serialconnection."""
+    with patch(
+        "custom_components.foldingathomecontrol.foldingathomecontrol_client.FoldingAtHomeController"  # noqa: E501
+    ) as mock:
+
+        mock.return_value.start = AsyncMock()
+        yield mock
+
+
 @pytest.fixture(name="foldingathomecontroller")
 def foldingathomecontroller_fixture():
     """Mock the serialconnection."""
