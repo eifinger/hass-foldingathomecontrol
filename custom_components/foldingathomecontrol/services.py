@@ -1,5 +1,6 @@
 """FoldingAtHomeControl services."""
 import voluptuous as vol
+from FoldingAtHomeControl import PowerLevel
 from homeassistant.helpers import config_validation as cv
 
 from .const import _LOGGER, CLIENT, CONF_ADDRESS, DOMAIN
@@ -8,6 +9,7 @@ DOMAIN_SERVICES = f"{DOMAIN}_services"
 
 SERVICE_ADDRESS = "address"
 SERVICE_SLOT = "slot"
+SERVICE_POWER_LEVEL = "power_level"
 
 SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT = "request_work_server_assignment"
 SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT_SCHEMA = vol.Schema(
@@ -19,13 +21,21 @@ SERVICE_UNPAUSE = "unpause"
 SERVICE_SLOT_SCHEMA = vol.Schema(
     {
         vol.Required(SERVICE_ADDRESS): cv.string,
-        vol.Optional(SERVICE_SLOT, default=None): cv.string,
+        vol.Optional(SERVICE_SLOT, default=None): vol.Any(cv.string, None),
     }
 )
 
 SERVICE_SHUTDOWN = "shutdown"
 SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT = "request_work_server_assignment"
 SERVICE_SCHEMA = vol.Schema({vol.Required(SERVICE_ADDRESS): cv.string})
+
+SERVICE_SET_POWER_LEVEL = "set_power_level"
+SERVICE_SET_POWER_LEVEL_SCHEMA = vol.Schema(
+    {
+        vol.Required(SERVICE_ADDRESS): cv.string,
+        vol.Required(SERVICE_POWER_LEVEL): cv.enum(PowerLevel),
+    }
+)
 
 
 async def async_setup_services(hass) -> None:
@@ -40,6 +50,8 @@ async def async_setup_services(hass) -> None:
         service = service_call.service
         service_data = service_call.data
 
+        if service == SERVICE_SET_POWER_LEVEL:
+            await async_set_power_level_service(hass, service_data)
         if service == SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT:
             await async_request_assignment_service(hass, service_data)
         if service == SERVICE_PAUSE:
@@ -49,6 +61,12 @@ async def async_setup_services(hass) -> None:
         if service == SERVICE_SHUTDOWN:
             await async_shutdown_service(hass, service_data)
 
+    hass.services.async_register(
+        DOMAIN,
+        SERVICE_SET_POWER_LEVEL,
+        async_call_folding_at_home_control_service,
+        schema=SERVICE_SET_POWER_LEVEL_SCHEMA,
+    )
     hass.services.async_register(
         DOMAIN,
         SERVICE_PAUSE,
@@ -87,6 +105,7 @@ async def async_unload_services(hass) -> None:
     hass.services.async_remove(DOMAIN, SERVICE_UNPAUSE)
     hass.services.async_remove(DOMAIN, SERVICE_SHUTDOWN)
     hass.services.async_remove(DOMAIN, SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT)
+    hass.services.async_remove(DOMAIN, SERVICE_SET_POWER_LEVEL)
     return None
 
 
@@ -165,6 +184,25 @@ async def async_request_assignment_service(hass, data) -> None:
             await hass.data[DOMAIN][config_entry][
                 CLIENT
             ].client.request_work_server_assignment()
+            return None
+    _LOGGER.warning("Could not find a registered integration with address: %s", address)
+    return None
+
+
+async def async_set_power_level_service(hass, data) -> None:
+    """Let the client set the power level."""
+
+    address = data[SERVICE_ADDRESS]
+    power_level = data[SERVICE_POWER_LEVEL]
+
+    for config_entry in hass.data[DOMAIN]:
+        if (
+            hass.data[DOMAIN][config_entry][CLIENT].config_entry.data[CONF_ADDRESS]
+            == address
+        ):
+            await hass.data[DOMAIN][config_entry][CLIENT].client.set_power_level_async(
+                PowerLevel(power_level)
+            )
             return None
     _LOGGER.warning("Could not find a registered integration with address: %s", address)
     return None

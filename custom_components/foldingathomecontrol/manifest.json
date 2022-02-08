@@ -10,7 +10,7 @@
     "@eifinger"
   ],
   "requirements": [
-    "PyFoldingAtHomeControl==2.0.1"
+    "PyFoldingAtHomeControl==2.1.2"
   ],
   "iot_class": "local_push"
 }
