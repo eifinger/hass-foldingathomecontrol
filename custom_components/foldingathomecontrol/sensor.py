@@ -1,6 +1,7 @@
 """Sensor platform for PyFoldingAtHomeControl."""
 from typing import List, Optional
 
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
@@ -44,7 +45,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         )
 
 
-class FoldingAtHomeControlSensor(FoldingAtHomeControlDevice):
+class FoldingAtHomeControlSensor(FoldingAtHomeControlDevice, SensorEntity):
     """Implementation of a FoldingAtHomeControl sensor."""
 
     def __init__(
@@ -62,16 +63,8 @@ class FoldingAtHomeControlSensor(FoldingAtHomeControlDevice):
         self._icon = icon
         self._state: Optional[str] = None
         self._attributes: dict = {}
-
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        return f"{self._device_identifier} {self._sensor_type}"
-
-    @property
-    def unique_id(self):
-        """Set unique_id for sensor."""
-        return self.name
+        self._attr_name = f"{self._device_identifier} {self._sensor_type}"
+        self._attr_unique_id = self._attr_name
 
     @property
     def icon(self):

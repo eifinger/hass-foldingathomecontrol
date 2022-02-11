@@ -16,6 +16,7 @@ from .const import (
     CONF_READ_TIMEOUT,
     CONF_UPDATE_RATE,
     DOMAIN,
+    PLATFORMS,
     UNSUB_DISPATCHERS,
 )
 from .foldingathomecontrol_client import FoldingAtHomeControlClient
@@ -57,6 +58,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.setdefault(DOMAIN, {})[entry.entry_id][UNSUB_DISPATCHERS] = []
 
         await async_setup_services(hass)
+        hass.config_entries.async_setup_platforms(entry, PLATFORMS)
         entry.add_update_listener(async_options_updated)
 
         return True
@@ -68,7 +70,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    await hass.config_entries.async_forward_entry_unload(entry, "sensor")
+    await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     await hass.data[DOMAIN][entry.entry_id][CLIENT].async_remove()
     for unsub_dispatcher in hass.data[DOMAIN][entry.entry_id][UNSUB_DISPATCHERS]:
         unsub_dispatcher()

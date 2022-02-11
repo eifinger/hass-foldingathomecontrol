@@ -64,7 +64,7 @@ def foldingathomecontroller_fixture():
 
             callback(message_type, data)
 
-        yield receive_data
+        yield receive_data, mock
 
 
 @pytest.fixture(name="bypass_login")
@@ -72,8 +72,11 @@ def bypass_login_fixture():
     """Mock the serialconnection."""
     with patch(
         "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
-    ) as mock:
+    ) as mock, patch(
+        "custom_components.foldingathomecontrol.foldingathomecontrol_client.FoldingAtHomeController"  # noqa: E501
+    ) as mock2:
 
+        mock2.return_value.start = AsyncMock()
         mock.return_value.try_connect_async = AsyncMock()
         mock.return_value.cleanup_async = AsyncMock()
         yield

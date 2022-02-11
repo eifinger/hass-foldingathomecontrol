@@ -17,8 +17,9 @@ async def test_sensor(hass, foldingathomecontroller):
 
     await hass.async_block_till_done()
 
-    foldingathomecontroller("units", UNITS_DATA)
-    foldingathomecontroller("slots", SLOTS_DATA)
+    callback, _ = foldingathomecontroller
+    callback("units", UNITS_DATA)
+    callback("slots", SLOTS_DATA)
     await hass.async_block_till_done()
     assert hass.states.get("sensor.localhost_00_status").state == "READY"
     assert (
@@ -148,8 +149,9 @@ async def test_sensor_slots_before_units(hass, foldingathomecontroller):
 
     await hass.async_block_till_done()
 
-    foldingathomecontroller("units", UNITS_DATA)
-    foldingathomecontroller("slots", SLOTS_DATA)
+    callback, _ = foldingathomecontroller
+    callback("units", UNITS_DATA)
+    callback("slots", SLOTS_DATA)
     await hass.async_block_till_done()
     assert hass.states.get("sensor.localhost_00_status").state == "READY"
     assert (
