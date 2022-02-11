@@ -1,12 +1,12 @@
 """Base class for FoldingAtHomeControl devices."""
-from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
+from homeassistant.helpers.entity import Entity
 
 from .const import DOMAIN
 from .foldingathomecontrol_client import FoldingAtHomeControlClient
 
 
-class FoldingAtHomeControlBase:
+class FoldingAtHomeControlDevice(Entity):
     """Common base for FoldingAtHomeControl entities."""
 
     def __init__(self, client: FoldingAtHomeControlClient, slot_id: str) -> None:
@@ -18,21 +18,7 @@ class FoldingAtHomeControlBase:
         self._client: FoldingAtHomeControlClient = client
         self._slot_id: str = slot_id
         self.listeners: list = []
-
-    @property
-    def device_info(self) -> dict:
-        """Return a device description for device registry."""
-
-        return {
-            "identifiers": {(DOMAIN, self._device_identifier)},
-            "name": self._device_name,
-            "manufacturer": "FoldingAtHomeControl",
-            "via_device": (DOMAIN, self._client.address),
-        }
-
-
-class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, SensorEntity):
-    """Representation of a FoldingAtHomeControl entity."""
+        self._attr_should_poll = False
 
     async def async_added_to_hass(self) -> None:
         """Subscribe to device events."""
@@ -69,6 +55,12 @@ class FoldingAtHomeControlDevice(FoldingAtHomeControlBase, SensorEntity):
         return self._client.available
 
     @property
-    def should_poll(self) -> bool:
-        """No polling needed."""
-        return False
+    def device_info(self) -> dict:
+        """Return a device description for device registry."""
+
+        return {
+            "identifiers": {(DOMAIN, self._device_identifier)},
+            "name": self._device_name,
+            "manufacturer": "FoldingAtHomeControl",
+            "via_device": (DOMAIN, self._client.address),
+        }

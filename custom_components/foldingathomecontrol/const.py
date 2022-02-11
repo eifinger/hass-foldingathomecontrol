@@ -1,7 +1,7 @@
 """Constants for foldingathomecontrol."""
 import logging
 
-from homeassistant.const import PERCENTAGE, TIME_SECONDS
+from homeassistant.const import PERCENTAGE, TIME_SECONDS, Platform
 
 # Base component constants
 CLIENT = "client"
@@ -15,6 +15,7 @@ SENSOR_ADDED = f"{DOMAIN}_sensor_added"
 SENSOR_REMOVED = f"{DOMAIN}_sensor_removed"
 DEFAULT_UPDATE_RATE = 5
 DEFAULT_READ_TIMEOUT = 15
+PLATFORMS = [Platform.SENSOR, Platform.BUTTON]
 
 # Logger
 _LOGGER = logging.getLogger(__package__)

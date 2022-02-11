@@ -1,6 +1,7 @@
 """FoldingAtHomeControl services."""
 import voluptuous as vol
 from FoldingAtHomeControl import PowerLevel
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 
 from .const import _LOGGER, CLIENT, CONF_ADDRESS, DOMAIN
@@ -38,7 +39,7 @@ SERVICE_SET_POWER_LEVEL_SCHEMA = vol.Schema(
 )
 
 
-async def async_setup_services(hass) -> None:
+async def async_setup_services(hass: HomeAssistant) -> None:
     """Set up services for FoldingAtHomeControl integration."""
     if hass.data.get(DOMAIN_SERVICES, False):
         return None
@@ -51,15 +52,21 @@ async def async_setup_services(hass) -> None:
         service_data = service_call.data
 
         if service == SERVICE_SET_POWER_LEVEL:
-            await async_set_power_level_service(hass, service_data)
+            await async_set_power_level_service(
+                hass, service_data[SERVICE_ADDRESS], service_data[SERVICE_POWER_LEVEL]
+            )
         if service == SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT:
-            await async_request_assignment_service(hass, service_data)
+            await async_request_assignment_service(hass, service_data[SERVICE_ADDRESS])
         if service == SERVICE_PAUSE:
-            await async_pause_service(hass, service_data)
+            await async_pause_service(
+                hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT)
+            )
         if service == SERVICE_UNPAUSE:
-            await async_unpause_service(hass, service_data)
+            await async_unpause_service(
+                hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT)
+            )
         if service == SERVICE_SHUTDOWN:
-            await async_shutdown_service(hass, service_data)
+            await async_shutdown_service(hass, service_data[SERVICE_ADDRESS])
 
     hass.services.async_register(
         DOMAIN,
@@ -94,7 +101,7 @@ async def async_setup_services(hass) -> None:
     return None
 
 
-async def async_unload_services(hass) -> None:
+async def async_unload_services(hass: HomeAssistant) -> None:
     """Unload deCONZ services."""
     if not hass.data.get(DOMAIN_SERVICES):
         return None
@@ -109,11 +116,8 @@ async def async_unload_services(hass) -> None:
     return None
 
 
-async def async_pause_service(hass, data) -> None:
+async def async_pause_service(hass: HomeAssistant, address: str, slot: str) -> None:
     """Let the client pause one or all slots."""
-
-    address = data[SERVICE_ADDRESS]
-    slot = data[SERVICE_SLOT]
 
     for config_entry in hass.data[DOMAIN]:
         if (
@@ -131,11 +135,8 @@ async def async_pause_service(hass, data) -> None:
     return None
 
 
-async def async_unpause_service(hass, data) -> None:
+async def async_unpause_service(hass: HomeAssistant, address: str, slot: str) -> None:
     """Let the client unpause one or all slots."""
-
-    address = data[SERVICE_ADDRESS]
-    slot = data[SERVICE_SLOT]
 
     for config_entry in hass.data[DOMAIN]:
         if (
@@ -155,10 +156,8 @@ async def async_unpause_service(hass, data) -> None:
     return None
 
 
-async def async_shutdown_service(hass, data) -> None:
+async def async_shutdown_service(hass: HomeAssistant, address: str) -> None:
     """Let the client shutdown."""
-
-    address = data[SERVICE_ADDRESS]
 
     for config_entry in hass.data[DOMAIN]:
         if (
@@ -171,10 +170,8 @@ async def async_shutdown_service(hass, data) -> None:
     return None
 
 
-async def async_request_assignment_service(hass, data) -> None:
+async def async_request_assignment_service(hass: HomeAssistant, address: str) -> None:
     """Let the client request a new work server assignment."""
-
-    address = data[SERVICE_ADDRESS]
 
     for config_entry in hass.data[DOMAIN]:
         if (
@@ -189,11 +186,10 @@ async def async_request_assignment_service(hass, data) -> None:
     return None
 
 
-async def async_set_power_level_service(hass, data) -> None:
+async def async_set_power_level_service(
+    hass: HomeAssistant, address: str, power_level: str
+) -> None:
     """Let the client set the power level."""
-
-    address = data[SERVICE_ADDRESS]
-    power_level = data[SERVICE_POWER_LEVEL]
 
     for config_entry in hass.data[DOMAIN]:
         if (

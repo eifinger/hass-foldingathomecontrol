@@ -50,12 +50,6 @@ class FoldingAtHomeControlClient:
             self.data_received_callback
         )
 
-        self.hass.async_create_task(
-            self.hass.config_entries.async_forward_entry_setup(
-                self.config_entry, "sensor"
-            )
-        )
-
         self.client.on_disconnect(self.on_disconnect_callback)
         self._task = asyncio.ensure_future(self.client.start())
 
