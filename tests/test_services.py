@@ -18,15 +18,17 @@ from custom_components.foldingathomecontrol.services import (
 from tests.const import MOCK_CONFIG
 
 
-async def test_services(hass, simplecontroller):
+async def test_services(hass, foldingathomecontroller):
     """Test service calls."""
     config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
     config_entry.add_to_hass(hass)
     await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
 
+    _, mock = foldingathomecontroller
+
     function_mock = AsyncMock()
-    simplecontroller.return_value.set_power_level_async = function_mock
+    mock.return_value.set_power_level_async = function_mock
     await hass.services.async_call(
         DOMAIN,
         SERVICE_SET_POWER_LEVEL,
@@ -37,7 +39,7 @@ async def test_services(hass, simplecontroller):
     function_mock.assert_called_once()
 
     function_mock = AsyncMock()
-    simplecontroller.return_value.request_work_server_assignment = function_mock
+    mock.return_value.request_work_server_assignment = function_mock
     await hass.services.async_call(
         DOMAIN,
         SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT,
@@ -48,7 +50,7 @@ async def test_services(hass, simplecontroller):
     function_mock.assert_called_once()
 
     function_mock = AsyncMock()
-    simplecontroller.return_value.shutdown = function_mock
+    mock.return_value.shutdown = function_mock
     await hass.services.async_call(
         DOMAIN,
         SERVICE_SHUTDOWN,
@@ -59,7 +61,7 @@ async def test_services(hass, simplecontroller):
     function_mock.assert_called_once()
 
     function_mock = AsyncMock()
-    simplecontroller.return_value.unpause_all_slots_async = function_mock
+    mock.return_value.unpause_all_slots_async = function_mock
     await hass.services.async_call(
         DOMAIN,
         SERVICE_UNPAUSE,
@@ -70,7 +72,7 @@ async def test_services(hass, simplecontroller):
     function_mock.assert_called_once()
 
     function_mock = AsyncMock()
-    simplecontroller.return_value.unpause_slot_async = function_mock
+    mock.return_value.unpause_slot_async = function_mock
     await hass.services.async_call(
         DOMAIN,
         SERVICE_UNPAUSE,
@@ -81,7 +83,7 @@ async def test_services(hass, simplecontroller):
     function_mock.assert_called_once()
 
     function_mock = AsyncMock()
-    simplecontroller.return_value.pause_all_slots_async = function_mock
+    mock.return_value.pause_all_slots_async = function_mock
     await hass.services.async_call(
         DOMAIN,
         SERVICE_PAUSE,
@@ -92,7 +94,7 @@ async def test_services(hass, simplecontroller):
     function_mock.assert_called_once()
 
     function_mock = AsyncMock()
-    simplecontroller.return_value.pause_slot_async = function_mock
+    mock.return_value.pause_slot_async = function_mock
     await hass.services.async_call(
         DOMAIN,
         SERVICE_PAUSE,
