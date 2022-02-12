@@ -1,4 +1,6 @@
 """FoldingAtHomeControl services."""
+from __future__ import annotations
+
 import voluptuous as vol
 from FoldingAtHomeControl import PowerLevel
 from homeassistant.core import HomeAssistant
@@ -116,7 +118,9 @@ async def async_unload_services(hass: HomeAssistant) -> None:
     return None
 
 
-async def async_pause_service(hass: HomeAssistant, address: str, slot: str) -> None:
+async def async_pause_service(
+    hass: HomeAssistant, address: str, slot: str | None
+) -> None:
     """Let the client pause one or all slots."""
 
     for config_entry in hass.data[DOMAIN]:
@@ -135,7 +139,9 @@ async def async_pause_service(hass: HomeAssistant, address: str, slot: str) -> N
     return None
 
 
-async def async_unpause_service(hass: HomeAssistant, address: str, slot: str) -> None:
+async def async_unpause_service(
+    hass: HomeAssistant, address: str, slot: str | None
+) -> None:
     """Let the client unpause one or all slots."""
 
     for config_entry in hass.data[DOMAIN]:

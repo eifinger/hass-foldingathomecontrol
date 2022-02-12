@@ -25,22 +25,44 @@ async def test_buttons(hass, foldingathomecontroller):
     await hass.async_block_till_done()
 
     function_mock = AsyncMock()
-    mock.return_value.unpause_slot_async = function_mock
+    mock.return_value.unpause_all_slots_async = function_mock
     await hass.services.async_call(
         "button",
         "press",
-        {"entity_id": "button.unpause_localhost_00"},
+        {"entity_id": "button.localhost_unpause"},
+        blocking=True,
+    )
+    await hass.async_block_till_done()
+    function_mock.assert_awaited_once()
+
+    function_mock = AsyncMock()
+    mock.return_value.pause_all_slots_async = function_mock
+    await hass.services.async_call(
+        "button",
+        "press",
+        {"entity_id": "button.localhost_pause"},
         blocking=True,
     )
     await hass.async_block_till_done()
     function_mock.assert_called_once()
 
     function_mock = AsyncMock()
+    mock.return_value.unpause_slot_async = function_mock
+    await hass.services.async_call(
+        "button",
+        "press",
+        {"entity_id": "button.localhost_00_unpause"},
+        blocking=True,
+    )
+    await hass.async_block_till_done()
+    function_mock.assert_awaited_once()
+
+    function_mock = AsyncMock()
     mock.return_value.pause_slot_async = function_mock
     await hass.services.async_call(
         "button",
         "press",
-        {"entity_id": "button.pause_localhost_00"},
+        {"entity_id": "button.localhost_00_pause"},
         blocking=True,
     )
     await hass.async_block_till_done()
