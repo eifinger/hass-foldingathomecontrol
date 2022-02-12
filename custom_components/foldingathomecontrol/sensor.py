@@ -1,13 +1,131 @@
 """Sensor platform for PyFoldingAtHomeControl."""
-from typing import List, Optional
+from typing import List
 
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.const import PERCENTAGE, TIME_SECONDS
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import CLIENT, DOMAIN, SENSOR_TYPES, UNSUB_DISPATCHERS
-from .foldingathomecontrol_client import FoldingAtHomeControlClient
-from .foldingathomecontrol_device import FoldingAtHomeControlDevice
+from .const import CLIENT, DOMAIN, UNSUB_DISPATCHERS
+from .foldingathomecontrol_device import FoldingAtHomeControlSlotDevice
+
+ICON = "mdi:state-machine"
+
+SENSOR_ENTITY_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
+    SensorEntityDescription(
+        key="Status",
+        name="Status",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Reason",
+        name="Reason",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Idle",
+        name="Idle",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Error",
+        name="Error",
+        icon="mdi:alert",
+    ),
+    SensorEntityDescription(
+        key="Project",
+        name="Project",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Percentdone",
+        name="Percentdone",
+        native_unit_of_measurement=PERCENTAGE,
+        icon="mdi:percent",
+    ),
+    SensorEntityDescription(
+        key="Estimated Time Finished",
+        name="Estimated Time Finished",
+        icon="mdi:calendar-clock",
+    ),
+    SensorEntityDescription(
+        key="Points Per Day",
+        name="Points Per Day",
+        native_unit_of_measurement="points",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Creditestimate",
+        name="Creditestimate",
+        native_unit_of_measurement="credits",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Waiting On",
+        name="Waiting On",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Next Attempt",
+        name="Next Attempt",
+        icon="mdi:history",
+    ),
+    SensorEntityDescription(
+        key="Total Frames",
+        name="Total Frames",
+        native_unit_of_measurement="frames",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Frames Done",
+        name="Frames Done",
+        native_unit_of_measurement="frames",
+        icon=ICON,
+    ),
+    SensorEntityDescription(
+        key="Assigned",
+        name="Assigned",
+        icon="mdi:calendar-clock",
+    ),
+    SensorEntityDescription(
+        key="Timeout",
+        name="Timeout",
+        icon="mdi:calendar-clock",
+    ),
+    SensorEntityDescription(
+        key="Deadline",
+        name="Deadline",
+        icon="mdi:calendar-clock",
+    ),
+    SensorEntityDescription(
+        key="Work Server",
+        name="Work Server",
+        icon="mdi:server-network",
+    ),
+    SensorEntityDescription(
+        key="Collection Server",
+        name="Collection Server",
+        icon="mdi:server-network",
+    ),
+    SensorEntityDescription(
+        key="Attempts",
+        name="Attempts",
+        native_unit_of_measurement="attempts",
+        icon="mdi:cached",
+    ),
+    SensorEntityDescription(
+        key="Time per Frame",
+        name="Time per Frame",
+        native_unit_of_measurement=TIME_SECONDS,
+        icon="mdi:speedometer",
+    ),
+    SensorEntityDescription(
+        key="Basecredit",
+        name="Basecredit",
+        native_unit_of_measurement="credits",
+        icon=ICON,
+    ),
+)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -20,14 +138,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         client = hass.data[DOMAIN][config_entry.entry_id][CLIENT]
         dev: list = []
         for slot in new_slots:
-            for sensor_type in SENSOR_TYPES:
+            for entity_description in SENSOR_ENTITY_DESCRIPTIONS:
                 dev.append(
                     FoldingAtHomeControlSensor(
                         client,
+                        entity_description,
                         slot,
-                        sensor_type["name"],
-                        sensor_type["unit_of_measurement"],
-                        sensor_type["icon"],
                     )
                 )
 
@@ -45,42 +161,14 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         )
 
 
-class FoldingAtHomeControlSensor(FoldingAtHomeControlDevice, SensorEntity):
+class FoldingAtHomeControlSensor(FoldingAtHomeControlSlotDevice, SensorEntity):
     """Implementation of a FoldingAtHomeControl sensor."""
-
-    def __init__(
-        self,
-        client: FoldingAtHomeControlClient,
-        slot_id: str,
-        sensor_type: str,
-        unit_of_measurement: str,
-        icon: str,
-    ) -> None:
-        """Initialize the sensor."""
-        super().__init__(client, slot_id)
-        self._sensor_type = sensor_type
-        self._unit_of_measurement = unit_of_measurement
-        self._icon = icon
-        self._state: Optional[str] = None
-        self._attributes: dict = {}
-        self._attr_name = f"{self._device_identifier} {self._sensor_type}"
-        self._attr_unique_id = self._attr_name
-
-    @property
-    def icon(self):
-        """Icon to use in the frontend, if any."""
-        return self._icon
-
-    @property
-    def native_unit_of_measurement(self):
-        """Return the unit the value is expressed in."""
-        return self._unit_of_measurement
 
     @property
     def native_value(self):
         """Return the state of the resources if it has been received yet."""
-        if self._sensor_type in self._client.slot_data[self._slot_id]:
-            return self._client.slot_data[self._slot_id][self._sensor_type]
+        if self.entity_description.key in self._client.slot_data[self._slot_id]:
+            return self._client.slot_data[self._slot_id][self.entity_description.key]
 
     @property
     def extra_state_attributes(self):
