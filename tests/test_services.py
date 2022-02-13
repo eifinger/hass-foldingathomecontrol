@@ -7,9 +7,11 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.foldingathomecontrol.const import DOMAIN
 from custom_components.foldingathomecontrol.services import (
     SERVICE_ADDRESS,
+    SERVICE_COMMAND,
     SERVICE_PAUSE,
     SERVICE_POWER_LEVEL,
     SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT,
+    SERVICE_SEND_COMMAND,
     SERVICE_SET_POWER_LEVEL,
     SERVICE_SHUTDOWN,
     SERVICE_SLOT,
@@ -26,6 +28,17 @@ async def test_services(hass, foldingathomecontroller):
     await hass.async_block_till_done()
 
     _, mock = foldingathomecontroller
+
+    function_mock = AsyncMock()
+    mock.return_value.send_command_async = function_mock
+    await hass.services.async_call(
+        DOMAIN,
+        SERVICE_SEND_COMMAND,
+        {SERVICE_ADDRESS: "localhost", SERVICE_COMMAND: "slot-info"},
+        blocking=True,
+    )
+    await hass.async_block_till_done()
+    function_mock.assert_called_once()
 
     function_mock = AsyncMock()
     mock.return_value.set_power_level_async = function_mock
