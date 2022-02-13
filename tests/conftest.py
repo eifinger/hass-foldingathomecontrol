@@ -44,6 +44,8 @@ def foldingathomecontroller_fixture():
     ) as mock:
 
         mock.return_value.start = AsyncMock()
+        mock.return_value.update_rate = 5
+        mock.return_value.send_command_async = AsyncMock()
         register_callback_mock = MagicMock()
         mock.return_value.register_callback = register_callback_mock
 
@@ -61,13 +63,15 @@ def bypass_login_fixture():
     """Mock the serialconnection."""
     with patch(
         "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
-    ) as mock, patch(
+    ) as config_flow_mock, patch(
         "custom_components.foldingathomecontrol.foldingathomecontrol_client.FoldingAtHomeController"  # noqa: E501
-    ) as mock2:
+    ) as client_mock:
 
-        mock2.return_value.start = AsyncMock()
-        mock.return_value.try_connect_async = AsyncMock()
-        mock.return_value.cleanup_async = AsyncMock()
+        client_mock.return_value.start = AsyncMock()
+        client_mock.return_value.update_rate = 5
+        client_mock.return_value.send_command_async = AsyncMock()
+        config_flow_mock.return_value.try_connect_async = AsyncMock()
+        config_flow_mock.return_value.cleanup_async = AsyncMock()
         yield
 
 

@@ -7,7 +7,8 @@ import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 from FoldingAtHomeControl import FoldingAtHomeController, PyOnMessageTypes
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.const import EVENT_HOMEASSISTANT_STOP
+from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.util.dt import as_utc
 
@@ -51,7 +52,29 @@ class FoldingAtHomeControlClient:
         )
 
         self.client.on_disconnect(self.on_disconnect_callback)
-        self._task = asyncio.ensure_future(self.client.start())
+        self._tasks = self._start_background_tasks()
+
+    def _start_background_tasks(self) -> List[asyncio.Task[None]]:
+        """Start all background tasks."""
+
+        tasks = []
+
+        @callback
+        def cancel_tasks(event: Event) -> None:  # noqa
+            for task in self._tasks:
+                task.cancel()
+
+        tasks.append(asyncio.ensure_future(self.client.start()))
+        tasks.append(asyncio.ensure_future(self._request_slot_info()))
+        self.hass.bus.async_listen(EVENT_HOMEASSISTANT_STOP, cancel_tasks)
+        return tasks
+
+    async def _request_slot_info(self) -> None:
+        """Send a slot-info command."""
+        while True:
+            if self.client.is_connected:
+                await self.client.send_command_async("slot-info")
+            await asyncio.sleep(self.client.update_rate)
 
     def add_options(self) -> None:
         """Add options for FoldingAtHomeControl integration."""
@@ -117,12 +140,13 @@ class FoldingAtHomeControlClient:
         """Remove the callback and stops the client."""
         if self._remove_callback is not None:
             self._remove_callback()
-        if self._task is not None:
-            try:
-                self._task.cancel()
-                await self._task
-            except asyncio.CancelledError:
-                pass
+        if self._tasks:
+            for task in self._tasks:
+                try:
+                    task.cancel()
+                    await task
+                except asyncio.CancelledError:
+                    pass
 
     def handle_error_received(self, error: Any) -> None:
         """Handle received error message."""

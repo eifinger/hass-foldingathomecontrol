@@ -9,6 +9,7 @@ from homeassistant.core import Config, HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .const import (
+    _LOGGER,
     CLIENT,
     CONF_ADDRESS,
     CONF_PASSWORD,
@@ -70,6 +71,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
+    _LOGGER.debug("unloading entry")
     await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     await hass.data[DOMAIN][entry.entry_id][CLIENT].async_remove()
     for unsub_dispatcher in hass.data[DOMAIN][entry.entry_id][UNSUB_DISPATCHERS]:
