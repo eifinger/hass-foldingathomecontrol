@@ -16,12 +16,7 @@ from custom_components.foldingathomecontrol.foldingathomecontrol_device import (
 )
 
 from .const import CLIENT, DOMAIN, UNSUB_DISPATCHERS
-from .services import (
-    SERVICE_PAUSE,
-    SERVICE_UNPAUSE,
-    async_pause_service,
-    async_unpause_service,
-)
+from .services import SERVICE_PAUSE, SERVICE_UNPAUSE, async_pause, async_unpause
 
 BUTTON_ENTITY_DESCRIPTIONS: tuple[ButtonEntityDescription, ...] = (
     ButtonEntityDescription(
@@ -80,9 +75,9 @@ class FoldingAtHomeControlSlotButton(FoldingAtHomeControlSlotDevice, ButtonEntit
     async def async_press(self) -> None:
         """Handle the button press."""
         if self.entity_description.key == SERVICE_PAUSE:
-            await async_pause_service(self.hass, self._client.address, self._slot_id)
+            await async_pause(self.hass, self._client.address, self._slot_id)
         if self.entity_description.key == SERVICE_UNPAUSE:
-            await async_unpause_service(self.hass, self._client.address, self._slot_id)
+            await async_unpause(self.hass, self._client.address, self._slot_id)
 
 
 class FoldingAtHomeControlButton(FoldingAtHomeControlDevice, ButtonEntity):
@@ -91,6 +86,6 @@ class FoldingAtHomeControlButton(FoldingAtHomeControlDevice, ButtonEntity):
     async def async_press(self) -> None:
         """Handle the button press."""
         if self.entity_description.key == SERVICE_PAUSE:
-            await async_pause_service(self.hass, self._client.address, None)
+            await async_pause(self.hass, self._client.address, None)
         if self.entity_description.key == SERVICE_UNPAUSE:
-            await async_unpause_service(self.hass, self._client.address, None)
+            await async_unpause(self.hass, self._client.address, None)

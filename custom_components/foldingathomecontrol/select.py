@@ -15,7 +15,7 @@ from custom_components.foldingathomecontrol.foldingathomecontrol_device import (
 )
 
 from .const import CLIENT, DOMAIN
-from .services import SERVICE_SET_POWER_LEVEL, async_set_power_level_service
+from .services import SERVICE_SET_POWER_LEVEL, async_set_power_level
 
 SELECT_ENTITY_DESCRIPTIONS: tuple[SelectEntityDescription, ...] = (
     SelectEntityDescription(
@@ -64,4 +64,4 @@ class FoldingAtHomeControlSelect(FoldingAtHomeControlDevice, SelectEntity):
 
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
-        await async_set_power_level_service(self.hass, self._client.address, option)
+        await async_set_power_level(self.hass, self._client.address, option)

@@ -80,25 +80,25 @@ async def async_setup_services(hass: HomeAssistant) -> None:
         service_data = service_call.data
 
         if service == SERVICE_SEND_COMMAND:
-            await async_send_command_service(
+            await async_send_command(
                 hass, service_data[SERVICE_ADDRESS], service_data[SERVICE_COMMAND]
             )
         if service == SERVICE_SET_POWER_LEVEL:
-            await async_set_power_level_service(
+            await async_set_power_level(
                 hass, service_data[SERVICE_ADDRESS], service_data[SERVICE_POWER_LEVEL]
             )
         if service == SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT:
-            await async_request_assignment_service(hass, service_data[SERVICE_ADDRESS])
+            await async_request_assignment(hass, service_data[SERVICE_ADDRESS])
         if service == SERVICE_PAUSE:
-            await async_pause_service(
+            await async_pause(
                 hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT)
             )
         if service == SERVICE_UNPAUSE:
-            await async_unpause_service(
+            await async_unpause(
                 hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT)
             )
         if service == SERVICE_SHUTDOWN:
-            await async_shutdown_service(hass, service_data[SERVICE_ADDRESS])
+            await async_shutdown(hass, service_data[SERVICE_ADDRESS])
 
     hass.services.async_register(
         DOMAIN,
@@ -155,9 +155,7 @@ async def async_unload_services(hass: HomeAssistant) -> None:
     return None
 
 
-async def async_pause_service(
-    hass: HomeAssistant, address: str, slot: str | None
-) -> None:
+async def async_pause(hass: HomeAssistant, address: str, slot: str | None) -> None:
     """Let the client pause one or all slots."""
 
     for config_entry in hass.data[DOMAIN]:
@@ -172,9 +170,7 @@ async def async_pause_service(
     return None
 
 
-async def async_unpause_service(
-    hass: HomeAssistant, address: str, slot: str | None
-) -> None:
+async def async_unpause(hass: HomeAssistant, address: str, slot: str | None) -> None:
     """Let the client unpause one or all slots."""
 
     for config_entry in hass.data[DOMAIN]:
@@ -191,7 +187,7 @@ async def async_unpause_service(
     return None
 
 
-async def async_shutdown_service(hass: HomeAssistant, address: str) -> None:
+async def async_shutdown(hass: HomeAssistant, address: str) -> None:
     """Let the client shutdown."""
 
     for config_entry in hass.data[DOMAIN]:
@@ -201,7 +197,7 @@ async def async_shutdown_service(hass: HomeAssistant, address: str) -> None:
     return None
 
 
-async def async_request_assignment_service(hass: HomeAssistant, address: str) -> None:
+async def async_request_assignment(hass: HomeAssistant, address: str) -> None:
     """Let the client request a new work server assignment."""
 
     for config_entry in hass.data[DOMAIN]:
@@ -213,7 +209,7 @@ async def async_request_assignment_service(hass: HomeAssistant, address: str) ->
     return None
 
 
-async def async_set_power_level_service(
+async def async_set_power_level(
     hass: HomeAssistant, address: str, power_level: str
 ) -> None:
     """Let the client set the power level."""
@@ -227,9 +223,7 @@ async def async_set_power_level_service(
     return None
 
 
-async def async_send_command_service(
-    hass: HomeAssistant, address: str, command: str
-) -> None:
+async def async_send_command(hass: HomeAssistant, address: str, command: str) -> None:
     """Let the client set the power level."""
 
     for config_entry in hass.data[DOMAIN]:
