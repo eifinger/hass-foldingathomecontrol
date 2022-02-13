@@ -116,3 +116,24 @@ async def test_services(hass, foldingathomecontroller):
     )
     await hass.async_block_till_done()
     function_mock.assert_called_once()
+
+
+async def test_address_not_found(hass, foldingathomecontroller):
+    """Test service call for wrong address."""
+    config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
+    config_entry.add_to_hass(hass)
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    _, mock = foldingathomecontroller
+
+    function_mock = AsyncMock()
+    mock.return_value.send_command_async = function_mock
+    await hass.services.async_call(
+        DOMAIN,
+        SERVICE_SEND_COMMAND,
+        {SERVICE_ADDRESS: "false", SERVICE_COMMAND: "slot-info"},
+        blocking=True,
+    )
+    await hass.async_block_till_done()
+    function_mock.assert_not_called()
