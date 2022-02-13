@@ -1,6 +1,7 @@
 """Test weenect setup process."""
 import pytest
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.setup import async_setup_component
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.foldingathomecontrol import (
@@ -55,3 +56,13 @@ async def test_setup_entry_exception(hass):
     # an error.
     with pytest.raises(ConfigEntryNotReady):
         assert await async_setup_entry(hass, config_entry)
+
+
+@pytest.mark.usefixtures("bypass_login")
+async def test_import(hass):
+    """Test import from configuration.yaml"""
+    config = {DOMAIN: MOCK_CONFIG}
+    assert await async_setup_component(hass, DOMAIN, config)
+    await hass.async_block_till_done()
+
+    assert len(hass.states.async_all()) == 3
