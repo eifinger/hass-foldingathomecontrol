@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.0 (2022-02-13)
+### Feature
+* Add send_command service ([`76aaea6`](https://github.com/eifinger/hass-foldingathomecontrol/commit/76aaea6e0eeacc85ed4d434a488e85e1a651980d))
+
+### Fix
+* Only add address buttons once ([`b3af5e2`](https://github.com/eifinger/hass-foldingathomecontrol/commit/b3af5e200d4b42a06e168dfe8bfe03c8c2bd1301))
+* Force slot updates ([`9a4f04d`](https://github.com/eifinger/hass-foldingathomecontrol/commit/9a4f04d9588f76f95d2bc805044046ea3a0e996c))
+
 ## v2.2.0 (2022-02-12)
 ### Feature
 * Add select entities and button per instance ([`25a66cb`](https://github.com/eifinger/hass-foldingathomecontrol/commit/25a66cbd34f2d63f2e6f0b66b224b7c43915b456))
