@@ -24,7 +24,7 @@ async def test_sensor(hass, foldingathomecontroller):
 
     await hass.async_block_till_done()
 
-    callback, _ = foldingathomecontroller
+    callback, _, _ = foldingathomecontroller
     callback("units", UNITS_DATA)
     callback("slots", SLOTS_DATA)
     await hass.async_block_till_done()
@@ -156,7 +156,7 @@ async def test_sensor_slots_before_units(hass, foldingathomecontroller):
 
     await hass.async_block_till_done()
 
-    callback, _ = foldingathomecontroller
+    callback, _, _ = foldingathomecontroller
     callback("units", UNITS_DATA)
     callback("slots", SLOTS_DATA)
     await hass.async_block_till_done()
@@ -178,7 +178,7 @@ async def test_sensor_attributes(hass, foldingathomecontroller):
 
     await hass.async_block_till_done()
 
-    callback, _ = foldingathomecontroller
+    callback, _, _ = foldingathomecontroller
     callback("slots", SLOTS_DATA)
     callback("units", UNITS_DATA)
     callback("options", OPTIONS_DATA)
@@ -204,7 +204,7 @@ async def test_sensor_removed(hass, foldingathomecontroller):
     await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    callback, _ = foldingathomecontroller
+    callback, _, _ = foldingathomecontroller
     callback("slots", TWO_SLOTS_DATA)
     callback("units", TWO_UNITS_DATA)
     await hass.async_block_till_done()
@@ -214,3 +214,23 @@ async def test_sensor_removed(hass, foldingathomecontroller):
     callback("units", UNITS_DATA)
     await hass.async_block_till_done()
     assert len(hass.states.async_all()) == 49
+
+
+async def test_disconnect(hass, foldingathomecontroller):
+    """Test that disconnect is handled."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data=MOCK_CONFIG,
+    )
+    entry.add_to_hass(hass)
+    await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    callback, disconnect, _ = foldingathomecontroller
+    callback("slots", TWO_SLOTS_DATA)
+    callback("units", TWO_UNITS_DATA)
+    await hass.async_block_till_done()
+
+    disconnect()
+    await hass.async_block_till_done()
+    assert hass.states.get("sensor.localhost_00_status").state == "unavailable"

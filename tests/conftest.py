@@ -55,7 +55,16 @@ def foldingathomecontroller_fixture():
 
             callback(message_type, data)
 
-        yield receive_data, mock
+        register_on_disconnect_callback_mock = MagicMock()
+        mock.return_value.on_disconnect = register_on_disconnect_callback_mock
+
+        def disconnect():
+            """Call the disconnect callback."""
+            callback = register_on_disconnect_callback_mock.call_args[0][0]
+
+            callback()
+
+        yield receive_data, disconnect, mock
 
 
 @pytest.fixture(name="bypass_login")

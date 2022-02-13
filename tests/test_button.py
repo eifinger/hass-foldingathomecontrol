@@ -19,7 +19,7 @@ async def test_buttons(hass, foldingathomecontroller):
 
     await hass.async_block_till_done()
 
-    callback, mock = foldingathomecontroller
+    callback, _, mock = foldingathomecontroller
     callback("units", UNITS_DATA)
     callback("slots", SLOTS_DATA)
     await hass.async_block_till_done()

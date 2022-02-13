@@ -79,7 +79,7 @@ async def test_error_received(hass, foldingathomecontroller, caplog):
 
     await hass.async_block_till_done()
 
-    callback, _ = foldingathomecontroller
+    callback, _, _ = foldingathomecontroller
     callback("error", "Something happened!")
     await hass.async_block_till_done()
     assert "localhost received error: Something happened!" in caplog.text

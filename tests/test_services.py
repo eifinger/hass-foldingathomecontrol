@@ -27,7 +27,7 @@ async def test_services(hass, foldingathomecontroller):
     await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
 
-    _, mock = foldingathomecontroller
+    _, _, mock = foldingathomecontroller
 
     function_mock = AsyncMock()
     mock.return_value.send_command_async = function_mock
@@ -125,7 +125,7 @@ async def test_address_not_found(hass, foldingathomecontroller):
     await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
 
-    _, mock = foldingathomecontroller
+    _, _, mock = foldingathomecontroller
 
     function_mock = AsyncMock()
     mock.return_value.send_command_async = function_mock
