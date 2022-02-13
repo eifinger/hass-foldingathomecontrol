@@ -3,7 +3,14 @@
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.foldingathomecontrol.const import DOMAIN
-from tests.const import MOCK_CONFIG, OPTIONS_DATA, SLOTS_DATA, UNITS_DATA
+from tests.const import (
+    MOCK_CONFIG,
+    OPTIONS_DATA,
+    SLOTS_DATA,
+    TWO_SLOTS_DATA,
+    TWO_UNITS_DATA,
+    UNITS_DATA,
+)
 
 
 async def test_sensor(hass, foldingathomecontroller):
@@ -185,3 +192,25 @@ async def test_sensor_attributes(hass, foldingathomecontroller):
         hass.states.get("sensor.localhost_00_status").attributes["description"]
         == "cpu: 3"
     )
+
+
+async def test_sensor_removed(hass, foldingathomecontroller):
+    """Test that sensors get removed."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data=MOCK_CONFIG,
+    )
+    entry.add_to_hass(hass)
+    await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    callback, _ = foldingathomecontroller
+    callback("slots", TWO_SLOTS_DATA)
+    callback("units", TWO_UNITS_DATA)
+    await hass.async_block_till_done()
+    assert len(hass.states.async_all()) == 49
+
+    callback("slots", SLOTS_DATA)
+    callback("units", UNITS_DATA)
+    await hass.async_block_till_done()
+    assert len(hass.states.async_all()) == 49

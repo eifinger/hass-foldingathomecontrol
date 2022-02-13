@@ -167,12 +167,16 @@ class FoldingAtHomeControlSensor(FoldingAtHomeControlSlotDevice, SensorEntity):
     @property
     def native_value(self):
         """Return the state of the resources if it has been received yet."""
-        if self.entity_description.key in self._client.slot_data[self._slot_id]:
-            return self._client.slot_data[self._slot_id][self.entity_description.key]
+        if self._slot_id in self._client.slot_data:
+            if self.entity_description.key in self._client.slot_data[self._slot_id]:
+                return self._client.slot_data[self._slot_id][
+                    self.entity_description.key
+                ]
 
     @property
     def extra_state_attributes(self):
         """Return the state attributes of the sensor."""
-        attr = self._client.options_data.copy()
-        attr["description"] = self._client.slot_data[self._slot_id]["Description"]
-        return attr
+        if self._slot_id in self._client.slot_data:
+            attr = self._client.options_data.copy()
+            attr["description"] = self._client.slot_data[self._slot_id]["Description"]
+            return attr
