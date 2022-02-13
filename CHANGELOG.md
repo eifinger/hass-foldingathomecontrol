@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.1 (2022-02-13)
+### Fix
+* Fix removal of slots ([`c8e35a9`](https://github.com/eifinger/hass-foldingathomecontrol/commit/c8e35a9e55fa250b71e0b3f12f8756a7d3903cc5))
+
 ## v2.3.0 (2022-02-13)
 ### Feature
 * Add send_command service ([`76aaea6`](https://github.com/eifinger/hass-foldingathomecontrol/commit/76aaea6e0eeacc85ed4d434a488e85e1a651980d))
