@@ -184,11 +184,11 @@ async def test_options_flow(hass):
 
     result = await hass.config_entries.options.async_configure(
         result["flow_id"],
-        user_input={CONF_UPDATE_RATE: 10},
+        user_input={CONF_UPDATE_RATE: 10, CONF_READ_TIMEOUT: 40},
     )
 
     assert result["type"] == data_entry_flow.RESULT_TYPE_CREATE_ENTRY
     assert entry.options == {
         CONF_UPDATE_RATE: 10,
-        CONF_READ_TIMEOUT: 15,
+        CONF_READ_TIMEOUT: 40,
     }
