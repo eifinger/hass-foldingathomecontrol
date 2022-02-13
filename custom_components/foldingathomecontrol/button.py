@@ -41,16 +41,20 @@ async def async_setup_entry(
 ) -> None:
     """Set up the foldingathomecontrol buttons."""
 
+    client = hass.data[DOMAIN][entry.entry_id][CLIENT]
+    # Add buttons for address
+    buttons: list = []
+    for button_description in BUTTON_ENTITY_DESCRIPTIONS:
+        buttons.append(FoldingAtHomeControlButton(client, button_description))
+    async_add_entities(buttons, True)
+
     @callback
     def async_add_buttons(
         new_slots: List[str],
     ) -> None:
-        """Add buttons callback."""
+        """Add slot buttons callback."""
 
-        client = hass.data[DOMAIN][entry.entry_id][CLIENT]
         buttons: list = []
-        for button_description in BUTTON_ENTITY_DESCRIPTIONS:
-            buttons.append(FoldingAtHomeControlButton(client, button_description))
         for slot in new_slots:
             for button_description in BUTTON_ENTITY_DESCRIPTIONS:
                 buttons.append(
