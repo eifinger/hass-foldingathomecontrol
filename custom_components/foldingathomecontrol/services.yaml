@@ -93,3 +93,23 @@ set_power_level:
             - "LIGHT"
             - "MEDIUM"
             - "FULL"
+
+send_command:
+  description: Send a custom command.
+  fields:
+    address:
+      description: >
+        The IP address or hostname of the client.
+        It can be found as part of the integration name.
+      example: "localhost"
+      default: "localhost"
+      required: true
+      selector:
+        text:
+    command:
+      description: >
+        The command to send.
+      example: "slot-info"
+      required: true
+      selector:
+        text:
