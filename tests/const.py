@@ -27,6 +27,19 @@ SLOTS_DATA = [
     }
 ]
 
+OPTIONS_DATA = {
+    "allow": "0/0",
+    "command-address": "0.0.0.0",
+    "command-allow-no-pass": "0/0",
+    "command-port": "36330",
+    "http-addresses": "0.0.0.0:7396",
+    "power": "Light",
+    "smp": "true",
+    "team": "247478",
+    "user": "Anonymous",
+    "web-allow": "0/0",
+}
+
 UNITS_DATA = [
     {
         "id": "00",
