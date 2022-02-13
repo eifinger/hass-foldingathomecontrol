@@ -60,7 +60,7 @@ class FoldingAtHomeControlClient:
         tasks = []
 
         @callback
-        def cancel_tasks(event: Event) -> None:  # noqa
+        def cancel_tasks(_event: Event) -> None:
             for task in self._tasks:
                 task.cancel()
 
