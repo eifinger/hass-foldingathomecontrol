@@ -66,3 +66,20 @@ async def test_import(hass):
     await hass.async_block_till_done()
 
     assert len(hass.states.async_all()) == 3
+
+
+async def test_error_received(hass, foldingathomecontroller, caplog):
+    """Test that error is logged."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data=MOCK_CONFIG,
+    )
+    entry.add_to_hass(hass)
+    await hass.config_entries.async_setup(entry.entry_id)
+
+    await hass.async_block_till_done()
+
+    callback, _ = foldingathomecontroller
+    callback("error", "Something happened!")
+    await hass.async_block_till_done()
+    assert "localhost received error: Something happened!" in caplog.text
