@@ -178,3 +178,8 @@ repos:
       - id: prettier
         name: 💄 Ensuring files are prettier
         types: [yaml, json, markdown]
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: "v0.8.0"
+    hooks:
+      - id: shellcheck
+        name: ✅ Check Shell files
