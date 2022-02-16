@@ -556,7 +556,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "homeassistant"
-version = "2022.2.6"
+version = "2022.2.7"
 description = "Open-source home automation platform running on Python 3."
 category = "dev"
 optional = false
@@ -1080,7 +1080,7 @@ pytest = ">=3.0.0"
 
 [[package]]
 name = "pytest-homeassistant-custom-component"
-version = "0.6.12"
+version = "0.6.13"
 description = "Experimental package to automatically extract test plugins for Home Assistant custom components"
 category = "dev"
 optional = false
@@ -1089,7 +1089,7 @@ python-versions = ">=3.9"
 [package.dependencies]
 coverage = "6.2.0"
 freezegun = "1.1.0"
-homeassistant = "2022.2.6"
+homeassistant = "2022.2.7"
 jsonpickle = "1.4.1"
 mock-open = "1.4.0"
 pipdeptree = "2.2.1"
@@ -1608,7 +1608,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "5d8d41e3bebba438f3b07d993a659ef10fe14f356b9d7dd5927bdb3302f2d401"
+content-hash = "47e63415e567e518aac0d475a88b5dd7e17846bd12d40065d8d5a9ecf0104eab"
 
 [metadata.files]
 aiohttp = [
@@ -2127,8 +2127,8 @@ h11 = [
     {file = "h11-0.12.0.tar.gz", hash = "sha256:47222cb6067e4a307d535814917cd98fd0a57b6788ce715755fa2b6c28b56042"},
 ]
 homeassistant = [
-    {file = "homeassistant-2022.2.6-py3-none-any.whl", hash = "sha256:29197c012f3d43f3b98501ea069d19686339c009a67a4e1d6f133738e118dff0"},
-    {file = "homeassistant-2022.2.6.tar.gz", hash = "sha256:6a437fe5d3d8267ecda99ee0b3e9cc8c25c5ac0e6d4d88492a253c74a3163957"},
+    {file = "homeassistant-2022.2.7-py3-none-any.whl", hash = "sha256:60ad03ae1dccfe6340d35dc270dd6024de68ed2c77c60752952dcb4e5522dbae"},
+    {file = "homeassistant-2022.2.7.tar.gz", hash = "sha256:7416d9a5c028d7f3a8d3f9518ade8888a67b946135fe3bfd129011ffa989a60c"},
 ]
 httpcore = [
     {file = "httpcore-0.14.7-py3-none-any.whl", hash = "sha256:47d772f754359e56dd9d892d9593b6f9870a37aeb8ba51e9a88b09b3d68cfade"},
@@ -2475,8 +2475,8 @@ pytest-freezegun = [
     {file = "pytest_freezegun-0.4.2-py2.py3-none-any.whl", hash = "sha256:5318a6bfb8ba4b709c8471c94d0033113877b3ee02da5bfcd917c1889cde99a7"},
 ]
 pytest-homeassistant-custom-component = [
-    {file = "pytest-homeassistant-custom-component-0.6.12.tar.gz", hash = "sha256:a987de89b7474e54ea7a69dcb362b3978d504457683060ad9505573e3df21c71"},
-    {file = "pytest_homeassistant_custom_component-0.6.12-py3-none-any.whl", hash = "sha256:9ee13b3cffd09a77bb8efa84e1c76fb6c79902fe522afb344162ac7c3c7b48e6"},
+    {file = "pytest-homeassistant-custom-component-0.6.13.tar.gz", hash = "sha256:b648de943c5f96dfc3bca999cbf0210fed7c875a62e3a6a7c2256ddf39da2d8b"},
+    {file = "pytest_homeassistant_custom_component-0.6.13-py3-none-any.whl", hash = "sha256:65a954e40d13168b34cc56d7f1a0a6c574b1df5f4d6cb9e15c3e65c40557b9d5"},
 ]
 pytest-mock = [
     {file = "pytest-mock-3.7.0.tar.gz", hash = "sha256:5112bd92cc9f186ee96e1a92efc84969ea494939c3aead39c50f421c4cc69534"},
