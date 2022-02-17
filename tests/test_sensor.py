@@ -1,5 +1,8 @@
 """Tests for the foldingathomecontrol sensor platform."""
 
+import logging
+
+import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.foldingathomecontrol.const import DOMAIN
@@ -165,6 +168,22 @@ async def test_sensor_slots_before_units(hass, foldingathomecontroller):
         hass.states.get("sensor.localhost_00_status").attributes["icon"]
         == "mdi:state-machine"
     )
+
+
+@pytest.mark.usefixtures("no_slots_controller")
+async def test_sensor_no_slots(hass, caplog):
+    """Test that sensor gets not created before slot info is received."""
+    caplog.set_level(logging.ERROR)
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data=MOCK_CONFIG,
+    )
+    entry.add_to_hass(hass)
+    await hass.config_entries.async_setup(entry.entry_id)
+
+    await hass.async_block_till_done()
+    assert hass.states.get("sensor.localhost_00_status") is None
+    assert len(caplog.records) == 0
 
 
 async def test_sensor_attributes(hass, foldingathomecontroller):

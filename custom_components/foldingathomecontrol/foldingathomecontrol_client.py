@@ -35,7 +35,7 @@ class FoldingAtHomeControlClient:
         """Initialize the class."""
         self.hass = hass
         self.config_entry = config_entry
-        self.slot_data: Dict[str, Dict[str, str | None]] = {}
+        self._slot_data: Dict[str, Dict[str, str | None]] = {}
         self.slots: List[str] = []
         self.options_data: Dict[str, str | None] = {}
         self._available = False
@@ -160,37 +160,37 @@ class FoldingAtHomeControlClient:
             if unit["slot"] not in slots_in_data_handled or unit["state"] == "Running":
                 #  For more than one unit for a slot take the one which is running
                 slots_in_data_handled.append(unit["slot"])
-                self.slot_data.setdefault(unit["id"], {})
-                self.slot_data[unit["slot"]]["Error"] = unit.get("error")
-                self.slot_data[unit["slot"]]["Project"] = unit.get("project")
+                self._slot_data.setdefault(unit["id"], {})
+                self._slot_data[unit["slot"]]["Error"] = unit.get("error")
+                self._slot_data[unit["slot"]]["Project"] = unit.get("project")
                 percent_done = unit.get("percentdone")
                 if percent_done is not None:
                     percent_done = percent_done.split("%")[0]
-                self.slot_data[unit["slot"]]["Percentdone"] = percent_done
-                self.slot_data[unit["slot"]]["Estimated Time Finished"] = str(
+                self._slot_data[unit["slot"]]["Percentdone"] = percent_done
+                self._slot_data[unit["slot"]]["Estimated Time Finished"] = str(
                     convert_eta_to_timestamp(unit.get("eta"))
                 )
-                self.slot_data[unit["slot"]]["Points Per Day"] = unit.get("ppd")
-                self.slot_data[unit["slot"]]["Creditestimate"] = unit.get(
+                self._slot_data[unit["slot"]]["Points Per Day"] = unit.get("ppd")
+                self._slot_data[unit["slot"]]["Creditestimate"] = unit.get(
                     "creditestimate"
                 )
-                self.slot_data[unit["slot"]]["Waiting On"] = unit.get("waitingon")
-                self.slot_data[unit["slot"]]["Next Attempt"] = unit.get("nextattempt")
-                self.slot_data[unit["slot"]]["Total Frames"] = unit.get("totalframes")
-                self.slot_data[unit["slot"]]["Frames Done"] = unit.get("framesdone")
-                self.slot_data[unit["slot"]]["Assigned"] = unit.get("assigned")
-                self.slot_data[unit["slot"]]["Timeout"] = unit.get("timeout")
-                self.slot_data[unit["slot"]]["Deadline"] = unit.get("deadline")
-                self.slot_data[unit["slot"]]["Work Server"] = unit.get("ws")
-                self.slot_data[unit["slot"]]["Collection Server"] = unit.get("cs")
-                self.slot_data[unit["slot"]]["Attempts"] = unit.get("attempts")
+                self._slot_data[unit["slot"]]["Waiting On"] = unit.get("waitingon")
+                self._slot_data[unit["slot"]]["Next Attempt"] = unit.get("nextattempt")
+                self._slot_data[unit["slot"]]["Total Frames"] = unit.get("totalframes")
+                self._slot_data[unit["slot"]]["Frames Done"] = unit.get("framesdone")
+                self._slot_data[unit["slot"]]["Assigned"] = unit.get("assigned")
+                self._slot_data[unit["slot"]]["Timeout"] = unit.get("timeout")
+                self._slot_data[unit["slot"]]["Deadline"] = unit.get("deadline")
+                self._slot_data[unit["slot"]]["Work Server"] = unit.get("ws")
+                self._slot_data[unit["slot"]]["Collection Server"] = unit.get("cs")
+                self._slot_data[unit["slot"]]["Attempts"] = unit.get("attempts")
                 tpf = unit.get("tpf")
                 if tpf is not None:
                     tpf = timeparse(
                         tpf
                     )  # Convert to seconds e.g. "22 mins 47 secs" to 1367
-                self.slot_data[unit["slot"]]["Time per Frame"] = str(tpf)
-                self.slot_data[unit["slot"]]["Basecredit"] = unit.get("basecredit")
+                self._slot_data[unit["slot"]]["Time per Frame"] = str(tpf)
+                self._slot_data[unit["slot"]]["Basecredit"] = unit.get("basecredit")
 
     def handle_options_data_received(self, data: Any) -> None:
         """Handle options data received."""
@@ -213,7 +213,7 @@ class FoldingAtHomeControlClient:
             async_dispatcher_send(self.hass, self.sensor_removed_identifer, removed)
             for slot in removed:
                 # Remove old data
-                del self.slot_data[slot]
+                del self._slot_data[slot]
                 self.slots.remove(slot)
 
     def calculate_slot_changes(self, slots: dict) -> Tuple[List[Any], List[str]]:
@@ -229,11 +229,24 @@ class FoldingAtHomeControlClient:
     def update_slots_data(self, data: Any) -> None:
         """Store received slots data."""
         for slot in data:
-            self.slot_data.setdefault(slot["id"], {})
-            self.slot_data[slot["id"]]["Status"] = slot.get("status")
-            self.slot_data[slot["id"]]["Description"] = slot.get("description")
-            self.slot_data[slot["id"]]["Reason"] = slot.get("reason")
-            self.slot_data[slot["id"]]["Idle"] = slot.get("idle")
+            self._slot_data.setdefault(slot["id"], {})
+            self._slot_data[slot["id"]]["Status"] = slot.get("status")
+            self._slot_data[slot["id"]]["Description"] = slot.get("description")
+            self._slot_data[slot["id"]]["Reason"] = slot.get("reason")
+            self._slot_data[slot["id"]]["Idle"] = slot.get("idle")
+
+    @property
+    def slot_data(self) -> Dict[str, Dict[str, str | None]]:
+        """Slot for which slot data has been received.
+        Sometimes unit data does arrive before slots data.
+        Such a slot is not fully ready to be used.
+        """
+        slot_data = {
+            slot_id: slot
+            for slot_id, slot in self._slot_data.items()
+            if "Description" in slot
+        }
+        return slot_data
 
     @property
     def available(self) -> bool:
