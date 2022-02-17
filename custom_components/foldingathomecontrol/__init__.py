@@ -18,6 +18,7 @@ from .const import (
     CONF_UPDATE_RATE,
     DOMAIN,
     PLATFORMS,
+    STARTUP_MESSAGE,
     UNSUB_DISPATCHERS,
 )
 from .foldingathomecontrol_client import FoldingAtHomeControlClient
@@ -52,11 +53,14 @@ async def async_setup(hass: HomeAssistant, config: Config) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up PyFoldingAtHomeControl from config entry."""
+    if hass.data.get(DOMAIN) is None:
+        hass.data.setdefault(DOMAIN, {})
+        _LOGGER.info(STARTUP_MESSAGE)
     try:
         client = FoldingAtHomeControlClient(hass, entry)
-        hass.data.setdefault(DOMAIN, {})[entry.entry_id] = {}
-        hass.data.setdefault(DOMAIN, {})[entry.entry_id][CLIENT] = client
-        hass.data.setdefault(DOMAIN, {})[entry.entry_id][UNSUB_DISPATCHERS] = []
+        hass.data[DOMAIN][entry.entry_id] = {}
+        hass.data[DOMAIN][entry.entry_id][CLIENT] = client
+        hass.data[DOMAIN][entry.entry_id][UNSUB_DISPATCHERS] = []
 
         await async_setup_services(hass)
         hass.config_entries.async_setup_platforms(entry, PLATFORMS)
