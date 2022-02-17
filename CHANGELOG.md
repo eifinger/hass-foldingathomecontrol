@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.2 (2022-02-17)
+### Fix
+* Avoid KeyError 'Description' ([`d46f8c3`](https://github.com/eifinger/hass-foldingathomecontrol/commit/d46f8c3577f66dcf867b89fd8a17d3788b523491))
+
 ## v2.3.1 (2022-02-13)
 ### Fix
 * Fix removal of slots ([`c8e35a9`](https://github.com/eifinger/hass-foldingathomecontrol/commit/c8e35a9e55fa250b71e0b3f12f8756a7d3903cc5))
