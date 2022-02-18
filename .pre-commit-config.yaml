@@ -183,3 +183,9 @@ repos:
     hooks:
       - id: shellcheck
         name: ✅ Check Shell files
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: master
+    hooks:
+      - id: commitizen
+        name: 🆎 Enforce semantic-commits
+        stages: [commit-msg]
