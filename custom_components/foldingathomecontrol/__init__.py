@@ -41,6 +41,11 @@ CONFIG_SCHEMA = vol.Schema(
 async def async_setup(hass: HomeAssistant, config: Config) -> bool:
     """Configure PyFoldingAtHomeControl using config flow only."""
     if DOMAIN in config:
+        _LOGGER.warning(
+            "Your foldingathomecontrol configuration has been imported into the UI; "
+            "please remove it from configuration.yaml as support for it will be "
+            "removed in a future release"
+        )
         for entry in config[DOMAIN]:
             hass.async_create_task(
                 hass.config_entries.flow.async_init(
