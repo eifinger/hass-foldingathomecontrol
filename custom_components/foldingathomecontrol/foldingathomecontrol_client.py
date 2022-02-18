@@ -160,7 +160,7 @@ class FoldingAtHomeControlClient:
             if unit["slot"] not in slots_in_data_handled or unit["state"] == "Running":
                 #  For more than one unit for a slot take the one which is running
                 slots_in_data_handled.append(unit["slot"])
-                self._slot_data.setdefault(unit["id"], {})
+                self._slot_data.setdefault(unit["slot"], {})
                 self._slot_data[unit["slot"]]["Error"] = unit.get("error")
                 self._slot_data[unit["slot"]]["Project"] = unit.get("project")
                 percent_done = unit.get("percentdone")
