@@ -14,33 +14,17 @@ _Component to integrate with [Folding@Home][Folding@Home]._
 
 Platform | Description
 -- | --
+`button` | Pause and Unpause Folding@Home clients.
 `sensor` | Show stats from Folding@Home clients.
+`select` | Select Power Setting Folding@Home clients.
 
 ![example][exampleimg]
+![configuration][configurationimg]
 
 ## Setup
 
 Follow [this](https://linustechtips.com/main/topic/990176-howto-remotely-access-your-folding-systems-part-1-fahcontrol/)
 guide in order to allow other clients on your local network to access your Folding@Home client.
-
-## Configuration
-
-### Example configuration.yaml
-
-```yaml
-foldingathomecontrol:
-  - address: "localhost"
-    port: 36330
-    password: "password"
-```
-
-### Configuration options
-
-Key | Type | Required | Default | Description
--- | -- | -- | -- | --
-`address` | `string` | `False` | `localhost` | IP address or hostname where the Folding@Home client is running on. Default is `localhost`.
-`port` | `int` | `False` | `36330` | Port of the client. Default is `36330`.
-`password` | `string` | `False` | - | Password for the client if configured.
 
 ## Services
 
@@ -78,7 +62,25 @@ Name | Description | Example
 -- | -- | --
 `address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
 
-## Contributions are welcome!
+### foldingathomecontrol.set_power_level
+
+Set the power level.
+
+Name | Description | Example
+-- | -- | --
+`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+`power_level` | `The power level to set.` | `One of: LIGHT,MEDIUM,FULL`
+
+### foldingathomecontrol.send_command
+
+Set the power level.
+
+Name | Description | Example
+-- | -- | --
+`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+`command` | `The command to send.` | `slot-info`
+
+## Contributions are welcome
 
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
 
@@ -88,10 +90,11 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [buymecoffee]: https://www.buymeacoffee.com/eifinger
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/eifinger/hass-foldingathomecontrol.svg?style=for-the-badge
-[commits]: https://github.com/eifinger/hass-foldingathomecontrol/commits/master
+[commits]: https://github.com/eifinger/hass-foldingathomecontrol/commits/main
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
-[exampleimg]: example.png
+[exampleimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/master/example.png?raw=true
+[configurationimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/main/configuration.png?raw=true
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/eifinger/hass-foldingathomecontrol.svg?style=for-the-badge
