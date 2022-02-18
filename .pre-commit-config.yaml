@@ -184,7 +184,7 @@ repos:
       - id: shellcheck
         name: ✅ Check Shell files
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: master
+    rev: v2.21.0
     hooks:
       - id: commitizen
         name: 🆎 Enforce semantic-commits
