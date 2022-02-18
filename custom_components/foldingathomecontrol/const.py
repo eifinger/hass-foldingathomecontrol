@@ -29,7 +29,7 @@ CONF_READ_TIMEOUT = "read_timeout"
 # Startup message
 NAME = "FoldingAtHomeControl"
 ISSUE_URL = "https://github.com/eifinger/hass-foldingathomecontrol/issues"
-VERSION = "2.3.2"
+VERSION = "2.3.3"
 STARTUP_MESSAGE = f"""
 -------------------------------------------------------------------
 {NAME}

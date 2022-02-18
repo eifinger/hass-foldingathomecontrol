@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v2.3.3 (2022-02-18)
+### Fix
+* Correct default for unit data ([`c605145`](https://github.com/eifinger/hass-foldingathomecontrol/commit/c605145d2b97a024b69c2d35fb730a082078a02d))
+
+### Documentation
+* Update documentation. ([`386038f`](https://github.com/eifinger/hass-foldingathomecontrol/commit/386038f63f083323a477f7bab9af50bab41a4274))
+
 ## v2.3.2 (2022-02-17)
 ### Fix
 * Avoid KeyError 'Description' ([`d46f8c3`](https://github.com/eifinger/hass-foldingathomecontrol/commit/d46f8c3577f66dcf867b89fd8a17d3788b523491))
