@@ -495,7 +495,7 @@ flake8 = "*"
 
 [[package]]
 name = "flake8-simplify"
-version = "0.19.0"
+version = "0.19.2"
 description = "flake8 plugin which checks for code that can be simplified"
 category = "dev"
 optional = false
@@ -1624,7 +1624,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "dfd107f7f9065346b6a5c315db2ff9ca205e6e97ae395ef27ba5d9ad61de806f"
+content-hash = "99193099c1cdd9946f560e8d86e239704a1bcb9ac700a958b32d75f7b6ea7d2c"
 
 [metadata.files]
 aiohttp = [
@@ -2010,8 +2010,8 @@ flake8-polyfill = [
     {file = "flake8_polyfill-1.0.2-py2.py3-none-any.whl", hash = "sha256:12be6a34ee3ab795b19ca73505e7b55826d5f6ad7230d31b18e106400169b9e9"},
 ]
 flake8-simplify = [
-    {file = "flake8_simplify-0.19.0-py3-none-any.whl", hash = "sha256:89d23cf051f4828bf2f669df57ce455ad73f5ac4a3413cbf89c2f54470e4a28d"},
-    {file = "flake8_simplify-0.19.0.tar.gz", hash = "sha256:b13969a67f9e8aad32efac93d8f59080dbff032110b4b21b65de35be6dbdb416"},
+    {file = "flake8_simplify-0.19.2-py3-none-any.whl", hash = "sha256:9c1e96ba738f9057a561697d67df7a9058898ac6313a67eda09942255cba6d38"},
+    {file = "flake8_simplify-0.19.2.tar.gz", hash = "sha256:a30ef76bf1c0cb89a52a8a5cee37667688e61a66735e997c08d56cd002f9e3e9"},
 ]
 freezegun = [
     {file = "freezegun-1.1.0-py2.py3-none-any.whl", hash = "sha256:2ae695f7eb96c62529f03a038461afe3c692db3465e215355e1bb4b0ab408712"},
