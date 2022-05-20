@@ -220,9 +220,7 @@ class FoldingAtHomeControlClient:
         """Get added and removed slots."""
         added = [slot["id"] for slot in slots if slot["id"] not in self.slots]
         removed = [
-            slot
-            for slot in self.slots
-            if slot not in list(map(lambda x: x["id"], slots))  # type: ignore
+            slot for slot in self.slots if slot not in [slot["id"] for slot in slots]
         ]
         return added, removed
 

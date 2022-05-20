@@ -213,8 +213,8 @@ async def test_sensor_attributes(hass, foldingathomecontroller):
     )
 
 
-async def test_sensor_removed(hass, foldingathomecontroller):
-    """Test that sensors get removed."""
+async def test_sensor_unavailable(hass, foldingathomecontroller):
+    """Test that sensors are unavailable when slot is removed."""
     entry = MockConfigEntry(
         domain=DOMAIN,
         data=MOCK_CONFIG,
@@ -227,12 +227,12 @@ async def test_sensor_removed(hass, foldingathomecontroller):
     callback("slots", TWO_SLOTS_DATA)
     callback("units", TWO_UNITS_DATA)
     await hass.async_block_till_done()
-    assert len(hass.states.async_all()) == 49
+    assert hass.states.get("sensor.localhost_01_status").state == "READY"
 
     callback("slots", SLOTS_DATA)
     callback("units", UNITS_DATA)
     await hass.async_block_till_done()
-    assert len(hass.states.async_all()) == 49
+    assert hass.states.get("sensor.localhost_01_status").state == "unavailable"
 
 
 async def test_disconnect(hass, foldingathomecontroller):
