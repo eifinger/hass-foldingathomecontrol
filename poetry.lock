@@ -1129,7 +1129,7 @@ tqdm = "4.49.0"
 
 [[package]]
 name = "pytest-mock"
-version = "3.7.0"
+version = "3.8.1"
 description = "Thin-wrapper around the mock package for easier use with pytest"
 category = "dev"
 optional = false
@@ -1602,7 +1602,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "2d3c59b83cf8065ca07e849e04f9ec04695139349f4e3c44521028be9ebab5ce"
+content-hash = "2651611610f160418475a0f1ec725a6f4a8d720d45b7ea39a134f215ea40458d"
 
 [metadata.files]
 aiohttp = [
@@ -2449,8 +2449,8 @@ pytest-homeassistant-custom-component = [
     {file = "pytest_homeassistant_custom_component-0.9.3-py3-none-any.whl", hash = "sha256:00bed3db198b533c2cb9543e77b47883aff86c30fc4a70534221bbc76ef8781b"},
 ]
 pytest-mock = [
-    {file = "pytest-mock-3.7.0.tar.gz", hash = "sha256:5112bd92cc9f186ee96e1a92efc84969ea494939c3aead39c50f421c4cc69534"},
-    {file = "pytest_mock-3.7.0-py3-none-any.whl", hash = "sha256:6cff27cec936bf81dc5ee87f07132b807bcda51106b5ec4b90a04331cba76231"},
+    {file = "pytest-mock-3.8.1.tar.gz", hash = "sha256:2c6d756d5d3bf98e2e80797a959ca7f81f479e7d1f5f571611b0fdd6d1745240"},
+    {file = "pytest_mock-3.8.1-py3-none-any.whl", hash = "sha256:d989f11ca4a84479e288b0cd1e6769d6ad0d3d7743dcc75e460d1416a5f2135a"},
 ]
 pytest-socket = [
     {file = "pytest-socket-0.5.1.tar.gz", hash = "sha256:7c4b81dc6a51cbc0093f11791de00ff4a15ac698f5da96879a80f5d9ad4179b6"},
