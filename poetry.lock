@@ -1240,7 +1240,7 @@ python-versions = "*"
 
 [[package]]
 name = "pyupgrade"
-version = "2.34.0"
+version = "2.37.1"
 description = "A tool to automatically upgrade syntax for newer versions."
 category = "dev"
 optional = false
@@ -1602,7 +1602,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a74d1d4e53cfdb1d70aab07ee6abb88fb6a45d1695053301e35c4c5f9c2a32e7"
+content-hash = "0ad52647fa51548a9af449deb9458fc5883c15ae0400b3933f7d5c7226ba7242"
 
 [metadata.files]
 aiohttp = []
