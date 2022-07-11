@@ -1341,17 +1341,18 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "safety"
-version = "1.10.3"
-description = "Checks installed dependencies for known vulnerabilities."
+version = "2.0.0"
+description = "Checks installed dependencies for known vulnerabilities and licenses."
 category = "dev"
 optional = false
-python-versions = ">=3.5"
+python-versions = "*"
 
 [package.dependencies]
-Click = ">=6.0"
+Click = ">=8.0.2"
 dparse = ">=0.5.1"
-packaging = "*"
+packaging = ">=21.0"
 requests = "*"
+"ruamel.yaml" = ">=0.17.21"
 
 [[package]]
 name = "six"
@@ -1602,7 +1603,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "0ad52647fa51548a9af449deb9458fc5883c15ae0400b3933f7d5c7226ba7242"
+content-hash = "fb015693aec0b888486b976fde18952de8eb17f55fc2f5de0c8bfc3fcc20c2ea"
 
 [metadata.files]
 aiohttp = []
