@@ -3,6 +3,7 @@
 [![License][license-shield]](LICENSE.md)
 
 [![hacs][hacsbadge]][hacs]
+![HACS Installs][hacs-installs-shield]
 ![Project Maintenance][maintenance-shield]
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
@@ -93,6 +94,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [commits]: https://github.com/eifinger/hass-foldingathomecontrol/commits/main
 [hacs]: https://github.com/custom-components/hacs
 [hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
+[hacs-installs-shield]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=installs&style=for-the-badge&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.foldingathomecontrol.total
 [exampleimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/master/example.png?raw=true
 [configurationimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/main/configuration.png?raw=true
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
