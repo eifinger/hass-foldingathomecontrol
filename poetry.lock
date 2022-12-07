@@ -637,7 +637,7 @@ bleak = ">=0.19.0"
 
 [[package]]
 name = "homeassistant"
-version = "2022.12.0b5"
+version = "2022.12.0b7"
 description = "Open-source home automation platform running on Python 3."
 category = "dev"
 optional = false
@@ -1221,7 +1221,7 @@ pytest = ">=3.0.0"
 
 [[package]]
 name = "pytest-homeassistant-custom-component"
-version = "0.12.27"
+version = "0.12.28"
 description = "Experimental package to automatically extract test plugins for Home Assistant custom components"
 category = "dev"
 optional = false
@@ -1231,7 +1231,7 @@ python-versions = ">=3.9"
 coverage = "6.4.4"
 fnvhash = "0.1.0"
 freezegun = "1.2.2"
-homeassistant = "2022.12.0b5"
+homeassistant = "2022.12.0b7"
 mock-open = "1.4.0"
 numpy = "1.23.2"
 paho-mqtt = "1.6.1"
@@ -1756,7 +1756,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "201005df43cfad896210d5ede93290c246edd58319dbeed14e09469d38af9000"
+content-hash = "cc226759ff195494d2095e5c57d6aecc876cc032da84b587e33f5dd22c49dcca"
 
 [metadata.files]
 aiohttp = [
@@ -2394,8 +2394,8 @@ home-assistant-bluetooth = [
     {file = "home_assistant_bluetooth-1.8.1.tar.gz", hash = "sha256:7c7ed94ab9488ee0a354b4eae8fe037d70a1d269dabe7c16e42e97a8ead23b61"},
 ]
 homeassistant = [
-    {file = "homeassistant-2022.12.0b5-py3-none-any.whl", hash = "sha256:97b60e49e45426877bf1e52a319cea8dd52ee5a18efd686f289e95eabd3fecb1"},
-    {file = "homeassistant-2022.12.0b5.tar.gz", hash = "sha256:7fc4250c88600c9a8ad402fde2dab0452a667f407fe13fd6b084556cc9a7ae68"},
+    {file = "homeassistant-2022.12.0b7-py3-none-any.whl", hash = "sha256:2d42221b8f3c4d28d97bee3d448a6acc2d2a4a10edac303edcdc708f23ff2e25"},
+    {file = "homeassistant-2022.12.0b7.tar.gz", hash = "sha256:696eb11abf658d270ed447b11ec38310039e4267bc79bef94cdf2c22afb5f1e7"},
 ]
 httpcore = [
     {file = "httpcore-0.16.2-py3-none-any.whl", hash = "sha256:52c79095197178856724541e845f2db86d5f1527640d9254b5b8f6f6cebfdee6"},
@@ -2867,8 +2867,8 @@ pytest-freezegun = [
     {file = "pytest_freezegun-0.4.2-py2.py3-none-any.whl", hash = "sha256:5318a6bfb8ba4b709c8471c94d0033113877b3ee02da5bfcd917c1889cde99a7"},
 ]
 pytest-homeassistant-custom-component = [
-    {file = "pytest-homeassistant-custom-component-0.12.27.tar.gz", hash = "sha256:5a805c4b45ef07f5be606682f3642f247ea6ad212a8b52f5abb6fa3cae6bdfc9"},
-    {file = "pytest_homeassistant_custom_component-0.12.27-py3-none-any.whl", hash = "sha256:e7cc3dcc87d8af8aba0b9acbd1f7d1bac4c5e7a518ded439cd5f79bbe9f07802"},
+    {file = "pytest-homeassistant-custom-component-0.12.28.tar.gz", hash = "sha256:87802c186315e2ff7fd69fd60185ca498de02fc176fe46d7f48eaeccd16f5642"},
+    {file = "pytest_homeassistant_custom_component-0.12.28-py3-none-any.whl", hash = "sha256:f60497d9a947a9c1f63acdf694f64d3de49c17158bf54854c09ab89110ac76c1"},
 ]
 pytest-mock = [
     {file = "pytest-mock-3.10.0.tar.gz", hash = "sha256:fbbdb085ef7c252a326fd8cdcac0aa3b1333d8811f131bdcc701002e1be7ed4f"},
@@ -2979,6 +2979,7 @@ ruamel-yaml-clib = [
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win_amd64.whl", hash = "sha256:d000f258cf42fec2b1bbf2863c61d7b8918d31ffee905da62dede869254d3b8a"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_12_6_arm64.whl", hash = "sha256:721bc4ba4525f53f6a611ec0967bdcee61b31df5a56801281027a3a6d1c2daf5"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:41d0f1fa4c6830176eef5b276af04c89320ea616655d01327d5ce65e50575c94"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:4b3a93bb9bc662fc1f99c5c3ea8e623d8b23ad22f861eb6fce9377ac07ad6072"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_12_0_arm64.whl", hash = "sha256:a234a20ae07e8469da311e182e70ef6b199d0fbeb6c6cc2901204dd87fb867e8"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:15910ef4f3e537eea7fe45f8a5d19997479940d9196f357152a09031c5be59f3"},
