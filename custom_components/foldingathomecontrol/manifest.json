@@ -1,16 +1,16 @@
 {
   "domain": "foldingathomecontrol",
   "name": "Folding@HomeControl",
-  "documentation": "https://github.com/eifinger/hass-foldingathomecontrol",
-  "issue_tracker": "https://github.com/eifinger/hass-foldingathomecontrol/issues",
-  "dependencies": [],
-  "config_flow": true,
-  "version": "2.3.3",
   "codeowners": [
     "@eifinger"
   ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/eifinger/hass-foldingathomecontrol",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/eifinger/hass-foldingathomecontrol/issues",
   "requirements": [
     "PyFoldingAtHomeControl==2.2.0"
   ],
-  "iot_class": "local_push"
+  "version": "2.3.3"
 }
