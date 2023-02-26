@@ -26,39 +26,20 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 PyFoldingAtHomeControl = "^2.2.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "^22.12.0"
 blacken-docs = "^1.13.0"
-coverage = {version = "^6.2", extras = ["toml"]}
-bandit = "^1.7.2"
-codecov = "^2.1.12"
 codespell = "^2.2.2"
-darglint = "^1.8.1"
-flake8 = "^4.0.1"
-flake8-bandit = "^3.0.0"
-flake8-bugbear = "^23.2.13"
-flake8-builtins = "^2.1.0"
-flake8-comprehensions = "^3.10.1"
-flake8-docstrings = "^1.7.0"
-flake8-eradicate = "^1.4.0"
-flake8-markdown = "^0.3.0"
-flake8-simplify = "^0.19.3"
-mypy = "^1.0"
-pre-commit = "^3.1.0"
-pre-commit-hooks = "^4.3.0"
-pytest = "^7.1.1"
-pytest-asyncio = "^0.20.2"
-pytest-cov = "^3.0.0"
-pytest-homeassistant-custom-component = "^0.12.29"
-pytest-mock = "^3.10.0"
-pylint = "^2.16.2"
-pyupgrade = "^3.3.1"
-safety = "^2.3.5"
+mypy = "^0.991"
+pre-commit = "^2.21.0"
+pre-commit-hooks = "^4.4.0"
 vulture = "^2.7"
 yamllint = "^1.29.0"
+ruff = "^0.0.192"
+pytest-homeassistant-custom-component = "^0.12.57"
 
 [tool.pytest.ini_options]
 addopts = "--cov --cov-report term-missing --cov=custom_components tests"
@@ -66,6 +47,22 @@ addopts = "--cov --cov-report term-missing --cov=custom_components tests"
 [tool.coverage.report]
 show_missing = true
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
+
+[tool.ruff]
+ignore = ['E501']
+line-length = 88
+select = [
+    'B',
+    'B9',
+    'C',
+    'E',
+    'F',
+    'W',
+]
+fix = true
+
+[tool.ruff.mccabe]
+max-complexity = 12
 
 [tool.isort]
 profile = "black"
