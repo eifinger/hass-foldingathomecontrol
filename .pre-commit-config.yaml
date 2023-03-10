@@ -68,7 +68,13 @@ repos:
         name: ✅ Check code for common misspellings
         language: system
         types: [text]
-        exclude: ^poetry\.lock$
+        exclude: |
+          (?x)^(
+              poetry.lock|
+              custom_components/foldingathomecontrol/translations/nb.json|
+              custom_components/foldingathomecontrol/translations/pl.json|
+              custom_components/foldingathomecontrol/translations/pt.json
+          )$
         entry: poetry run codespell --ignore-words=.codespell
       - id: debug-statements
         name: 🪵  Debug Statements and imports (Python)

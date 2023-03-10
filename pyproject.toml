@@ -27,7 +27,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-PyFoldingAtHomeControl = "^2.2.0"
+PyFoldingAtHomeControl = "^3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
