@@ -1,0 +1,34 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "FoldingAtHomeControl",
+                "description": "Caso precises de ajuda na configuração podes consultar: https://github.com/eifinger/hass-foldingathomecontrol",
+                "data": {
+                    "address": "IP ou host",
+                    "password": "Password",
+                    "port": "Porta"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Não me consegui ligar ao host.",
+            "auth_required": "É obrigatório password para ligar.",
+            "auth_failed": "Utilizador ou password errada."
+        },
+        "abort": {
+            "already_configured": "Só é permitida uma intância FoldingAtHomeControl por cada ip."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "description": "Configurar opcções para FoldingAtHomeControl",
+                "data": {
+                    "update_rate": "Definir Rate",
+                    "read_timeout": "Definir os Timeout"
+                }
+            }
+        }
+    }
+}
