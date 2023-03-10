@@ -39,7 +39,7 @@ pre-commit-hooks = "^4.4.0"
 vulture = "^2.7"
 yamllint = "^1.29.0"
 ruff = "^0.0.192"
-pytest-homeassistant-custom-component = "^0.12.57"
+pytest-homeassistant-custom-component = "^0.13.7"
 
 [tool.pytest.ini_options]
 addopts = "--cov --cov-report term-missing --cov=custom_components tests"
