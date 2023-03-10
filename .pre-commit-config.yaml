@@ -145,7 +145,8 @@ repos:
       - id: ruff
         name: ⚡️ Check with ruff
         language: system
-        entry: poetry run ruff
+        entry: poetry run ruff check
+        types: [python]
         args: ["--force-exclude"]
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.0.0-alpha.4"
