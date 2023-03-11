@@ -63,7 +63,6 @@ def foldingathomecontroller_fixture():
     with patch(
         "custom_components.foldingathomecontrol.foldingathomecontrol_client.FoldingAtHomeController"  # noqa: E501
     ) as mock:
-
         mock.return_value.start = AsyncMock()
         mock.return_value.update_rate = 5
         mock.return_value.send_command_async = AsyncMock()
@@ -96,7 +95,6 @@ def bypass_login_fixture():
     ) as config_flow_mock, patch(
         "custom_components.foldingathomecontrol.foldingathomecontrol_client.FoldingAtHomeController"  # noqa: E501
     ) as client_mock:
-
         client_mock.return_value.start = AsyncMock()
         client_mock.return_value.update_rate = 5
         client_mock.return_value.send_command_async = AsyncMock()
@@ -111,7 +109,6 @@ def auth_failed_on_login_fixture():
     with patch(
         "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
     ) as mock:
-
         mock.return_value.try_connect_async = AsyncMock(
             side_effect=FoldingAtHomeControlAuthenticationFailed
         )
@@ -124,7 +121,6 @@ def auth_required_on_login_fixture():
     with patch(
         "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
     ) as mock:
-
         mock.return_value.try_connect_async = AsyncMock(
             side_effect=FoldingAtHomeControlAuthenticationRequired
         )
@@ -137,7 +133,6 @@ def connection_failed_on_login_fixture():
     with patch(
         "custom_components.foldingathomecontrol.config_flow.FoldingAtHomeController"
     ) as mock:
-
         mock.return_value.try_connect_async = AsyncMock(
             side_effect=FoldingAtHomeControlConnectionFailed
         )
