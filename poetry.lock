@@ -992,14 +992,14 @@ files = [
 
 [[package]]
 name = "homeassistant"
-version = "2023.3.4"
+version = "2023.3.5"
 description = "Open-source home automation platform running on Python 3."
 category = "dev"
 optional = false
 python-versions = ">=3.10.0"
 files = [
-    {file = "homeassistant-2023.3.4-py3-none-any.whl", hash = "sha256:c35aed741a6fa68f6ad5cd2374b060a4f9ce7150270d65e0c7084487317f0f3c"},
-    {file = "homeassistant-2023.3.4.tar.gz", hash = "sha256:0490a293c4f13733ac7a10f57c13503bc2af99be996aa132e281159ad221c29d"},
+    {file = "homeassistant-2023.3.5-py3-none-any.whl", hash = "sha256:0177cd4846624e07dd2e442cfe7e58936908f27331df3c3554eb05683f502d9e"},
+    {file = "homeassistant-2023.3.5.tar.gz", hash = "sha256:fa7e362e77d9d11d2e81492c7b6109d303d41e7e1872dac06fb86405df3e6630"},
 ]
 
 [package.dependencies]
@@ -1917,21 +1917,21 @@ pytest = ">=3.6"
 
 [[package]]
 name = "pytest-homeassistant-custom-component"
-version = "0.13.8"
+version = "0.13.9"
 description = "Experimental package to automatically extract test plugins for Home Assistant custom components"
 category = "dev"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "pytest-homeassistant-custom-component-0.13.8.tar.gz", hash = "sha256:ce26066d305c95037e1be570d3f0e10f9c31bc6e8872ae5dca575ea696fb32ac"},
-    {file = "pytest_homeassistant_custom_component-0.13.8-py3-none-any.whl", hash = "sha256:49577ce578089d637a12cb34eb12b509c98027c6fd1e7834c7d83404809e3f42"},
+    {file = "pytest-homeassistant-custom-component-0.13.9.tar.gz", hash = "sha256:f75537fe292363e136222949088bd43728fc05dc13c8dc4e21832249b711aa34"},
+    {file = "pytest_homeassistant_custom_component-0.13.9-py3-none-any.whl", hash = "sha256:01f18821ed24d8e57807c2e959304dd63273db40dc6a08e470acd81f70588b91"},
 ]
 
 [package.dependencies]
 coverage = "7.1.0"
 fnvhash = "0.1.0"
 freezegun = "1.2.2"
-homeassistant = "2023.3.4"
+homeassistant = "2023.3.5"
 mock-open = "1.4.0"
 numpy = "1.23.2"
 paho-mqtt = "1.6.1"
@@ -2723,4 +2723,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "6c1ddfb89fa71cb74be981e37192ba5e42c2760c0ae85ffa4716789cd08b9341"
+content-hash = "e51c35404c8696b88c9583b91bb5656dd84108276eb144488a3da22a0508edf5"
