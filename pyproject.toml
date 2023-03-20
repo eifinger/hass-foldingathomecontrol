@@ -74,6 +74,7 @@ paths = ["custom_components", "tests"]
 
 [tool.semantic_release]
 version_source = "tag"
+commit_version_number = true
 version_toml = "pyproject.toml:tool.poetry.version"
 version_pattern = "custom_components/foldingathomecontrol/manifest.json:\"version\": \"{version}\""
 version_variable = "custom_components/foldingathomecontrol/const.py:VERSION"
