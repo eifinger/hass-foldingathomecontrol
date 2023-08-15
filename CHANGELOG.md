@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.4.0 (2023-08-15)
+
+### Feature
+
+* Translate services for en and de ([`37ed3c3`](https://github.com/eifinger/hass-foldingathomecontrol/commit/37ed3c3c1eaef0c71fda8ab1c19409096cf9f128))
+
 ## v2.3.3 (2022-02-18)
 ### Fix
 * Correct default for unit data ([`c605145`](https://github.com/eifinger/hass-foldingathomecontrol/commit/c605145d2b97a024b69c2d35fb730a082078a02d))
