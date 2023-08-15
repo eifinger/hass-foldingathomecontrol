@@ -1,8 +1,7 @@
 ---
 name: CI
 
-# yamllint disable-line rule:truthy
-on:
+"on":
   push:
     branches:
       - main
@@ -17,43 +16,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11"]
+        python-version: ["3.11"]
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - name: Lint GitHub Actions
+        uses: eifinger/actionlint-action@v1
+      - uses: eifinger/setup-rye@v1
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+          enable-cache: true
+      - name: Pin python-version ${{ matrix.python-version }}
+        run: rye pin ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          poetry install
+          rye sync --no-lock
       - name: Lint
         run: |
-          SKIP=no-commit-to-branch poetry run pre-commit run --all-files
-      - name: Coverage
-        run: |
-          poetry run coverage xml -i
-      - uses: codecov/codecov-action@v3.1.1
-        with:
-          token: ${{secrets.CODECOV}}
-          file: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-  security:
-    name: CodeQL
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-    steps:
-      - uses: actions/checkout@v3
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: python
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+          rye run pre-commit run --all-files
   hacs:
     name: HACS Action
     runs-on: "ubuntu-latest"
@@ -75,7 +53,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build
-      - security
+      - hacs
+      - hass_validate
     if: github.ref != 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
@@ -93,7 +72,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build
-      - security
+      - hacs
+      - hass_validate
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
