@@ -42,7 +42,7 @@ dev-dependencies = [
     "pre-commit>=3.3.3",
     "yamllint>=1.32.0",
     "ruff>=0.0.281",
-    "pytest-homeassistant-custom-component>=0.13.46",
+    "pytest-homeassistant-custom-component>=0.13.51",
     "pre-commit-hooks>=4.4.0",
     "respx>=0.20.1",
 ]
