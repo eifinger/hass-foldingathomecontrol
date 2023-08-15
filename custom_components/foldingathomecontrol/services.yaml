@@ -1,55 +1,35 @@
 ---
 pause:
-  description: Pause one or all slots.
   fields:
     address:
-      description: >
-        The IP address or hostname of the client.
-        It can be found as part of the integration name.
       example: "localhost"
       default: "localhost"
       required: true
       selector:
         text:
     slot:
-      description: >
-        The slot to pause.
-        Be sure to include the 0 in front if needed.
-        Leave this out to pause all slots.
       example: "01"
       required: false
       selector:
         text:
 
 unpause:
-  description: Unpause one or all slots.
   fields:
     address:
-      description: >
-        The IP address or hostname of the client.
-        It can be found as part of the integration name.
       example: "localhost"
       default: "localhost"
       required: true
       selector:
         text:
     slot:
-      description: >
-        The slot to unpause.
-        Be sure to include the 0 in front if needed.
-        Leave this out to unpause all slots.
       example: "01"
       required: false
       selector:
         text:
 
 shutdown:
-  description: Shut down the client.
   fields:
     address:
-      description: >
-        The IP address or hostname of the client.
-        It can be found as part of the integration name.
       example: "localhost"
       default: "localhost"
       required: true
@@ -57,12 +37,8 @@ shutdown:
         text:
 
 request_work_server_assignment:
-  description: Request a new assignment from the work server.
   fields:
     address:
-      description: >
-        The IP address or hostname of the client.
-        It can be found as part of the integration name.
       example: "localhost"
       default: "localhost"
       required: true
@@ -70,20 +46,14 @@ request_work_server_assignment:
         text:
 
 set_power_level:
-  description: Set the power level.
   fields:
     address:
-      description: >
-        The IP address or hostname of the client.
-        It can be found as part of the integration name.
       example: "localhost"
       default: "localhost"
       required: true
       selector:
         text:
     power_level:
-      description: >
-        The power level to set.
       example: "LIGHT"
       default: "FULL"
       required: true
@@ -95,20 +65,14 @@ set_power_level:
             - "FULL"
 
 send_command:
-  description: Send a custom command.
   fields:
     address:
-      description: >
-        The IP address or hostname of the client.
-        It can be found as part of the integration name.
       example: "localhost"
       default: "localhost"
       required: true
       selector:
         text:
     command:
-      description: >
-        The command to send.
       example: "slot-info"
       required: true
       selector:

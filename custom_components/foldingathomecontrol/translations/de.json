@@ -30,5 +30,83 @@
                 }
             }
         }
+    },
+    "services": {
+        "pause": {
+            "name": "Pause",
+            "description": "Einen oder alle Slots pausieren",
+            "fields": {
+                "address": {
+                    "name": "Addresse",
+                    "description": "Die IP Addresse or Hostname des Clients. Ist Bestandteil des Names des Integration Eintrags."
+                },
+                "slot": {
+                    "name": "Slot",
+                    "description": "Der Slot der pausiert werden soll. Falls vorhanden muss die führende 0 mit angegeben werden. Leer lassen um alle Slots zu pausieren."
+                }
+            }
+        },
+        "unpause": {
+            "name": "Unpause",
+            "description": "Pause für einen oder alle Slots aufheben",
+            "fields": {
+                "address": {
+                    "name": "Addresse",
+                    "description": "Die IP Addresse or Hostname des Clients. Ist Bestandteil des Names des Integration Eintrags."
+                },
+                "slot": {
+                    "name": "Slot",
+                    "description": "Der Slot der pausiert werden soll. Falls vorhanden muss die führende 0 mit angegeben werden. Leer lassen um alle Slots zu pausieren."
+                }
+            }
+        },
+        "shutdown": {
+            "name": "Herunterfahren",
+            "description": "Client herunterfahren.",
+            "fields": {
+                "address": {
+                    "name": "Addresse",
+                    "description": "Die IP Addresse or Hostname des Clients. Ist Bestandteil des Names des Integration Eintrags."
+                }
+            }
+        },
+        "request_work_server_assignment": {
+            "name": "Neues Assignment anfordern",
+            "description": "Ein neues assignment vom work server anfordern.",
+            "fields": {
+                "address": {
+                    "name": "Addresse",
+                    "description": "Die IP Addresse or Hostname des Clients. Ist Bestandteil des Names des Integration Eintrags."
+                }
+            }
+        },
+        "set_power_level": {
+            "name": "Setze Powerlevel.",
+            "description": "Setze das Powerlevel.",
+            "fields": {
+                "address": {
+                    "name": "Addresse",
+                    "description": "Die IP Addresse or Hostname des Clients. Ist Bestandteil des Names des Integration Eintrags."
+                },
+                "power_level": {
+                    "name": "Powerlevel",
+                    "description": "Das Powerlevel das gesetzt werden soll."
+                }
+            }
+        },
+        "send_command": {
+            "name": "Sende Kommando.",
+            "description": "Sende ein Kommando.",
+            "fields": {
+                "address": {
+                    "name": "Addresse",
+                    "description": "Die IP Addresse or Hostname des Clients. Ist Bestandteil des Names des Integration Eintrags."
+                },
+                "command": {
+                    "name": "Kommando",
+                    "description": "Das Kommando, das gesendet werden soll."
+                }
+            }
+        }
     }
 }
