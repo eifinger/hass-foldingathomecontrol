@@ -1,6 +1,4 @@
-"""
-Component to integrate with PyFoldingAtHomeControl.
-"""
+"""Component to integrate with PyFoldingAtHomeControl."""
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol

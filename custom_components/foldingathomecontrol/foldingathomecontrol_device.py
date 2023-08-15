@@ -1,5 +1,5 @@
 """Base class for FoldingAtHomeControl devices."""
-from typing import Callable, List
+from collections.abc import Callable
 
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo, Entity, EntityDescription
@@ -15,7 +15,7 @@ class FoldingAtHomeControlDevice(Entity):
         self, client: FoldingAtHomeControlClient, entity_description: EntityDescription
     ) -> None:
         self._client: FoldingAtHomeControlClient = client
-        self.listeners: List[Callable[[], None]] = []
+        self.listeners: list[Callable[[], None]] = []
         self.entity_description = entity_description
         self._attr_name = f"{client.address} {self.entity_description.name}"
         self._attr_unique_id = self._attr_name

@@ -48,7 +48,7 @@ dev-dependencies = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov --cov-report term-missing --cov=custom_components tests"
+addopts = "--cov --cov-report term-missing --asyncio-mode=auto --cov=custom_components tests"
 
 [tool.coverage.report]
 show_missing = true

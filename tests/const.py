@@ -1,7 +1,6 @@
 """Constants for foldingathomecontrol tests."""
 from __future__ import annotations
 
-from typing import Dict
 
 from custom_components.foldingathomecontrol.const import (
     CONF_ADDRESS,
@@ -10,7 +9,7 @@ from custom_components.foldingathomecontrol.const import (
 )
 
 # Mock config data to be used across multiple tests
-MOCK_CONFIG: Dict[str, str | int] = {
+MOCK_CONFIG: dict[str, str | int] = {
     CONF_ADDRESS: "localhost",
     CONF_PORT: 36330,
     CONF_PASSWORD: "password",

@@ -60,7 +60,7 @@ async def test_setup_entry_exception(hass):
 
 @pytest.mark.usefixtures("bypass_login")
 async def test_import(hass):
-    """Test import from configuration.yaml"""
+    """Test import from configuration.yaml."""
     config = {DOMAIN: MOCK_CONFIG}
     assert await async_setup_component(hass, DOMAIN, config)
     await hass.async_block_till_done()
