@@ -71,6 +71,7 @@ repos:
         exclude: |
           (?x)^(
               rye.lock|
+              custom_components/foldingathomecontrol/translations/de.json|
               custom_components/foldingathomecontrol/translations/nb.json|
               custom_components/foldingathomecontrol/translations/pl.json|
               custom_components/foldingathomecontrol/translations/pt.json

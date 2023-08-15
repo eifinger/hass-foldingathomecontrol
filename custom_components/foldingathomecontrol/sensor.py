@@ -1,5 +1,4 @@
 """Sensor platform for PyFoldingAtHomeControl."""
-from typing import List
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.const import PERCENTAGE, TIME_SECONDS
@@ -132,8 +131,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the PyFoldingAtHomeControl sensors."""
 
     @callback
-    def async_add_sensors(new_slots: List[str]) -> None:
-        """add sensors callback."""
+    def async_add_sensors(new_slots: list[str]) -> None:
+        """Add sensors callback."""
 
         client = hass.data[DOMAIN][config_entry.entry_id][CLIENT]
         dev: list = []

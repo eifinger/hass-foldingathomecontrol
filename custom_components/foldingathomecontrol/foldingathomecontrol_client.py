@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from FoldingAtHomeControl import FoldingAtHomeController, PyOnMessageTypes
 from homeassistant.const import EVENT_HOMEASSISTANT_STOP
@@ -35,9 +35,9 @@ class FoldingAtHomeControlClient:
         """Initialize the class."""
         self.hass = hass
         self.config_entry = config_entry
-        self._slot_data: Dict[str, Dict[str, str | None]] = {}
-        self.slots: List[str] = []
-        self.options_data: Dict[str, str | None] = {}
+        self._slot_data: dict[str, dict[str, str | None]] = {}
+        self.slots: list[str] = []
+        self.options_data: dict[str, str | None] = {}
         self._available = False
         self.add_options()
         self.client = FoldingAtHomeController(
@@ -54,7 +54,7 @@ class FoldingAtHomeControlClient:
         self.client.on_disconnect(self.on_disconnect_callback)
         self._tasks = self._start_background_tasks()
 
-    def _start_background_tasks(self) -> List[asyncio.Task[None]]:
+    def _start_background_tasks(self) -> list[asyncio.Task[None]]:
         """Start all background tasks."""
 
         tasks = []
@@ -108,7 +108,7 @@ class FoldingAtHomeControlClient:
 
     @callback
     def data_received_callback(self, message_type: str, data: Any) -> None:
-        """Called when data is received from the Folding@Home client."""
+        """Handle data received from the Folding@Home client."""
         self._available = True
         if message_type == PyOnMessageTypes.SLOTS.value:
             self.handle_slots_data_received(data)
@@ -122,7 +122,7 @@ class FoldingAtHomeControlClient:
 
     @callback
     def on_disconnect_callback(self) -> None:
-        """Called when data is received from the Folding@Home client."""
+        """Handle disconnection of the Folding@Home client."""
         if self._available:
             self._available = False
             _LOGGER.error(
@@ -216,7 +216,7 @@ class FoldingAtHomeControlClient:
                 del self._slot_data[slot]
                 self.slots.remove(slot)
 
-    def calculate_slot_changes(self, slots: dict) -> Tuple[List[Any], List[str]]:
+    def calculate_slot_changes(self, slots: dict) -> tuple[list[Any], list[str]]:
         """Get added and removed slots."""
         added = [slot["id"] for slot in slots if slot["id"] not in self.slots]
         removed = [
@@ -234,8 +234,9 @@ class FoldingAtHomeControlClient:
             self._slot_data[slot["id"]]["Idle"] = slot.get("idle")
 
     @property
-    def slot_data(self) -> Dict[str, Dict[str, str | None]]:
+    def slot_data(self) -> dict[str, dict[str, str | None]]:
         """Slot for which slot data has been received.
+
         Sometimes unit data does arrive before slots data.
         Such a slot is not fully ready to be used.
         """
@@ -277,7 +278,7 @@ class FoldingAtHomeControlClient:
         return f"{SENSOR_REMOVED}_{self.address}"
 
 
-def convert_eta_to_timestamp(eta: Optional[str]) -> Optional[datetime.datetime]:
+def convert_eta_to_timestamp(eta: str | None) -> datetime.datetime | None:
     """Convert relative eta to a timestamp."""
     if eta is None:
         return None

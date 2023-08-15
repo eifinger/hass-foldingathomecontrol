@@ -1,7 +1,6 @@
 """Support for foldingathomecontrol button entities."""
 from __future__ import annotations
 
-from typing import List
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -50,7 +49,7 @@ async def async_setup_entry(
 
     @callback
     def async_add_buttons(
-        new_slots: List[str],
+        new_slots: list[str],
     ) -> None:
         """Add slot buttons callback."""
 
