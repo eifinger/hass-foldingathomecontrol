@@ -1,4 +1,5 @@
 {
     "name": "Folding@HomeControl",
-    "homeassistant": "2022.2.3"
+    "homeassistant": "2022.2.3",
+    "render_readme": true
 }

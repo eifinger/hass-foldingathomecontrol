@@ -7,7 +7,6 @@
 [![hacs][hacsbadge]][hacs]
 ![HACS Installs][hacs-installs-shield]
 ![Project Maintenance][maintenance-shield]
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 [![Community Forum][forum-shield]][forum]
 
@@ -122,18 +121,19 @@ Name | Description | Example
 
 If you want to contribute to this please read the [Contribution guidelines](CONTRIBUTING.md)
 
-***
+---
+
+[<img src="https://raw.githubusercontent.com/eifinger/hass-foldingathomecontrol/main/docs/images/bmc-button.svg" width=150 height=40 style="margin: 5px"/>](https://www.buymeacoffee.com/eifinger)
+[<img src="https://raw.githubusercontent.com/eifinger/hass-foldingathomecontrol/main/docs/images/paypal-button.svg" width=150 height=40 style="margin: 5px"/>](https://paypal.me/kevinstillhammer)
 
 [Folding@Home]: https://github.com/eifinger/PyFoldingAtHomeControl
-[buymecoffee]: https://www.buymeacoffee.com/eifinger
-[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/eifinger/hass-foldingathomecontrol.svg?style=for-the-badge
 [commits]: https://github.com/eifinger/hass-foldingathomecontrol/commits/main
 [hacs]: https://github.com/hacs/integration
 [hacsbadge]: https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge
 [hacs-installs-shield]: https://img.shields.io/badge/dynamic/json?color=41BDF5&logo=home-assistant&label=installs&style=for-the-badge&cacheSeconds=15600&url=https://analytics.home-assistant.io/custom_integrations.json&query=$.foldingathomecontrol.total
-[exampleimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/main/example.png?raw=true
-[configurationimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/main/configuration.png?raw=true
+[exampleimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/main/docs/images/example.png?raw=true
+[configurationimg]: https://github.com/eifinger/hass-foldingathomecontrol/blob/main/docs/images/configuration.png?raw=true
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/eifinger/hass-foldingathomecontrol.svg?style=for-the-badge
