@@ -23,6 +23,9 @@ classifiers = [
     "License :: OSI Approved :: MIT License"
 ]
 requires-python = ">=3.10"
+dependencies = [
+    "PyFoldingAtHomeControl>=3.0.1",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -37,7 +40,6 @@ packages = ["custom_components/foldingathomecontrol"]
 [tool.rye]
 managed = true
 dev-dependencies = [
-    "PyFoldingAtHomeControl>=3.0.1",
     "black>=23.7.0",
     "blacken-docs>=1.14.0",
     "codespell>=2.2.5",
