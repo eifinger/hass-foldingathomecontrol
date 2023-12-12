@@ -7,3 +7,4 @@
 #   all-features: false
 
 -e file:.
+pyfoldingathomecontrol==3.0.1
