@@ -36,9 +36,7 @@ async def validate_input(hass: core.HomeAssistant, data):
     for entry in hass.config_entries.async_entries(DOMAIN):
         if entry.data[CONF_ADDRESS] == data[CONF_ADDRESS]:
             raise AlreadyConfigured
-    client = FoldingAtHomeController(
-        data[CONF_ADDRESS], data[CONF_PORT], data.get(CONF_PASSWORD)
-    )
+    client = FoldingAtHomeController(data[CONF_ADDRESS], data[CONF_PORT], data.get(CONF_PASSWORD))
     await client.try_connect_async(timeout=5)
     await client.cleanup_async()
 
@@ -62,9 +60,7 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
         if user_input is not None:
             try:
                 await validate_input(self.hass, user_input)
-                return self.async_create_entry(
-                    title=user_input[CONF_ADDRESS], data=user_input
-                )
+                return self.async_create_entry(title=user_input[CONF_ADDRESS], data=user_input)
             except AlreadyConfigured:
                 return self.async_abort(reason="already_configured")
             except FoldingAtHomeControlConnectionFailed:
@@ -74,9 +70,7 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
             except FoldingAtHomeControlAuthenticationFailed:
                 errors["base"] = "auth_failed"
 
-        return self.async_show_form(
-            step_id="user", data_schema=DATA_SCHEMA, errors=errors
-        )
+        return self.async_show_form(step_id="user", data_schema=DATA_SCHEMA, errors=errors)
 
     async def async_step_import(self, import_config) -> FlowResult:
         """Import from configuration.yaml."""
@@ -99,15 +93,11 @@ class FoldingAtHomeControlOptionsFlowHandler(config_entries.OptionsFlow):
         options = {
             vol.Optional(
                 CONF_UPDATE_RATE,
-                default=self.config_entry.options.get(
-                    CONF_UPDATE_RATE, DEFAULT_UPDATE_RATE
-                ),
+                default=self.config_entry.options.get(CONF_UPDATE_RATE, DEFAULT_UPDATE_RATE),
             ): int,
             vol.Optional(
                 CONF_READ_TIMEOUT,
-                default=self.config_entry.options.get(
-                    CONF_READ_TIMEOUT, DEFAULT_READ_TIMEOUT
-                ),
+                default=self.config_entry.options.get(CONF_READ_TIMEOUT, DEFAULT_READ_TIMEOUT),
             ): int,
         }
 

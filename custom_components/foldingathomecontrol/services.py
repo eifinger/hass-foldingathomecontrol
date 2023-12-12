@@ -17,9 +17,7 @@ SERVICE_POWER_LEVEL = "power_level"
 SERVICE_COMMAND = "command"
 
 SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT = "request_work_server_assignment"
-SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT_SCHEMA = vol.Schema(
-    {vol.Required(SERVICE_ADDRESS): cv.string}
-)
+SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT_SCHEMA = vol.Schema({vol.Required(SERVICE_ADDRESS): cv.string})
 
 SERVICE_PAUSE = "pause"
 SERVICE_UNPAUSE = "unpause"
@@ -51,14 +49,9 @@ SERVICE_SEND_COMMAND_SCHEMA = vol.Schema(
 )
 
 
-def _is_valid_address(
-    hass: HomeAssistant, address: str, config_entry: ConfigEntry
-) -> bool:
+def _is_valid_address(hass: HomeAssistant, address: str, config_entry: ConfigEntry) -> bool:
     """Determine whether the config_entry is valid this address."""
-    if (
-        hass.data[DOMAIN][config_entry][CLIENT].config_entry.data[CONF_ADDRESS]
-        == address
-    ):
+    if hass.data[DOMAIN][config_entry][CLIENT].config_entry.data[CONF_ADDRESS] == address:
         return True
     _LOGGER.warning(
         "Could not find a registered integration for address: %s",
@@ -80,23 +73,15 @@ async def async_setup_services(hass: HomeAssistant) -> None:
         service_data = service_call.data
 
         if service == SERVICE_SEND_COMMAND:
-            await async_send_command(
-                hass, service_data[SERVICE_ADDRESS], service_data[SERVICE_COMMAND]
-            )
+            await async_send_command(hass, service_data[SERVICE_ADDRESS], service_data[SERVICE_COMMAND])
         if service == SERVICE_SET_POWER_LEVEL:
-            await async_set_power_level(
-                hass, service_data[SERVICE_ADDRESS], service_data[SERVICE_POWER_LEVEL]
-            )
+            await async_set_power_level(hass, service_data[SERVICE_ADDRESS], service_data[SERVICE_POWER_LEVEL])
         if service == SERVICE_REQUEST_WORK_SERVER_ASSIGNMENT:
             await async_request_assignment(hass, service_data[SERVICE_ADDRESS])
         if service == SERVICE_PAUSE:
-            await async_pause(
-                hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT)
-            )
+            await async_pause(hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT))
         if service == SERVICE_UNPAUSE:
-            await async_unpause(
-                hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT)
-            )
+            await async_unpause(hass, service_data[SERVICE_ADDRESS], service_data.get(SERVICE_SLOT))
         if service == SERVICE_SHUTDOWN:
             await async_shutdown(hass, service_data[SERVICE_ADDRESS])
 
@@ -161,9 +146,7 @@ async def async_pause(hass: HomeAssistant, address: str, slot: str | None) -> No
     for config_entry in hass.data[DOMAIN]:
         if _is_valid_address(hass, address, config_entry):
             if slot is not None:
-                await hass.data[DOMAIN][config_entry][CLIENT].client.pause_slot_async(
-                    slot
-                )
+                await hass.data[DOMAIN][config_entry][CLIENT].client.pause_slot_async(slot)
                 return None
             await hass.data[DOMAIN][config_entry][CLIENT].client.pause_all_slots_async()
             return None
@@ -176,13 +159,9 @@ async def async_unpause(hass: HomeAssistant, address: str, slot: str | None) -> 
     for config_entry in hass.data[DOMAIN]:
         if _is_valid_address(hass, address, config_entry):
             if slot is not None:
-                await hass.data[DOMAIN][config_entry][CLIENT].client.unpause_slot_async(
-                    slot
-                )
+                await hass.data[DOMAIN][config_entry][CLIENT].client.unpause_slot_async(slot)
                 return None
-            await hass.data[DOMAIN][config_entry][
-                CLIENT
-            ].client.unpause_all_slots_async()
+            await hass.data[DOMAIN][config_entry][CLIENT].client.unpause_all_slots_async()
             return None
     return None
 
@@ -202,23 +181,17 @@ async def async_request_assignment(hass: HomeAssistant, address: str) -> None:
 
     for config_entry in hass.data[DOMAIN]:
         if _is_valid_address(hass, address, config_entry):
-            await hass.data[DOMAIN][config_entry][
-                CLIENT
-            ].client.request_work_server_assignment()
+            await hass.data[DOMAIN][config_entry][CLIENT].client.request_work_server_assignment()
             return None
     return None
 
 
-async def async_set_power_level(
-    hass: HomeAssistant, address: str, power_level: str
-) -> None:
+async def async_set_power_level(hass: HomeAssistant, address: str, power_level: str) -> None:
     """Let the client set the power level."""
 
     for config_entry in hass.data[DOMAIN]:
         if _is_valid_address(hass, address, config_entry):
-            await hass.data[DOMAIN][config_entry][CLIENT].client.set_power_level_async(
-                PowerLevel(power_level)
-            )
+            await hass.data[DOMAIN][config_entry][CLIENT].client.set_power_level_async(PowerLevel(power_level))
             return None
     return None
 
@@ -228,8 +201,6 @@ async def async_send_command(hass: HomeAssistant, address: str, command: str) ->
 
     for config_entry in hass.data[DOMAIN]:
         if _is_valid_address(hass, address, config_entry):
-            await hass.data[DOMAIN][config_entry][CLIENT].client.send_command_async(
-                command
-            )
+            await hass.data[DOMAIN][config_entry][CLIENT].client.send_command_async(command)
             return None
     return None

@@ -30,16 +30,12 @@ async def test_setup_unload_and_reload_entry(hass):
 
     assert await async_setup_entry(hass, config_entry)
     assert DOMAIN in hass.data and config_entry.entry_id in hass.data[DOMAIN]
-    assert isinstance(
-        hass.data[DOMAIN][config_entry.entry_id][CLIENT], FoldingAtHomeControlClient
-    )
+    assert isinstance(hass.data[DOMAIN][config_entry.entry_id][CLIENT], FoldingAtHomeControlClient)
 
     # Reload the entry and assert that the data from above is still there
     await async_reload_entry(hass, config_entry)
     assert DOMAIN in hass.data and config_entry.entry_id in hass.data[DOMAIN]
-    assert isinstance(
-        hass.data[DOMAIN][config_entry.entry_id][CLIENT], FoldingAtHomeControlClient
-    )
+    assert isinstance(hass.data[DOMAIN][config_entry.entry_id][CLIENT], FoldingAtHomeControlClient)
 
     # Unload the entry and verify that the data has been removed
     assert await async_unload_entry(hass, config_entry)

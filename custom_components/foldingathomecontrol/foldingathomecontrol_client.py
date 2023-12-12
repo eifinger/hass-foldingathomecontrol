@@ -47,9 +47,7 @@ class FoldingAtHomeControlClient:
             update_rate=config_entry.options[CONF_UPDATE_RATE],
             read_timeout=config_entry.options[CONF_READ_TIMEOUT],
         )
-        self._remove_callback = self.client.register_callback(
-            self.data_received_callback
-        )
+        self._remove_callback = self.client.register_callback(self.data_received_callback)
 
         self.client.on_disconnect(self.on_disconnect_callback)
         self._tasks = self._start_background_tasks()
@@ -83,18 +81,14 @@ class FoldingAtHomeControlClient:
                 CONF_UPDATE_RATE: DEFAULT_UPDATE_RATE,
                 CONF_READ_TIMEOUT: DEFAULT_READ_TIMEOUT,
             }
-            self.hass.config_entries.async_update_entry(
-                self.config_entry, options=options
-            )
+            self.hass.config_entries.async_update_entry(self.config_entry, options=options)
         else:
             options = dict(self.config_entry.options)
             if CONF_UPDATE_RATE not in self.config_entry.options:
                 options[CONF_UPDATE_RATE] = DEFAULT_UPDATE_RATE
             if CONF_READ_TIMEOUT not in self.config_entry.options:
                 options[CONF_READ_TIMEOUT] = DEFAULT_READ_TIMEOUT
-            self.hass.config_entries.async_update_entry(
-                self.config_entry, options=options
-            )
+            self.hass.config_entries.async_update_entry(self.config_entry, options=options)
 
     async def async_set_update_rate(self, update_rate: int) -> None:
         """Set update_rate."""
@@ -171,9 +165,7 @@ class FoldingAtHomeControlClient:
                     convert_eta_to_timestamp(unit.get("eta"))
                 )
                 self._slot_data[unit["slot"]]["Points Per Day"] = unit.get("ppd")
-                self._slot_data[unit["slot"]]["Creditestimate"] = unit.get(
-                    "creditestimate"
-                )
+                self._slot_data[unit["slot"]]["Creditestimate"] = unit.get("creditestimate")
                 self._slot_data[unit["slot"]]["Waiting On"] = unit.get("waitingon")
                 self._slot_data[unit["slot"]]["Next Attempt"] = unit.get("nextattempt")
                 self._slot_data[unit["slot"]]["Total Frames"] = unit.get("totalframes")
@@ -186,9 +178,7 @@ class FoldingAtHomeControlClient:
                 self._slot_data[unit["slot"]]["Attempts"] = unit.get("attempts")
                 tpf = unit.get("tpf")
                 if tpf is not None:
-                    tpf = timeparse(
-                        tpf
-                    )  # Convert to seconds e.g. "22 mins 47 secs" to 1367
+                    tpf = timeparse(tpf)  # Convert to seconds e.g. "22 mins 47 secs" to 1367
                 self._slot_data[unit["slot"]]["Time per Frame"] = str(tpf)
                 self._slot_data[unit["slot"]]["Basecredit"] = unit.get("basecredit")
 
@@ -219,9 +209,7 @@ class FoldingAtHomeControlClient:
     def calculate_slot_changes(self, slots: dict) -> tuple[list[Any], list[str]]:
         """Get added and removed slots."""
         added = [slot["id"] for slot in slots if slot["id"] not in self.slots]
-        removed = [
-            slot for slot in self.slots if slot not in [slot["id"] for slot in slots]
-        ]
+        removed = [slot for slot in self.slots if slot not in [slot["id"] for slot in slots]]
         return added, removed
 
     def update_slots_data(self, data: Any) -> None:
@@ -240,11 +228,7 @@ class FoldingAtHomeControlClient:
         Sometimes unit data does arrive before slots data.
         Such a slot is not fully ready to be used.
         """
-        slot_data = {
-            slot_id: slot
-            for slot_id, slot in self._slot_data.items()
-            if "Description" in slot
-        }
+        slot_data = {slot_id: slot for slot_id, slot in self._slot_data.items() if "Description" in slot}
         return slot_data
 
     @property
