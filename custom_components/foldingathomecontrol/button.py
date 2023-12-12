@@ -56,9 +56,7 @@ async def async_setup_entry(
         buttons: list = []
         for slot in new_slots:
             for button_description in BUTTON_ENTITY_DESCRIPTIONS:
-                buttons.append(
-                    FoldingAtHomeControlSlotButton(client, button_description, slot)
-                )
+                buttons.append(FoldingAtHomeControlSlotButton(client, button_description, slot))
 
         async_add_entities(buttons, True)
 

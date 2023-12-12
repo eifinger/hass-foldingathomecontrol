@@ -46,9 +46,7 @@ async def async_setup(hass: HomeAssistant, config: Config) -> bool:
         )
         for entry in config[DOMAIN]:
             hass.async_create_task(
-                hass.config_entries.flow.async_init(
-                    DOMAIN, context={"source": SOURCE_IMPORT}, data=entry
-                )
+                hass.config_entries.flow.async_init(DOMAIN, context={"source": SOURCE_IMPORT}, data=entry)
             )
 
     return True
@@ -92,12 +90,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_options_updated(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Triggered by config entry options updates."""
-    await hass.data[DOMAIN][entry.entry_id][CLIENT].async_set_update_rate(
-        entry.options[CONF_UPDATE_RATE]
-    )
-    hass.data[DOMAIN][entry.entry_id][CLIENT].set_read_timeout(
-        entry.options[CONF_READ_TIMEOUT]
-    )
+    await hass.data[DOMAIN][entry.entry_id][CLIENT].async_set_update_rate(entry.options[CONF_UPDATE_RATE])
+    hass.data[DOMAIN][entry.entry_id][CLIENT].set_read_timeout(entry.options[CONF_READ_TIMEOUT])
 
 
 async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:

@@ -11,9 +11,7 @@ from .foldingathomecontrol_client import FoldingAtHomeControlClient
 class FoldingAtHomeControlDevice(Entity):
     """Common base for FoldingAtHomeControl entities for an address."""
 
-    def __init__(
-        self, client: FoldingAtHomeControlClient, entity_description: EntityDescription
-    ) -> None:
+    def __init__(self, client: FoldingAtHomeControlClient, entity_description: EntityDescription) -> None:
         self._client: FoldingAtHomeControlClient = client
         self.listeners: list[Callable[[], None]] = []
         self.entity_description = entity_description
@@ -80,9 +78,7 @@ class FoldingAtHomeControlSlotDevice(FoldingAtHomeControlDevice):
             )
         )
         self.listeners.append(
-            async_dispatcher_connect(
-                self.hass, self._client.sensor_removed_identifer, self.async_remove_self
-            )
+            async_dispatcher_connect(self.hass, self._client.sensor_removed_identifer, self.async_remove_self)
         )
 
     async def async_remove_self(self, removed_slots: list) -> None:

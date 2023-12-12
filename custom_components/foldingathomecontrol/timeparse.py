@@ -44,9 +44,7 @@ SEPARATORS = r"[,/]"
 SECCLOCK = r":(?P<secs>\d{2}(?:\.\d+)?)"
 MINCLOCK = r"(?P<mins>\d{1,2}):(?P<secs>\d{2}(?:\.\d+)?)"
 HOURCLOCK = r"(?P<hours>\d+):(?P<mins>\d{2}):(?P<secs>\d{2}(?:\.\d+)?)"
-DAYCLOCK = (
-    r"(?P<days>\d+):(?P<hours>\d{2}):" r"(?P<mins>\d{2}):(?P<secs>\d{2}(?:\.\d+)?)"
-)
+DAYCLOCK = r"(?P<days>\d+):(?P<hours>\d{2}):" r"(?P<mins>\d{2}):(?P<secs>\d{2}(?:\.\d+)?)"
 
 OPT = lambda x: rf"(?:{x})?"
 OPTSEP = lambda x: rf"(?:{x}\s*(?:{SEPARATORS}\s*)?)?"
@@ -62,9 +60,7 @@ TIMEFORMATS = [
         SECS=OPT(SECS),
     ),
     rf"{MINCLOCK}",
-    r"{WEEKS}\s*{DAYS}\s*{HOURCLOCK}".format(
-        WEEKS=OPTSEP(WEEKS), DAYS=OPTSEP(DAYS), HOURCLOCK=HOURCLOCK
-    ),
+    r"{WEEKS}\s*{DAYS}\s*{HOURCLOCK}".format(WEEKS=OPTSEP(WEEKS), DAYS=OPTSEP(DAYS), HOURCLOCK=HOURCLOCK),
     rf"{DAYCLOCK}",
     rf"{SECCLOCK}",
     # r'{YEARS}'.format(
@@ -74,9 +70,7 @@ TIMEFORMATS = [
 ]
 
 COMPILED_SIGN = re.compile(r"\s*" + SIGN + r"\s*(?P<unsigned>.*)$")
-COMPILED_TIMEFORMATS = [
-    re.compile(r"\s*" + timefmt + r"\s*$", re.I) for timefmt in TIMEFORMATS
-]
+COMPILED_TIMEFORMATS = [re.compile(r"\s*" + timefmt + r"\s*$", re.I) for timefmt in TIMEFORMATS]
 
 MULTIPLIERS = dict(
     [
@@ -160,24 +154,12 @@ def timeparse(sval, granularity="seconds"):
                 mdict = _interpret_as_minutes(sval, mdict)
             # if all of the fields are integer numbers
             if all(v.isdigit() for v in list(mdict.values()) if v):
-                return sign * sum(
-                    MULTIPLIERS[k] * int(v, 10)
-                    for (k, v) in list(mdict.items())
-                    if v is not None
-                )
+                return sign * sum(MULTIPLIERS[k] * int(v, 10) for (k, v) in list(mdict.items()) if v is not None)
             # if SECS is an integer number
             if "secs" not in mdict or mdict["secs"] is None or mdict["secs"].isdigit():
                 # we will return an integer
                 return sign * int(
-                    sum(
-                        MULTIPLIERS[k] * float(v)
-                        for (k, v) in list(mdict.items())
-                        if k != "secs" and v is not None
-                    )
+                    sum(MULTIPLIERS[k] * float(v) for (k, v) in list(mdict.items()) if k != "secs" and v is not None)
                 ) + (int(mdict["secs"], 10) if mdict["secs"] else 0)
             # SECS is a float, we will return a float
-            return sign * sum(
-                MULTIPLIERS[k] * float(v)
-                for (k, v) in list(mdict.items())
-                if v is not None
-            )
+            return sign * sum(MULTIPLIERS[k] * float(v) for (k, v) in list(mdict.items()) if v is not None)
