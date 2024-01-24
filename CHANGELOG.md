@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.4.1 (2024-01-24)
+
+### Fix
+
+* Use UnitOfTime.SECONDS ([#444](https://github.com/eifinger/hass-foldingathomecontrol/issues/444)) ([`4cc437d`](https://github.com/eifinger/hass-foldingathomecontrol/commit/4cc437d7676e7eefedbce8a96cef4cfb3591d02e))
+
 ## v2.4.0 (2023-08-15)
 
 ### Feature
