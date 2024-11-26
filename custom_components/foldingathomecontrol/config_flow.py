@@ -9,7 +9,6 @@ from FoldingAtHomeControl import (
 )
 from homeassistant import config_entries, core, exceptions
 from homeassistant.core import callback
-from homeassistant.data_entry_flow import FlowResult
 
 from .const import (
     CONF_ADDRESS,
@@ -54,7 +53,7 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
         """Get the options flow for this handler."""
         return FoldingAtHomeControlOptionsFlowHandler(config_entry)
 
-    async def async_step_user(self, user_input=None) -> FlowResult:
+    async def async_step_user(self, user_input=None) -> config_entries.ConfigFlowResult:
         """Handle the initial step."""
         errors = {}
         if user_input is not None:
@@ -72,7 +71,7 @@ class FoldingAtHomeControllerFlowHandler(config_entries.ConfigFlow):
 
         return self.async_show_form(step_id="user", data_schema=DATA_SCHEMA, errors=errors)
 
-    async def async_step_import(self, import_config) -> FlowResult:
+    async def async_step_import(self, import_config) -> config_entries.ConfigFlowResult:
         """Import from configuration.yaml."""
 
         return await self.async_step_user(user_input=import_config)
@@ -85,7 +84,7 @@ class FoldingAtHomeControlOptionsFlowHandler(config_entries.OptionsFlow):
         """Initialize FoldingAtHomeControl options flow."""
         self.config_entry = config_entry
 
-    async def async_step_init(self, user_input=None) -> FlowResult:
+    async def async_step_init(self, user_input=None) -> config_entries.ConfigFlowResult:
         """Manage the FoldingAtHomeControl options."""
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
