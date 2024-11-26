@@ -14,11 +14,11 @@ _Component to integrate with [Folding@Home][Folding@Home]._
 
 **This component will set up the following platforms.**
 
-Platform | Description
--- | --
-`button` | Pause and Unpause Folding@Home clients.
-`sensor` | Show stats from Folding@Home clients.
-`select` | Select Power Setting Folding@Home clients.
+| Platform | Description                                |
+|----------|--------------------------------------------|
+| `button` | Pause and Unpause Folding@Home clients.    |
+| `sensor` | Show stats from Folding@Home clients.      |
+| `select` | Select Power Setting Folding@Home clients. |
 
 ![example][exampleimg]
 ![configuration][configurationimg]
@@ -52,11 +52,13 @@ Using your HA configuration directory (folder) as a starting point you should no
 ```text
 custom_components/foldingathomecontrol/.translations/en.json
 custom_components/foldingathomecontrol/__init__.py
+custom_components/foldingathomecontrol/button.py
 custom_components/foldingathomecontrol/config_flow.py
 custom_components/foldingathomecontrol/const.py
 custom_components/foldingathomecontrol/foldingathomecontrol_client.py
 custom_components/foldingathomecontrol/foldingathomecontrol_device.py
 custom_components/foldingathomecontrol/manifest.json
+custom_components/foldingathomecontrol/select.py
 custom_components/foldingathomecontrol/sensor.py
 custom_components/foldingathomecontrol/services.py
 custom_components/foldingathomecontrol/services.yaml
@@ -69,53 +71,53 @@ custom_components/foldingathomecontrol/timeparse.py
 
 Pause one or all slots.
 
-Name | Description | Example
--- | -- | --
-`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
-`slot` | `The slot to pause. Be sure to include the 0 in front if needed. Leave this out to pause all slots.` | `01`
+| Name      | Description                                                                                          | Example     |
+|-----------|------------------------------------------------------------------------------------------------------|-------------|
+| `address` | `The IP address or hostname of the client. It can be found as part of the integration name.`         | `localhost` |
+| `slot`    | `The slot to pause. Be sure to include the 0 in front if needed. Leave this out to pause all slots.` | `01`        |
 
 ### foldingathomecontrol.unpause
 
 Unpause one or all slots.
 
-Name | Description | Example
--- | -- | --
-`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
-`slot` | `The slot to unpause. Be sure to include the 0 in front if needed. Leave this out to unpause all slots.` | `01`
+| Name      | Description                                                                                              | Example     |
+|-----------|----------------------------------------------------------------------------------------------------------|-------------|
+| `address` | `The IP address or hostname of the client. It can be found as part of the integration name.`             | `localhost` |
+| `slot`    | `The slot to unpause. Be sure to include the 0 in front if needed. Leave this out to unpause all slots.` | `01`        |
 
 ### foldingathomecontrol.shutdown
 
 Shut down the client.
 
-Name | Description | Example
--- | -- | --
-`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+| Name      | Description                                                                                  | Example     |
+|-----------|----------------------------------------------------------------------------------------------|-------------|
+| `address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost` |
 
 ### foldingathomecontrol.request_work_server_assignment
 
 Request a new assignment from the work server.
 
-Name | Description | Example
--- | -- | --
-`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
+| Name      | Description                                                                                  | Example     |
+|-----------|----------------------------------------------------------------------------------------------|-------------|
+| `address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost` |
 
 ### foldingathomecontrol.set_power_level
 
 Set the power level.
 
-Name | Description | Example
--- | -- | --
-`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
-`power_level` | `The power level to set.` | `One of: LIGHT,MEDIUM,FULL`
+| Name          | Description                                                                                  | Example                     |
+|---------------|----------------------------------------------------------------------------------------------|-----------------------------|
+| `address`     | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`                 |
+| `power_level` | `The power level to set.`                                                                    | `One of: LIGHT,MEDIUM,FULL` |
 
 ### foldingathomecontrol.send_command
 
 Set the power level.
 
-Name | Description | Example
--- | -- | --
-`address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost`
-`command` | `The command to send.` | `slot-info`
+| Name      | Description                                                                                  | Example     |
+|-----------|----------------------------------------------------------------------------------------------|-------------|
+| `address` | `The IP address or hostname of the client. It can be found as part of the integration name.` | `localhost` |
+| `command` | `The command to send.`                                                                       | `slot-info` |
 
 ## Contributions are welcome
 

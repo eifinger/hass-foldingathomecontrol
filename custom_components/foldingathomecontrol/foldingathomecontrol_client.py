@@ -269,6 +269,4 @@ def convert_eta_to_timestamp(eta: str | None) -> datetime.datetime | None:
     seconds_from_now = timeparse(eta)
     if seconds_from_now is None:
         return None
-    return as_utc(  # type: ignore
-        datetime.datetime.now() + datetime.timedelta(seconds=seconds_from_now)
-    )
+    return as_utc(datetime.datetime.now() + datetime.timedelta(seconds=seconds_from_now))
