@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v2.4.2 (2024-11-26)
+
+### Fix
+
+* Use ConfigType instead of Config for hass.config ([#455](https://github.com/eifinger/hass-foldingathomecontrol/issues/455)) ([`19f9885`](https://github.com/eifinger/hass-foldingathomecontrol/commit/19f988539cd57fe0e7724a6f694d7e3395ed87d2))
+
 ## v2.4.1 (2024-01-24)
 
 ### Fix
